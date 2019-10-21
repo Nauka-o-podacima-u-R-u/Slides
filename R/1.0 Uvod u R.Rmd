@@ -1,0 +1,33 @@
+---
+title: "Uvod u <img src='assets/logos/R_logo.svg' height=45px> "
+subtitle: "<br/>"
+author: "<strong>Dr Milutin Pejovic </strong> <br/> University of Belgrade"
+date: "<br> 2019/10/15 - <small> Geodezija i Geoinformatika </small>"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, assets/css/footer.css, metropolis-fonts, assets/css/metropolis-ak.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      titleSlideClass: [middle, left]
+      highlightLines: true
+      countIncrementalSlides: false
+
+
+---
+layout: true
+
+<div class="my-footer"><span> Odsek za Geodeziju i Geoinformatiku    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+
+
+```{r setup, include=FALSE}
+library(magrittr)
+```
+
+
+
+
+---
