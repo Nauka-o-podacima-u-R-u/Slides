@@ -26,66 +26,6 @@ options(htmltools.dir.version = FALSE)
 
 Dobro dosli na predavanja iz predmeta Nauka o podacima u R-u.
 
----
-
-# Cilj predmeta
-</br>
-
--	***Upoznavanje sa oblasti "Nauka o podacima"***
-
--	***Upoznavanje sa R programskim jezikom***
-
--	***Ovladavanje savremenim metodama naučne analize podataka***
-
--	***Usvajanje dobre prakse kolaborativnog i reproduktivnog rada***
-
-
-???
-Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
-
-
-introduce tools and workflow for reproducible research (R/RStudio, Git/GitHub, etc.);
-introduce principles of tidy data and tools for data wrangling;
-exploit data structures to appropriately manage data, computer memory and computations;
-data manipulation through controls, instructions, and tailored functions;
-develop new software tools including functions, Shiny applications, and packages;
-manage software development process including version control, documentation (with embedded code), and dissemination for other users.
-
-
----
-
-# O predmetu
-</br>
-
--	***In the development...***
-
--	***Aplikativan predmet***
-
-???
-Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga
-
----
-
-# Sadržaj
-</br>
--	**Uvod u "R" programski jezik (R studio, CRAN, R packages)**
-- **Kreiranje reproduktivinih izveštaja (R markdown)**
-- **Kolaborativan rad korišćenjem GitHub-a**
--	**Tipovi i strukture osnovnih podataka u "R"-u**
--	**Učitavanje/ispisivanje podataka (readr, rgdal)**
--	**Dodavanja, eliminacije, sortiranja, selekcije i ekstrakcije podataka**
--	**Funkcionalnosti u "R"-u**
--	**Oblikovanje i formatiranje podataka (tidyverse familija alata)**
--	**Vizuelizacija podataka (base plot, grid, lattice, ggplot)**
--	**Deskriptivna statistička analiza**
-- **Prostorni podaci u "R"-u**
--	**Programiranje u "R"-u (pipes, functions...)**
--	**Osnove statističkog modeliranja**
--	**Kreiranje "R" paketa**
-
-
-???
-Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
 
 ---
 
@@ -106,20 +46,27 @@ class: inverse, center, middle
 Ona neizostavno podrazumeva primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja u cilju iznalaženja informacija koje na prvi pogled nisu dostupne, a koje su od značaja za bolje razumevanje samih podataka.
 
 ---
-# Nauka o podacima (Data Science)
+# Nauka o podacima - definicije
+</br>
 
-```{r echo = FALSE, out.width = '100%'}
-# url
-# knitr::include_graphics("http://bit.ly/arm-greens") 
-# local
-knitr::include_graphics("Figures/Nauka_google.jpg")
-```
+- *"Data science is the field of study that combines domain expertise, programming skills, and knowledge of mathematics and statistics to extract meaningful insights from data."*
+
+--
+
+- *"Data science is a multi-disciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from structured and unstructured data."* 
+
+--
+- *"Data science is the same concept as data mining and big data: "use the most powerful hardware, the most powerful programming systems, and the most efficient algorithms to solve problems"*
+
+--
+
+- *"Data science is a "concept to unify statistics, data analysis, machine learning and their related methods" in order to "understand and analyze actual phenomena" with data."*
 
 ???
 https://www.forbes.com/sites/gilpress/2013/05/28/a-very-short-history-of-data-science/#261dfb8555cf
 ---
 
-# Nauka o podacima (Data Science) `r emo::ji("face")`
+# Nauka o podacima (Data Science)`
 
 ```{r echo = FALSE, out.width = '100%'}
 # url
@@ -128,6 +75,20 @@ https://www.forbes.com/sites/gilpress/2013/05/28/a-very-short-history-of-data-sc
 knitr::include_graphics("Figures/Nauka_wiki.jpg")
 ```
 
+---
+
+# Data Scientist
+
+```{r echo = FALSE, out.width = '70%'}
+# url
+# knitr::include_graphics("http://bit.ly/arm-greens") 
+# local
+knitr::include_graphics("Figures/DataScientistSex.jpg")
+```
+
+--
+</br>
+#### *An analytical data professional with a high degree of technical skill and knowledge, usually with expertise in programming languages such as R and Python. Data scientists help businesses collect, compile, interpret, format, model, make predictions about, and manipulate all kinds of data in all manner of ways. They’re experts at both construction and deconstruction. Even though the role of data scientist is relatively new, it’s in high demand and pays well.* 
 
 ---
 
@@ -137,9 +98,9 @@ knitr::include_graphics("Figures/Nauka_wiki.jpg")
 
 -	***Relativno nova disciplina***
 
--	***Ima za cilj ekstrakciju znanja iz podataka***
+-	***Ima za cilj ekstrakciju znanja/informacija iz podataka***
 
--	***Oslanja se na statistiku, kao i na nove **pristupe** analizi podataka***
+-	***Oslanja se na statistiku, kao i na nove pristupe analizi podataka***
 
 -	***Proistekla je iz potrebe obrade velike količine podataka (senzori, automatizovani sistemi)***
 
@@ -160,7 +121,9 @@ Analiza podataka je proces u kojem podaci postaju razumljiviji, a njihova inform
 
 -	***Machine Learning***
 
+- ***Big Data***
 
+- ***Artificial Intelligence ili AI***
 
 
 ???
@@ -175,6 +138,8 @@ I Masinsko ucenje se bavi dizajnom algoritama koji generalizuju i stoga mogu da
 vrse predvidanje, njihovim svojstvima i time kako ta svojstva zavise od elemanta
 dizajna algoritma
 
+Data mining is a process that data scientists employ to find usable models and insights in data sets. They use numerous techniques to accomplish this task such as regression, classification, cluster analysis, and outlier analysis.
+
 # Spatial Data Science i ... 
 
 </br>
@@ -185,7 +150,7 @@ dizajna algoritma
 
 -	***Prostorna lokacija igra važnu ulogu***
 
-- ***U srodstvu sa Earth Observation***
+- ***Earth Observation***
 
 ???
 Spatial data science is a flavor of data science where spatial locations play a role, not only to hold records together (which IDs also could do), but also play an explicit role in the analysis, e.g. to compute and analyse distances, consider spatial autocorrelation, or compute spatial relationships between features with different geometry types, such as distances from points to linestrings. Quite often, temporal considerations play a role too when considering spatial properties.
@@ -265,6 +230,70 @@ knitr::include_graphics("Figures/diagram.jpg")
 
 .center[Book: [An Introduction to Statistical Programming Methods with R](https://smac-group.github.io/ds/)]
 
+
+---
+
+# Cilj predmeta
+</br>
+
+-	***Upoznavanje sa Naukom o podacima***
+
+-	***Upoznavanje sa R programskim jezikom***
+
+-	***Ovladavanje savremenim metodama i alatima (softverima) Nauke o podacima***
+
+-	***Usvajanje dobre prakse kolaborativnog i reproduktivnog rada***
+
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
+
+introduce tools and workflow for reproducible research (R/RStudio, Git/GitHub, etc.);
+introduce principles of tidy data and tools for data wrangling;
+exploit data structures to appropriately manage data, computer memory and computations;
+data manipulation through controls, instructions, and tailored functions;
+develop new software tools including functions, Shiny applications, and packages;
+manage software development process including version control, documentation (with embedded code), and dissemination for other users.
+
+
+---
+
+# Šta vas čeka?
+</br>
+
+-	***Interaktivan rad***
+
+-	***Seminarski rad***
+
+- ***Oktobar i Novembar posvećeni učenju***
+
+- ***Decembar i Januar posvećeni praktičnom radu***
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga
+
+---
+
+# Sadržaj
+</br>
+-	**Uvod u "R" programski jezik (R studio, CRAN, R packages)**
+- **Kreiranje reproduktivinih izveštaja (R markdown)**
+- **Kolaborativan rad korišćenjem GitHub-a**
+-	**Tipovi i strukture osnovnih podataka u "R"-u**
+-	**Učitavanje/ispisivanje podataka (readr, rgdal)**
+-	**Dodavanja, eliminacije, sortiranja, selekcije i ekstrakcije podataka**
+-	**Funkcionalnosti u "R"-u**
+-	**Oblikovanje i formatiranje podataka (tidyverse familija alata)**
+-	**Vizuelizacija podataka (base plot, grid, lattice, ggplot)**
+-	**Deskriptivna statistička analiza**
+- **Prostorni podaci u "R"-u**
+-	**Programiranje u "R"-u (pipes, functions...)**
+-	**Osnove statističkog modeliranja**
+-	**Kreiranje "R" paketa**
+
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
 
 
 
