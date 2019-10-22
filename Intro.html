@@ -4,10 +4,10 @@
     <title>Nauka o podacima u R-u</title>
     <meta charset="utf-8" />
     <meta name="author" content="Milutin Pejović" />
-    <meta name="date" content="2019-10-20" />
-    <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <meta name="date" content="2019-10-22" />
+    <link href="Intro_files/remark-css/default.css" rel="stylesheet" />
+    <link href="Intro_files/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="Intro_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
   </head>
   <body>
     <textarea id="source">
@@ -17,7 +17,81 @@ class: center, middle, inverse, title-slide
 ## <br/>UVOD
 ### Milutin Pejović
 ### <br/>Građevinski fakultet
-### 2019-10-20
+### 2019-10-22
+
+---
+
+class: inverse, center, middle
+
+# ***Dobrodošli na predmet &lt;/br&gt; Nauka o podacima u R-u***
+
+
+
+
+???
+
+Dobro dosli na predavanja iz predmeta Nauka o podacima u R-u.
+
+---
+
+# Cilj predmeta
+&lt;/br&gt;
+
+-	***Upoznavanje sa oblasti "Nauka o podacima"***
+
+-	***Upoznavanje sa R programskim jezikom***
+
+-	***Ovladavanje savremenim metodama naučne analize podataka***
+
+-	***Usvajanje dobre prakse kolaborativnog i reproduktivnog rada***
+
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
+
+
+introduce tools and workflow for reproducible research (R/RStudio, Git/GitHub, etc.);
+introduce principles of tidy data and tools for data wrangling;
+exploit data structures to appropriately manage data, computer memory and computations;
+data manipulation through controls, instructions, and tailored functions;
+develop new software tools including functions, Shiny applications, and packages;
+manage software development process including version control, documentation (with embedded code), and dissemination for other users.
+
+
+---
+
+# O predmetu
+&lt;/br&gt;
+
+-	***In the development...***
+
+-	***Aplikativan predmet***
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga
+
+---
+
+# Sadržaj
+&lt;/br&gt;
+-	**Uvod u "R" programski jezik (R studio, CRAN, R packages)**
+- **Kreiranje reproduktivinih izveštaja (R markdown)**
+- **Kolaborativan rad korišćenjem GitHub-a**
+-	**Tipovi i strukture osnovnih podataka u "R"-u**
+-	**Učitavanje/ispisivanje podataka (readr, rgdal)**
+-	**Dodavanja, eliminacije, sortiranja, selekcije i ekstrakcije podataka**
+-	**Funkcionalnosti u "R"-u**
+-	**Oblikovanje i formatiranje podataka (tidyverse familija alata)**
+-	**Vizuelizacija podataka (base plot, grid, lattice, ggplot)**
+-	**Deskriptivna statistička analiza**
+- **Prostorni podaci u "R"-u**
+-	**Programiranje u "R"-u (pipes, functions...)**
+-	**Osnove statističkog modeliranja**
+-	**Kreiranje "R" paketa**
+
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
 
 ---
 
@@ -25,56 +99,161 @@ class: inverse, center, middle
 
 # Šta je Nauka o podacima?
 
+???
+https://www.welcometothejungle.co/en/articles/story-origin-data-science
+---
+
+class: inverse, center, middle
+
+.center[***Nauka o podacima se bavi generičkim metodama analize podataka kojima podaci postaju razumljiviji, a njihova informativnost veća, čime se neposredno i produbljuje znanje o pojavi koju oni opisuju.***]
+
+???
+
+Ona neizostavno podrazumeva primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja u cilju iznalaženja informacija koje na prvi pogled nisu dostupne, a koje su od značaja za bolje razumevanje samih podataka.
+
 ---
 # Nauka o podacima (Data Science)
+
+&lt;img src="Figures/Nauka_google.jpg" width="100%" /&gt;
+
+???
+https://www.forbes.com/sites/gilpress/2013/05/28/a-very-short-history-of-data-science/#261dfb8555cf
+---
+
+# Nauka o podacima (Data Science) 🤤
 
 &lt;img src="Figures/Nauka_wiki.jpg" width="100%" /&gt;
 
 
 ---
+
 # Nauka o podacima (Data Science)
 
+&lt;/br&gt;
 
-&lt;br/&gt;
+-	***Relativno nova disciplina***
 
--	Nauka o podacima je nova disciplina
+-	***Ima za cilj ekstrakciju znanja iz podataka***
 
--	Bavi se razvojem metodologije, pristupa i softvera za bolje razumevanje podataka
+-	***Oslanja se na statistiku, kao i na nove **pristupe** analizi podataka***
 
--	Oslanja se na statistiku, kao i na nove pristupe analizi podataka
+-	***Proistekla je iz potrebe obrade velike količine podataka (senzori, automatizovani sistemi)***
 
--	Proistekla je iz potrebe obrade velike količine podataka (senzori, automatizovani sistemi)
+- ***Multidisciplinarna oblast***
+
+???
+Analiza podataka je proces u kojem podaci postaju razumljiviji, a njihova informativnost veća, čime se neposredno i produbljuje znanje o pojavi koju oni opisuju. Ona neizostavno podrazumeva primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja u cilju iznalaženja informacija koje na prvi pogled nisu dostupne, a koje su od značaja za bolje razumevanje samih podataka. Imajući u vidu da je razumevanje podataka saveznik i preduslov uspešnoj primeni svih metoda u cilju rešavanja nekog naučnog i praktičnog problema, analiza podataka bi trebala da rezultira i u identifikaciji  postojećih metoda neophodnih za neko istraživanje, kao i definisanju ciljeva i razvijanju novih pristupa neophodnih za rešavanje nekog naučnog i praktičnog problema. Programski jezik "R" nametnuo se u protekloj deceniji kao najpopularnije softversko okruženje za analizu podataka, naročito u akademskoj i naučnoj zajednici. Sa te strane, predmet je od izuzetne važnosti za sticanje veština naučne analize podataka.
+
+---
+
+# Povezane oblasti ... 
+
+&lt;/br&gt;
+
+-	***Data mining***
+
+-	***Statistics***
+
+-	***Machine Learning***
+
+
+
+
+???
+Istrazivanje podataka (eng. data mining) se bavi pronalazenjem zakonitosti u
+podacima i ukljucuje primenu algoritama masinskog ucenja kao jedan od cestih
+koraka
+
+I Takode, istrazivanje podataka ukljucuje poslove poput preprocesiranja podataka,
+eksplorativne analize, vizualizacije...
+
+I Masinsko ucenje se bavi dizajnom algoritama koji generalizuju i stoga mogu da
+vrse predvidanje, njihovim svojstvima i time kako ta svojstva zavise od elemanta
+dizajna algoritma
+
+# Spatial Data Science i ... 
+
+&lt;/br&gt;
+
+-	***Bavi se problemom prostornih podataka u "Data Science"***
+
+-	***Predstavlja logičnu nadogradnju/proširenje oblasti***
+
+-	***Prostorna lokacija igra važnu ulogu***
+
+- ***U srodstvu sa Earth Observation***
+
+???
+Spatial data science is a flavor of data science where spatial locations play a role, not only to hold records together (which IDs also could do), but also play an explicit role in the analysis, e.g. to compute and analyse distances, consider spatial autocorrelation, or compute spatial relationships between features with different geometry types, such as distances from points to linestrings. Quite often, temporal considerations play a role too when considering spatial properties.
+
+---
+# Nauka o podacima je proces..
+
+&lt;/br&gt;
+
+***"Data science is the process by which data becomes understanding, knowledge and insight"***
+&lt;/br&gt;
+.right[***Hadley Wickham***]
+--
+&lt;/br&gt;
+
+&lt;img src="Figures/datascience_workflow.jpg" width="100%" /&gt;
+
 
 ---
 
 class: inverse, center, middle
 
-***Nauka o podacima obuhvata generičke procese analize podataka kojima podaci postaju razumljiviji, a njihova informativnost veća, čime se neposredno i produbljuje znanje o pojavi koju oni opisuju. Ona neizostavno podrazumeva primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja u cilju iznalaženja informacija koje na prvi pogled nisu dostupne, a koje su od značaja za bolje razumevanje samih podataka.***
+# Šta je R?
 
+???
+https://www.welcometothejungle.co/en/articles/story-origin-data-science
 
+---
+
+# R
+
+&lt;/br&gt;
+
+-	***R nije program kao Word ili Excel ***
+
+--
+
+-	***R je programski jezik***
+
+--
+
+-	***Koristi se tako što se zadaju komande (koje naređuju računaru da ih interpretira)***
 
 
 ---
-# Šta je Nauka o podacima?
 
-&lt;br/&gt;
+# Zašto R?
 
--	Podaci postaju razumljiviji
+&lt;/br&gt;
 
--	Bavi se razvojem metodologije, pristupa i softvera za bolje razumevanje podataka
+-	***Free and Open Source***
 
--	Oslanja se na primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja
+-	***R je lako proširiv***
 
--	Proistekla je iz potrebe obrade velike količine podataka (senzori, automatizovani sistemi)
+-	***Ima najbolju zajednicu korisnika***
+
+-	***Ostavlja prostor za bavljenje problemom***
+
+-	***R je programski jezik akademske zajednice***
+
+-	***Ima najbolju zajednicu korisnika***
+
+- ***Ima neverovatne izvore za učenje***
+
 
 ---
-class: center, middle
 
-# xaringan
+# Nauka o podacima u R-u?
 
-### /ʃaː.'riŋ.ɡan/
+&lt;img src="Figures/diagram.jpg" width="70%" style="display: block; margin: auto;" /&gt;
 
----
+.center[Book: [An Introduction to Statistical Programming Methods with R](https://smac-group.github.io/ds/)]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
