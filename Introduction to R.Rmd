@@ -16,32 +16,21 @@ output:
 
 class: inverse, center, middle
 
-```{r echo FALSE}
-knitr::include_graphics("Figures/r.jpg")
+# Instalacija R-a
 
+---
+# Instalacija
+</br>
+
+- ***R ([za windows](http://derekogle.com/IFAR/supplements/installations/InstallRWin.html))***
+- ***RStudio ([za windows](http://derekogle.com/IFAR/supplements/installations/InstallRStudioWin.html))***
+
+- ***[R paketi](http://jtleek.com/modules/01_DataScientistToolbox/02_09_installingRPackages/#10)***
+
+--
+
+```{r eval = FALSE}
+install.packages("devtools")
 ```
 
 
----
-
-class: inverse, center, middle
-
-# Šta je R?
-
-???
-https://www.welcometothejungle.co/en/articles/story-origin-data-science
----
-
-class: inverse, center, middle
-
-.center[***Nauka o podacima se bavi generičkim metodama analize podataka kojima podaci postaju razumljiviji, a njihova informativnost veća, čime se neposredno i produbljuje znanje o pojavi koju oni opisuju.***]
-
-???
-
-Ona neizostavno podrazumeva primenu različitih metoda vizuelizacije, transformacije podataka, statističke analize i modeliranja u cilju iznalaženja informacija koje na prvi pogled nisu dostupne, a koje su od značaja za bolje razumevanje samih podataka.
-
----
-# Zašto R?
-</br>
-
-- *R je "*free*", "*open-source*" i dostupan za svaku platformu (Unix, Windows..)*
