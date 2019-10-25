@@ -3,8 +3,9 @@
   <head>
     <title>Nauka o podacima u R-u</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Milutin Pejović" />
-    <meta name="date" content="2019-10-23" />
+    <meta name="author" content="dr Milutin Pejović, dipl. geod. inž." />
+    <meta name="author" content="Petar Bursać master, inž. geod." />
+    <meta name="date" content="2019-10-25" />
     <link href="Intro_files/remark-css/default.css" rel="stylesheet" />
     <link href="Intro_files/remark-css/metropolis.css" rel="stylesheet" />
     <link href="Intro_files/remark-css/metropolis-fonts.css" rel="stylesheet" />
@@ -15,9 +16,10 @@ class: center, middle, inverse, title-slide
 
 # Nauka o podacima u R-u
 ## <br/>UVOD
-### Milutin Pejović
+### dr Milutin Pejović, dipl. geod. inž.
+### Petar Bursać master, inž. geod.
 ### <br/>Građevinski fakultet
-### 2019-10-23
+### 2019-10-25
 
 ---
 
@@ -74,17 +76,19 @@ https://www.forbes.com/sites/gilpress/2013/05/28/a-very-short-history-of-data-sc
 
 # Nauka o podacima (Data Science)`
 
-&lt;img src="Figures/Nauka_wiki.jpg" width="100%" /&gt;
+&lt;img src="Figures/DataScience.jpg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Data Scientist
 
-&lt;img src="Figures/DataScientistSex.jpg" width="70%" /&gt;
+&lt;img src="Figures/DataScientistSex.jpg" width="70%" style="display: block; margin: auto;" /&gt;
 
 --
 &lt;/br&gt;
-#### *An analytical data professional with a high degree of technical skill and knowledge, usually with expertise in programming languages such as R and Python. Data scientists help businesses collect, compile, interpret, format, model, make predictions about, and manipulate all kinds of data in all manner of ways. They’re experts at both construction and deconstruction. Even though the role of data scientist is relatively new, it’s in high demand and pays well.* 
+&lt;/br&gt;
+
+.center[*An analytical data professional with a high degree of technical skill and knowledge, usually with expertise in programming languages such as R and Python. Data scientists help businesses collect, compile, interpret, format, model, make predictions about, and manipulate all kinds of data in all manner of ways. They’re experts at both construction and deconstruction. ***Even though the role of data scientist is relatively new, it’s in high demand and pays well.****]
 
 ---
 
@@ -136,17 +140,25 @@ dizajna algoritma
 
 Data mining is a process that data scientists employ to find usable models and insights in data sets. They use numerous techniques to accomplish this task such as regression, classification, cluster analysis, and outlier analysis.
 
-# Spatial Data Science i ... 
+---
+
+# Spatial Data Science 
 
 &lt;/br&gt;
 
--	***Bavi se problemom prostornih podataka u "Data Science"***
+-	***Bavi se problemom prostornih podataka u "Data Science" (prostorna predikcija, klasterizacija, klasifikacija, prostorna zavisnost itd)***
 
--	***Predstavlja logičnu nadogradnju/proširenje oblasti***
+-	***Predstavlja logičnu nadogradnju/proširenje oblasti uzimanjem prostorne lokacije u obzir***
 
--	***Prostorna lokacija igra važnu ulogu***
+-	***GIS i Earth Observation***
 
-- ***Earth Observation***
+---
+class: inverse, center, middle
+
+***spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation." (Luc Anselin, 2019, "Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.***
+
+.right[Luc Anselin, 2019]
+.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
 
 ???
 Spatial data science is a flavor of data science where spatial locations play a role, not only to hold records together (which IDs also could do), but also play an explicit role in the analysis, e.g. to compute and analyse distances, consider spatial autocorrelation, or compute spatial relationships between features with different geometry types, such as distances from points to linestrings. Quite often, temporal considerations play a role too when considering spatial properties.
@@ -197,20 +209,16 @@ https://www.welcometothejungle.co/en/articles/story-origin-data-science
 
 &lt;/br&gt;
 
--	***Free and Open Source***
-
--	***R je lako proširiv***
-
--	***Ima najbolju zajednicu korisnika***
-
--	***Ostavlja prostor za bavljenje problemom***
-
--	***R je programski jezik akademske zajednice***
-
--	***Ima najbolju zajednicu korisnika***
-
-- ***Ima neverovatne izvore za učenje***
-
+-	***"Free and Open Source" i dostupan na svim platformama***
+-	***Ima najbolju zajednicu korisnika ([rstats on twitter](https://twitter.com/search?q=%23rstats), [rbloggers](https://www.r-bloggers.com/), [R Programming Language Meetup groups](https://www.meetup.com/topics/r-programming-language/)).***
+-	***Kao posledica toga, rešenja mnogih problema se brzo pronalaze na web-u ([R studio](https://community.rstudio.com/), [StackOverflow](http://stackoverflow.com/), [R-help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help))***
+- ***Ogroman broj paketa za različite oblasti je besplatno dostupan ([Cran Task View](https://cran.r-project.org/web/views/))***
+-	***Medju njima i fantastične alate za diseminaciju rezultata (kreiranje izveštaja u bilo kojem formatu [pandoc](https://pandoc.org/installing.html), web i blog stranica [blogdown](https://bookdown.org/yihui/blogdown/), knjiga [bookdown](https://bookdown.org/home/) i na kraju paketa [R packages](http://r-pkgs.had.co.nz/))***
+-	***R studio je integralno okruženje sa fantastičnim mogućnostima***
+- ***R je jezik akademske zajednice i kao takav predstavlja alat za implementaciju najnovijih rešenja***
+- ***U okviru R-a se lako mogu koristiti drugi programski jezici***
+- ***R ti dozvoljava da se fokusiraš na prblem koji rešavaš.***
+- ***Više na [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham.***
 
 ---
 
@@ -230,9 +238,9 @@ https://www.welcometothejungle.co/en/articles/story-origin-data-science
 
 -	***Upoznavanje sa R programskim jezikom***
 
--	***Ovladavanje savremenim metodama i alatima (softverima) Nauke o podacima***
+-	***Ovladavanje savremenim metodama i alatima za rad sa podacima (manupulacija, oblikovanje, transformacija, vizualizacija, stastistčko modeliranje itd.)***
 
--	***Usvajanje dobre prakse kolaborativnog i reproduktivnog rada***
+-	***Usvajanje dobre prakse (kolaborativni rada, reproduktivni izveštaji, itd.)***
 
 
 ???
@@ -245,22 +253,6 @@ data manipulation through controls, instructions, and tailored functions;
 develop new software tools including functions, Shiny applications, and packages;
 manage software development process including version control, documentation (with embedded code), and dissemination for other users.
 
-
----
-
-# Šta vas čeka?
-&lt;/br&gt;
-
--	***Interaktivan rad***
-
--	***Seminarski rad***
-
-- ***Oktobar i Novembar posvećeni učenju***
-
-- ***Decembar i Januar posvećeni praktičnom radu***
-
-???
-Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga
 
 ---
 
@@ -283,7 +275,56 @@ Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akadems
 
 
 ???
-Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga,
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga, 
+
+---
+
+# Šta vas čeka
+&lt;/br&gt;
+
+-	***Interaktivan rad***
+
+-	***Seminarski rad***
+
+- ***Oktobar i Novembar posvećeni učenju***
+
+- ***Decembar i Januar posvećeni praktičnom radu***
+
+???
+Predmet nauka o podacima je nastao iz potrebe da se studenti pripreme za akademski pristup analizi problema i podataka. Pored toga
+
+---
+
+# Literatura
+
+.pull-left[
+![Advanced R](https://images-na.ssl-images-amazon.com/images/I/41RJLhZ32VL._SX329_BO1,204,203,200_.jpg)
+]
+.pull-right[
+![R for Data science](https://images-na.ssl-images-amazon.com/images/I/71PFVFcIXnL.jpg)
+]
+
+
+# Literatura
+
+.pull-left[
+![Hands on Programming with R](https://kbimages1-a.akamaihd.net/641175b5-4cbb-494f-affb-f756e593d83b/1200/1200/False/hands-on-programming-with-r.jpg)
+]
+.pull-right[
+![R in Action](https://images-na.ssl-images-amazon.com/images/I/713n1IBYCXL.jpg)
+]
+
+
+---
+
+# Literatura
+
+.pull-left[
+![Applied Spatial Data Analysis with R (Use R!)](https://images-na.ssl-images-amazon.com/images/I/6157mMpgjcL.jpg)
+]
+.pull-right[
+![Geocomputation with R](https://images-na.ssl-images-amazon.com/images/I/81pjF588jaL.jpg)
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
