@@ -268,3 +268,6 @@ tail(studenti)
 #' 
 #' #### 
 #' 
+#' 
+#' # Kreiranje funkcija
+#' 
