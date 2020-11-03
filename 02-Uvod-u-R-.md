@@ -487,7 +487,7 @@ studenti <- read.csv(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt"
 ```
 
 
-#### `readxl` paket
+## `readxl` paket
 
 Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 
@@ -618,7 +618,7 @@ U okviru R-a postoji poseban sistem notacije kojim je moguće pristupiti vrednos
 # studenti[ , ]
 ```
 
-U okviru zagrrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **reda** i drugi predstavlja broj **kolone**. Indeksi mogu biti napisani na veći broj načina, i to:
+U okviru zagrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **reda** i drugi predstavlja broj **kolone**. Indeksi mogu biti napisani na veći broj načina, i to:
  
 - Pozitivne celobrojne vrednosti
 - Negativne celobrojne vrednosti
@@ -913,8 +913,6 @@ studenti$Prezime[1:5]
 ```
 
 
-
- 
 ## Sumiranje
 
 Sumiranje podataka je moguće uraditi po vrednostima reodova i/ili kolona. Postoji veliki broj funkcija, kao i paketa koji koriste svoje funkcije za sumiranje po određenim pravilima. Neke od osnovnih funkcija base paketa su:
@@ -991,15 +989,8 @@ apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat d
 
 
 ```r
-?apply()
-```
-
-```
-## starting httpd help server ... done
-```
-
-```r
-?lapply()
+## ?apply()
+## ?lapply()
 ```
 
 apply možemo koristiti kako bi izvršili sumiranje po svim redovima (drugi argument funkcije je 1) ili kolonama (drugi argument funkcije je 2). 
@@ -1100,7 +1091,7 @@ rowMeans(studenti[, 6:7], na.rm = T)
 ```
 
 
-Funkcija by()
+### Funkcija by()
 Koriscenjem funkcije by(), možemo na jednostavan način uraditi sumiranje po određenim faktorskim kolona.
 
 
@@ -1274,10 +1265,6 @@ plot(studenti_bez_na$kol.2, studenti_bez_na$Ocena)
 ```
 
 ![](02-Uvod-u-R-_files/figure-html/unnamed-chunk-45-2.png)<!-- -->
-
-koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu
-ko je polozio oba kolokvijuma 
-
 
 
 

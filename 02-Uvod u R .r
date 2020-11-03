@@ -232,7 +232,7 @@ studenti <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.tx
 
 studenti <- read.csv(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 #'
-#' #### `readxl` paket
+#' ## `readxl` paket
 #'
 #'Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 #+ eval = FALSE
@@ -268,7 +268,7 @@ dim(studenti)
 
 # studenti[ , ]
 
-#' U okviru zagrrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **reda** i drugi predstavlja broj **kolone**. Indeksi mogu biti napisani na veći broj načina, i to:
+#' U okviru zagrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **reda** i drugi predstavlja broj **kolone**. Indeksi mogu biti napisani na veći broj načina, i to:
 #'  
 #' - Pozitivne celobrojne vrednosti
 #' - Negativne celobrojne vrednosti
@@ -342,7 +342,7 @@ studenti[1:5, c("Prezime", "Ime", "br.ind", "god.upisa")]
 #' Kao i kombinacija navedenog:
 studenti[1:5, c(names(studenti[, c(2:5)]))]
 
-#'
+#' 
 #' ## Selektovanje podataka putem $ sintakse
 #' Putem prethodnih primera pokazan je osnovni način selekcije elementa iz skupa podataka. Način selekcije podataka koji se najčešče koristi predstavlja upotrebu $ sintakse.      
 #' Potrebno je napisati naziv objekta - data frame-a a zatim napisati naziv kolone odvojen znakom "$":
@@ -356,8 +356,6 @@ studenti$Prezime[1]
 studenti$Prezime[1:5]
 
 #' 
-#' 
-#'  
 #' ## Sumiranje
 #' 
 #' Sumiranje podataka je moguće uraditi po vrednostima reodova i/ili kolona. Postoji veliki broj funkcija, kao i paketa koji koriste svoje funkcije za sumiranje po određenim pravilima. Neke od osnovnih funkcija base paketa su:
@@ -375,8 +373,8 @@ median(studenti$Praksa, na.rm = T)
 #' 
 #' ### apply i lapply funkcije
 #' apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat daju vektor, listu ili array. 
-?apply()
-?lapply()
+## ?apply()
+## ?lapply()
 #' apply možemo koristiti kako bi izvršili sumiranje po svim redovima (drugi argument funkcije je 1) ili kolonama (drugi argument funkcije je 2). 
 #' 
 studenti_bez_na <- studenti
@@ -396,7 +394,7 @@ colMeans(studenti[, 6:14], na.rm = T) # Uočavamo razilku između srednje vredno
 rowMeans(studenti[, 6:7], na.rm = T)
 
 #'
-#' Funkcija by()
+#' ### Funkcija by()
 #' Koriscenjem funkcije by(), možemo na jednostavan način uraditi sumiranje po određenim faktorskim kolona.
 by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
 
