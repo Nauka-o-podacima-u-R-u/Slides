@@ -426,10 +426,31 @@ R podržava dva načina u okviru `S3` klasa za skladištenje informacija o datum
 > + Podesiti radni direktorijum.
 > + Izlistati sve fajlove koji se nalaze u radnom direktorijumu.
 
+Rešenje:
+
+```r
+wDir <- "D:/R_projects/[naziv foldera]" # (Napomena: Zagrade [] nisu potrebne!)
+setwd(wDir)
+
+##  Kontrola:
+getwd()
+
+```
+
+```r
+list.files("[naziv pod-foldera ako postoji]/")
+
+```
+
+```
+## [1] "iris.csv"          "Students_IG1.csv"  "Students_IG1.txt"  "Students_IG1.xlsx"
+## [5] "Students_IG2.xlsx"
+```
+
+Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.
 
 
-
-# Učitavanje i eksportovanje podataka u R-u
+# Učitavanje podataka u R-u
 
 
 
@@ -440,10 +461,54 @@ studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt"
 ```
 
 
+## Pregled podataka (Summary)
+
+
 
 # Selektovanje podataka
 
 
+
+
 ## Dodeljivanje atributa
+
+
+
+
+
+# Transformacija vrednosti podataka (Modifying values)
+
+## Promena vrednosti
+
+## Logički podskup podataka
+
+## Rad sa NA (nedostajući podaci)
+
+
+
+
+
+
+# Eksportovanje podataka u R-u
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
