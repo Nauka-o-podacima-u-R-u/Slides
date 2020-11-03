@@ -257,6 +257,19 @@ tail(studenti)
 #' #### Selektovanje podataka
 #' 
 #' 
+#'  
+#' 
+
+#' #### Rad sa NA podacima
+#' 
+#' 
+is.na(studenti)
+
+which(is.na(studenti[1, ]))
+
+studenti[which(is.na(studenti[1, ])), ]
+
+#' 
 #' #### Sumiranje
 #' 
 #'
