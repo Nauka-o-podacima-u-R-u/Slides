@@ -321,16 +321,20 @@ knitr::include_graphics("Figures/logicki operatori.jpg")
 #' 
 #' Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da `NA` vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa `NA`vrednošću nam kao rezultat vraća `NA` vrednost.
 #' 
-#' Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 10, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
-studenti[studenti$Jun == 100 & studenti$Ocena == 10, ]
+#' Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 9, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
 #' 
-#'
+studenti[studenti$Jun == 100 & studenti$Ocena == 9, ]
+
+studenti[!is.na(studenti$Jun) & !is.na(studenti$Ocena) & studenti$Jun == 100 & studenti$Ocena == 9, ]
+
+#' 
+#' 
+#' Međutim, ako
 #'
 #' 
 #'  
 #' ### Rad sa NA (nedostajući podaci)
 #' 
-studenti[is.na(studenti)] <- NULL
 #' 
 #' ## Kombinovanje i spajanje
 #' 
