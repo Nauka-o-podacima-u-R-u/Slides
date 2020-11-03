@@ -452,10 +452,6 @@ Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji 
 ?setwd()
 ```
 
-```
-## starting httpd help server ... done
-```
-
 ```r
 setwd(dir = "C:/R_projects/Nauka_R/Slides")
 ```
@@ -472,7 +468,6 @@ getwd()
 ```
 ## [1] "C:/R_projects/Nauka_R/Slides"
 ```
-
 
 Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
 
@@ -506,7 +501,7 @@ Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristi
 
 # Učitavanje podataka u R-u
 
-
+Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:
 
 ```r
 studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
@@ -514,27 +509,22 @@ studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.tx
 studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 ```
 
-
-<<<<<<< HEAD
-## Pregled podataka (Summary)
-
-
-=======
 #### `readxl` paket
 
+Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 
 
 ```r
 install.packages("readxl")
 library(readxl)
 
-# Dati primer za readxl
+studenti <- 
 ```
 
 
 
 
-### Pregledavanje podataka
+## Pregled podataka (Summary)
 
 
 
@@ -629,47 +619,74 @@ tail(studenti)
 ```
 
 
-#### Selektovanje podataka
+## Selektovanje podataka
 
 
-#### Sumiranje
 
 
-#### Modifikovanje 
 
 
-#### Kombinovanje i spajanje
->>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
+
+## Sumiranje
+Summary, apply i lapply
+colSums, rowSums
+
+i peske sabrati dve kolone 
+
+komanda by sa faktorskom promenljivom od godine upisa
+
+koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu
+ko je polozio oba kolokvijuma 
 
 
-#### 
 
-<<<<<<< HEAD
+
+
+
+
+
+
+
+
+
+## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
+
+
+### Promena vrednosti
+
+### Logički podskup podataka
+
+### Rad sa NA (nedostajući podaci)
+
+
+
+
+
+
 
 
 ## Dodeljivanje atributa
-=======
->>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
+
+
+
+
+
+## Kombinovanje i spajanje
+cbind i rbind
+
+
+
+# Eksportovanje podataka u R-u
+
+
 
 # Kreiranje funkcija
 
 
 
 
-# Transformacija vrednosti podataka (Modifying values)
-
-## Promena vrednosti
-
-## Logički podskup podataka
-
-## Rad sa NA (nedostajući podaci)
 
 
-
-
-
-
-# Eksportovanje podataka u R-u
 
 
 
