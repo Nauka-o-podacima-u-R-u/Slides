@@ -282,12 +282,55 @@ tail(studenti)
 #' 
 #' 
 #' ### Promena vrednosti
+#' 
+#' Modifikacija vrednosti podataka odnosi se na promenu vrednosti nekog podatka. Da bi neku vrednost bilo moguce promeniti, potrebno je prvo specificirati tačnu poziciju vrednosti koju žeimo promeniti. Na primer, ako želimo da upišemo kao godinu upisa broj 2017 umesto 17, i 2016 umesto 16, to cemo uraditi na sledeci nacin:
 
+
+studenti[studenti$god.upisa == 17, "god.upisa"] <- 2017
+
+studenti[studenti$god.upisa == 16, "god.upisa"] <- 2016
+
+studenti$god.upisa
+
+#' Ukoliko žeilimo da svim studentima koji su upisali fakultet 2017 godine dodelimo ocenu 5 iz IG1, to možemo uraditi na sledeći način:
+
+studenti[studenti$god.upisa == 17, "Ocena"] <- 5
+studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
+
+#' > <h3>Zadatak</h3>
+#' > + Izmeniti rezultate krajnje ocene i prakse za svoje ime tako sto cete dodeliti ocenu 10.
+
+#'
 #' ### Logički podskup podataka
+#'
+#' Kao što je već rečeno, vrednosti se mogu selektovati kreiranjem logičkog uputa. Odnosno kreiranjem logičkog upita dobija se vektor sa vrednostima TRUE i FALSE koji se mogu koristiti za određivanje pozicije vrednosti koju želimo izmeniti:
+#'   
+generacija_2017 <- studenti$god.upisa == 2017
+generacija_2017
 
+studenti[generacija_2017, ]
+
+#' 
+#' Logički operatori su veoma efikasan način selekcije i u okviru R-a definisani su na sledeći način:
+#' 
+#+ echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 8, fig.align='center'
+knitr::include_graphics("Figures/logicki operatori.jpg")
+
+#' 
+#' #### Bulovi operatori
+#' 
+#' Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da `NA` vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa `NA`vrednošću nam kao rezultat vraća `NA` vrednost.
+#' 
+#' Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 10, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
+studenti[studenti$Jun == 100 & studenti$Ocena == 10, ]
+#' 
+#'
+#'
+#' 
+#'  
 #' ### Rad sa NA (nedostajući podaci)
 #' 
-#' 
+studenti[is.na(studenti)] <- NULL
 #' 
 #' ## Kombinovanje i spajanje
 #' 
