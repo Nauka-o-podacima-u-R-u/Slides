@@ -229,16 +229,42 @@ studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.tx
 
 studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 #'
+#' #### `readxl` paket
+#'
+#+ eval = FALSE
+install.packages("readxl")
+library(readxl)
+
+# Dati primer za readxl
+
+#'
+#'
 #'
 #' ### Pregledavanje podataka
 #' 
 str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?
 
-#' Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja 
+#' Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja potrebno opciju `stringsAsFactors` podesititi da bude `FALSE`.
+#' 
+
+str(studenti)
+
+head(studenti)
+
+tail(studenti)
+
 #'
-#' # Selektovanje podataka
+#' #### Selektovanje podataka
+#' 
+#' 
+#' #### Sumiranje
 #' 
 #'
-#' ## Dodeljivanje atributa
+#' #### Modifikovanje 
 #' 
+#' 
+#' #### Kombinovanje i spajanje
+#' 
+#' 
+#' #### 
 #' 
