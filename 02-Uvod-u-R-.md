@@ -318,7 +318,7 @@ v1
 Jedan od najvažnijih atributa koji se vezuje za osnovne strukture podataka u R-u je `klasa`, čime se definiše jedan od objektno orijentisanih pristupa definisanja strukture podataka poznat pod imenom `S3` klase. R podržava više sistema za objeknto orijentisano struktuiranje podataka kao što su `S3`, `S4` i `R6`. `S3` je osnovni sistem i podržan je u okviru osnovne istalacije R-a.  
 Dodavanjem atributa `class` R objekat postja `S3` objekat i od toga zavisi kako će se neke osnovne funkcije (`generic functions`) ophoditi prema tom objektu. Drugim rečima, rezultat neke operacije zavisi od klase podataka. 
 
-U okviru ovog poglavlja, razmotrićemo četiri osnovne klase vekorskih podataka:
+U okviru ovog poglavlja, razmotrićemo dve osnovne klase vekorskih podataka:
 
 #### `factors`
 
@@ -417,10 +417,64 @@ R podržava dva načina u okviru `S3` klasa za skladištenje informacija o datum
 
 
 
+```r
+v10 <- as.POSIXct("2020-11-04 10:00", tz = "UTC")
+
+typeof(v10)
+```
+
+```
+## [1] "double"
+```
+
+```r
+attributes(v10)
+```
+
+```
+## $class
+## [1] "POSIXct" "POSIXt" 
+## 
+## $tzone
+## [1] "UTC"
+```
+
+
+
 
 # Podešavanje radnog direktorijuma 
 
+Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji se nalazi u određenom folderu, često je potrebno definisati radni direktorijum. Time se praktično definiše `default` putanja koju će koristiti sve funkcije koje za argument koriste putanju do određenog foldera, ukoliko se ne podesi drugačije. Podešavanje radnog direktorijuma se vrši pozivom komande `setwd()`
 
+
+
+```r
+?setwd()
+```
+
+```
+## starting httpd help server ... done
+```
+
+```r
+setwd(dir = "C:/R_projects/Nauka_R/Slides")
+```
+
+
+Ukoliko postoji potreba da se proveri koja je aktuelna putanja, odnosno koji je aktuelni radni direktorijum, to se može učiniti pozivom komande `getwd()`.
+
+
+
+```r
+getwd()
+```
+
+```
+## [1] "C:/R_projects/Nauka_R/Slides"
+```
+
+
+Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
 
 > <h3>Zadatak 1</h3>
 > + Podesiti radni direktorijum.
@@ -440,10 +494,129 @@ studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt"
 ```
 
 
+#### `readxl` paket
 
-# Selektovanje podataka
 
 
-## Dodeljivanje atributa
+```r
+install.packages("readxl")
+library(readxl)
 
+# Dati primer za readxl
+```
+
+
+
+
+### Pregledavanje podataka
+
+
+
+```r
+str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?
+```
+
+```
+## 'data.frame':	35 obs. of  14 variables:
+##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Prezime  : Factor w/ 30 levels "Antonijev","Arvaji",..: 1 2 3 4 5 6 29 30 9 10 ...
+##  $ Ime      : Factor w/ 25 levels "Aleksandar","Andrijana",..: 4 13 22 15 22 1 1 3 23 17 ...
+##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
+##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
+##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
+##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
+##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
+##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
+##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
+##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
+##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...
+```
+
+Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja potrebno opciju `stringsAsFactors` podesititi da bude `FALSE`.
+
+
+
+```r
+str(studenti)
+```
+
+```
+## 'data.frame':	35 obs. of  14 variables:
+##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Prezime  : Factor w/ 30 levels "Antonijev","Arvaji",..: 1 2 3 4 5 6 29 30 9 10 ...
+##  $ Ime      : Factor w/ 25 levels "Aleksandar","Andrijana",..: 4 13 22 15 22 1 1 3 23 17 ...
+##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
+##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
+##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
+##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
+##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
+##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
+##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
+##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
+##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...
+```
+
+```r
+head(studenti)
+```
+
+```
+##   ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1  1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 2  2          Arvaji       Luka   1020        17    NA    NA      NA      NA
+## 3  3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4  4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5  5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 6  6           Brkic Aleksandar   1038        17     0    60      55      NA
+##   Januar Februar Jun Ocena Praksa
+## 1     NA      40  51     7      9
+## 2     NA      NA  NA    NA     NA
+## 3     NA      NA 100     7      8
+## 4     NA      10 100     8      8
+## 5     NA     100  NA     7      8
+## 6     NA      NA  NA     7     NA
+```
+
+```r
+tail(studenti)
+```
+
+```
+##    ID     Prezime     Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 30 30 Stanojkovic   Ðorde   1004        17    75    60      NA      NA     NA
+## 31 31  Stojanovic   Marta   1048        16     0    NA      NA      NA     20
+## 32 32  Stojanovic   Mitar   1058        17     0    NA      NA      NA     NA
+## 33 33       Tomic   Filip   1029        17     0    NA      NA      NA     65
+## 34 34   Cvetkovic Božidar   1006        17     0    NA      NA      NA     NA
+## 35 35   Cvetkovic Nemanja   1039        17    15   100      60      NA     NA
+##    Februar Jun Ocena Praksa
+## 30      NA  NA     7      9
+## 31      51  NA     6      7
+## 32      10 100     9     10
+## 33      NA  NA     6      8
+## 34      40  70     6      8
+## 35      NA  NA     7      8
+```
+
+
+#### Selektovanje podataka
+
+
+#### Sumiranje
+
+
+#### Modifikovanje 
+
+
+#### Kombinovanje i spajanje
+
+
+#### 
+
+
+# Kreiranje funkcija
 
