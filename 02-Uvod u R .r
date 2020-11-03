@@ -219,10 +219,13 @@ getwd()
 #' > + Podesiti radni direktorijum.
 #' > + Izlistati sve fajlove koji se nalaze u radnom direktorijumu.
 #'
+#'Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.
 #'
 #'
-#'
-#' # Učitavanje i eksportovanje podataka u R-u
+#' # Učitavanje podataka u R-u
+#' 
+#' Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:
+#' 
 #' 
 #+ include = TRUE
 studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
@@ -231,16 +234,17 @@ studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt"
 #'
 #' #### `readxl` paket
 #'
+#'Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 #+ eval = FALSE
 install.packages("readxl")
 library(readxl)
 
-# Dati primer za readxl
+studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
 
 #'
 #'
 #'
-#' ### Pregledavanje podataka
+#' ## Pregled podataka (Summary)
 #' 
 str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?
 
@@ -254,19 +258,44 @@ head(studenti)
 tail(studenti)
 
 #'
-#' #### Selektovanje podataka
+#' ## Selektovanje podataka
 #' 
 #' 
-#' #### Sumiranje
+#'  
+#' ## Sumiranje
 #' 
+#'Summary, apply i lapply
+#' colSums, rowSums
+#' 
+#' i peske sabrati dve kolone 
+#' 
+#' komanda by sa faktorskom promenljivom od godine upisa
+#' 
+#' koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu
+#' ko je polozio oba kolokvijuma 
 #'
-#' #### Modifikovanje 
+#'
+#'
+#'
+#'
+#' ## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
 #' 
 #' 
-#' #### Kombinovanje i spajanje
+#' ### Promena vrednosti
+
+#' ### Logički podskup podataka
+
+#' ### Rad sa NA (nedostajući podaci)
 #' 
 #' 
-#' #### 
+#' 
+#' ## Kombinovanje i spajanje
+#' 
+#' cbind i rbind
+#' 
+#' 
+#' 
+#' # Eksportovanje podataka u R-u
 #' 
 #' 
 #' # Kreiranje funkcija
