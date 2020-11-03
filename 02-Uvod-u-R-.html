@@ -1716,7 +1716,7 @@ div.tocify {
 <h3>Klase podataka</h3>
 <p>Jedan od najvažnijih atributa koji se vezuje za osnovne strukture podataka u R-u je <code>klasa</code>, čime se definiše jedan od objektno orijentisanih pristupa definisanja strukture podataka poznat pod imenom <code>S3</code> klase. R podržava više sistema za objeknto orijentisano struktuiranje podataka kao što su <code>S3</code>, <code>S4</code> i <code>R6</code>. <code>S3</code> je osnovni sistem i podržan je u okviru osnovne istalacije R-a.<br />
 Dodavanjem atributa <code>class</code> R objekat postja <code>S3</code> objekat i od toga zavisi kako će se neke osnovne funkcije (<code>generic functions</code>) ophoditi prema tom objektu. Drugim rečima, rezultat neke operacije zavisi od klase podataka.</p>
-<p>U okviru ovog poglavlja, razmotrićemo četiri osnovne klase vekorskih podataka:</p>
+<p>U okviru ovog poglavlja, razmotrićemo dve osnovne klase vekorskih podataka:</p>
 <div id="factors" class="section level4">
 <h4><code>factors</code></h4>
 <p>Faktor je vektor koji može sadržati samo određeni broj predefinisanih vrednosti i služi za skladištenje kategoričkih promenljivih. Faktorski vektor u sebi sadrži celobrojne vrednosti kojima je dodeljen naziv, odnosno nivo (<code>level</code>). Tako na primer:</p>
@@ -1756,12 +1756,30 @@ Dodavanjem atributa <code>class</code> R objekat postja <code>S3</code> objekat 
 <div id="date-time-datum-vreme-vektori" class="section level4">
 <h4><code>Date-time</code> (datum-vreme) vektori</h4>
 <p>R podržava dva načina u okviru <code>S3</code> klasa za skladištenje informacija o datumu-vremenu POSIXct, and POSIXlt. POSIX je skraćenica od Portable Operating System Interface što je skraćenica za familiju standarda za razmenu informacija o vremenu. <code>ct</code> je skraćenica od <code>calendar</code>, a <code>lt</code> od <code>local time</code>. POSIXct vektor je kreiran na osnovu <code>double</code> vektora i predstavlja broj sekundi od <code>1970-01-01</code>.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">v10 &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2020-11-04 10:00&quot;</span>, <span class="dt">tz =</span> <span class="st">&quot;UTC&quot;</span>)</a>
+<a class="sourceLine" id="cb62-2" title="2"></a>
+<a class="sourceLine" id="cb62-3" title="3"><span class="kw">typeof</span>(v10)</a></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1"><span class="kw">attributes</span>(v10)</a></code></pre></div>
+<pre><code>## $class
+## [1] &quot;POSIXct&quot; &quot;POSIXt&quot; 
+## 
+## $tzone
+## [1] &quot;UTC&quot;</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div id="podešavanje-radnog-direktorijuma" class="section level1">
 <h1>Podešavanje radnog direktorijuma</h1>
+<p>Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji se nalazi u određenom folderu, često je potrebno definisati radni direktorijum. Time se praktično definiše <code>default</code> putanja koju će koristiti sve funkcije koje za argument koriste putanju do određenog foldera, ukoliko se ne podesi drugačije. Podešavanje radnog direktorijuma se vrši pozivom komande <code>setwd()</code></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">?<span class="kw">setwd</span>()</a></code></pre></div>
+<pre><code>## starting httpd help server ... done</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">setwd</span>(<span class="dt">dir =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides&quot;</span>)</a></code></pre></div>
+<p>Ukoliko postoji potreba da se proveri koja je aktuelna putanja, odnosno koji je aktuelni radni direktorijum, to se može učiniti pozivom komande <code>getwd()</code>.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="kw">getwd</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;C:/R_projects/Nauka_R/Slides&quot;</code></pre>
+<p>Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande <code>ls()</code></p>
 <blockquote>
 <h3>
 Zadatak 1
@@ -1784,15 +1802,106 @@ Zadatak 1
 </div>
 <div id="učitavanje-i-eksportovanje-podataka-u-r-u" class="section level1">
 <h1>Učitavanje i eksportovanje podataka u R-u</h1>
+<<<<<<< HEAD
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb65-2" title="2"></a>
 <a class="sourceLine" id="cb65-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+=======
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb71-2" title="2"></a>
+<a class="sourceLine" id="cb71-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div id="readxl-paket" class="section level4">
+<h4><code>readxl</code> paket</h4>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</a>
+<a class="sourceLine" id="cb72-2" title="2"><span class="kw">library</span>(readxl)</a>
+<a class="sourceLine" id="cb72-3" title="3"></a>
+<a class="sourceLine" id="cb72-4" title="4"><span class="co"># Dati primer za readxl</span></a></code></pre></div>
 </div>
-<div id="selektovanje-podataka" class="section level1">
-<h1>Selektovanje podataka</h1>
-<div id="dodeljivanje-atributa" class="section level2">
-<h2>Dodeljivanje atributa</h2>
+<div id="pregledavanje-podataka" class="section level3">
+<h3>Pregledavanje podataka</h3>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">str</span>(studenti) <span class="co"># Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?</span></a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    35 obs. of  14 variables:
+##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Prezime  : Factor w/ 30 levels &quot;Antonijev&quot;,&quot;Arvaji&quot;,..: 1 2 3 4 5 6 29 30 9 10 ...
+##  $ Ime      : Factor w/ 25 levels &quot;Aleksandar&quot;,&quot;Andrijana&quot;,..: 4 13 22 15 22 1 1 3 23 17 ...
+##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
+##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
+##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
+##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
+##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
+##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
+##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
+##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
+##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...</code></pre>
+<p>Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja potrebno opciju <code>stringsAsFactors</code> podesititi da bude <code>FALSE</code>.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1"><span class="kw">str</span>(studenti)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    35 obs. of  14 variables:
+##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Prezime  : Factor w/ 30 levels &quot;Antonijev&quot;,&quot;Arvaji&quot;,..: 1 2 3 4 5 6 29 30 9 10 ...
+##  $ Ime      : Factor w/ 25 levels &quot;Aleksandar&quot;,&quot;Andrijana&quot;,..: 4 13 22 15 22 1 1 3 23 17 ...
+##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
+##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
+##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
+##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
+##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
+##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
+##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
+##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
+##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="kw">head</span>(studenti)</a></code></pre></div>
+<pre><code>##   ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1  1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 2  2          Arvaji       Luka   1020        17    NA    NA      NA      NA
+## 3  3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4  4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5  5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 6  6           Brkic Aleksandar   1038        17     0    60      55      NA
+##   Januar Februar Jun Ocena Praksa
+## 1     NA      40  51     7      9
+## 2     NA      NA  NA    NA     NA
+## 3     NA      NA 100     7      8
+## 4     NA      10 100     8      8
+## 5     NA     100  NA     7      8
+## 6     NA      NA  NA     7     NA</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="kw">tail</span>(studenti)</a></code></pre></div>
+<pre><code>##    ID     Prezime     Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 30 30 Stanojkovic   Ðorde   1004        17    75    60      NA      NA     NA
+## 31 31  Stojanovic   Marta   1048        16     0    NA      NA      NA     20
+## 32 32  Stojanovic   Mitar   1058        17     0    NA      NA      NA     NA
+## 33 33       Tomic   Filip   1029        17     0    NA      NA      NA     65
+## 34 34   Cvetkovic Božidar   1006        17     0    NA      NA      NA     NA
+## 35 35   Cvetkovic Nemanja   1039        17    15   100      60      NA     NA
+##    Februar Jun Ocena Praksa
+## 30      NA  NA     7      9
+## 31      51  NA     6      7
+## 32      10 100     9     10
+## 33      NA  NA     6      8
+## 34      40  70     6      8
+## 35      NA  NA     7      8</code></pre>
+<div id="selektovanje-podataka" class="section level4">
+<h4>Selektovanje podataka</h4>
 </div>
+<div id="sumiranje" class="section level4">
+<h4>Sumiranje</h4>
+</div>
+<div id="modifikovanje" class="section level4">
+<h4>Modifikovanje</h4>
+</div>
+<div id="kombinovanje-i-spajanje" class="section level4">
+<h4>Kombinovanje i spajanje</h4>
+</div>
+<div id="section" class="section level4">
+<h4></h4>
+</div>
+>>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
+</div>
+</div>
+<div id="kreiranje-funkcija" class="section level1">
+<h1>Kreiranje funkcija</h1>
 </div>
 
 
