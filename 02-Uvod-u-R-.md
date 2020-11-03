@@ -452,10 +452,6 @@ Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji 
 ?setwd()
 ```
 
-```
-## starting httpd help server ... done
-```
-
 ```r
 setwd(dir = "C:/R_projects/Nauka_R/Slides")
 ```
@@ -473,19 +469,39 @@ getwd()
 ## [1] "C:/R_projects/Nauka_R/Slides"
 ```
 
-
 Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
 
 > <h3>Zadatak 1</h3>
 > + Podesiti radni direktorijum.
 > + Izlistati sve fajlove koji se nalaze u radnom direktorijumu.
 
+Rešenje:
+
+```r
+wDir <- "D:/R_projects/[naziv foldera]" # (Napomena: Zagrade [] nisu potrebne!)
+setwd(wDir)
+
+##  Kontrola:
+getwd()
+
+```
+
+```r
+list.files("[naziv pod-foldera ako postoji]/")
+
+```
+
+```
+## [1] "iris.csv"          "Students_IG1.csv"  "Students_IG1.txt"  "Students_IG1.xlsx"
+## [5] "Students_IG2.xlsx"
+```
+
+Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.
 
 
+# Učitavanje podataka u R-u
 
-# Učitavanje i eksportovanje podataka u R-u
-
-
+Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:
 
 ```r
 studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
@@ -493,22 +509,22 @@ studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.tx
 studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 ```
 
-
 #### `readxl` paket
 
+Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 
 
 ```r
 install.packages("readxl")
 library(readxl)
 
-# Dati primer za readxl
+studenti <- 
 ```
 
 
 
 
-### Pregledavanje podataka
+## Pregled podataka (Summary)
 
 
 
@@ -603,20 +619,93 @@ tail(studenti)
 ```
 
 
-#### Selektovanje podataka
+## Selektovanje podataka
 
 
-#### Sumiranje
 
 
-#### Modifikovanje 
 
 
-#### Kombinovanje i spajanje
+
+## Sumiranje
+Summary, apply i lapply
+colSums, rowSums
+
+i peske sabrati dve kolone 
+
+komanda by sa faktorskom promenljivom od godine upisa
+
+koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu
+ko je polozio oba kolokvijuma 
 
 
-#### 
+
+
+
+
+
+
+
+
+
+
+## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
+
+
+### Promena vrednosti
+
+### Logički podskup podataka
+
+### Rad sa NA (nedostajući podaci)
+
+
+
+
+
+
+
+
+## Dodeljivanje atributa
+
+
+
+
+
+## Kombinovanje i spajanje
+cbind i rbind
+
+
+
+# Eksportovanje podataka u R-u
+
 
 
 # Kreiranje funkcija
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

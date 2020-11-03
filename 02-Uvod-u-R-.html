@@ -1276,54 +1276,6 @@ window.buildTabsets = function(tocID) {
 };
 
 </script>
-<style type="text/css">
-a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
-a.anchor-section::before {content: '#';}
-.hasAnchor:hover a.anchor-section {visibility: visible;}
-</style>
-<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
-document.addEventListener('DOMContentLoaded', function() {
-  // Do nothing if AnchorJS is used
-  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
-    return;
-  }
-
-  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  // Do nothing if sections are already anchored
-  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
-    return null;
-  }
-
-  // Use section id when pandoc runs with --section-divs
-  const section_id = function(x) {
-    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
-            ? x.id : '');
-  };
-
-  // Add anchors
-  h.forEach(function(x) {
-    const id = x.id || section_id(x.parentElement);
-    if (id === '') {
-      return null;
-    }
-    let anchor = document.createElement('a');
-    anchor.href = '#' + id;
-    anchor.classList = ['anchor-section'];
-    x.classList.add('hasAnchor');
-    x.appendChild(anchor);
-  });
-});
-</script>
-
-<style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -1837,9 +1789,24 @@ Zadatak 1
 <li>Izlistati sve fajlove koji se nalaze u radnom direktorijumu.</li>
 </ul>
 </blockquote>
+<p>Rešenje:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">wDir &lt;-<span class="st"> &quot;D:/R_projects/[naziv foldera]&quot;</span> <span class="co"># (Napomena: Zagrade [] nisu potrebne!)</span></a>
+<a class="sourceLine" id="cb62-2" title="2"><span class="kw">setwd</span>(wDir)</a>
+<a class="sourceLine" id="cb62-3" title="3"></a>
+<a class="sourceLine" id="cb62-4" title="4"><span class="co">##  Kontrola:</span></a>
+<a class="sourceLine" id="cb62-5" title="5"><span class="kw">getwd</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="kw">list.files</span>(<span class="st">&quot;[naziv pod-foldera ako postoji]/&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;iris.csv&quot;          &quot;Students_IG1.csv&quot;  &quot;Students_IG1.txt&quot;  &quot;Students_IG1.xlsx&quot;
+## [5] &quot;Students_IG2.xlsx&quot;</code></pre>
+<p>Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.</p>
 </div>
 <div id="učitavanje-i-eksportovanje-podataka-u-r-u" class="section level1">
 <h1>Učitavanje i eksportovanje podataka u R-u</h1>
+<<<<<<< HEAD
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb65-2" title="2"></a>
+<a class="sourceLine" id="cb65-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+=======
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb71-2" title="2"></a>
 <a class="sourceLine" id="cb71-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
@@ -1930,6 +1897,7 @@ Zadatak 1
 <div id="section" class="section level4">
 <h4></h4>
 </div>
+>>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
 </div>
 </div>
 <div id="kreiranje-funkcija" class="section level1">
@@ -1947,7 +1915,7 @@ Zadatak 1
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1986,7 +1954,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
