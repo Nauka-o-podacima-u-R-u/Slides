@@ -11,7 +11,6 @@
 
 <meta name="author" content="Milutin Pejovic, Petar Bursac" />
 
-<meta name="date" content="2020-11-03" />
 
 <title>Uvod u R</title>
 
@@ -1580,7 +1579,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Uvod u R</h1>
 <h4 class="author">Milutin Pejovic, Petar Bursac</h4>
-<h4 class="date">03 November 2020</h4>
+<h4 class="date">03 novembar 2020</h4>
 
 </div>
 
@@ -1773,12 +1772,11 @@ Dodavanjem atributa <code>class</code> R objekat postja <code>S3</code> objekat 
 <div id="podešavanje-radnog-direktorijuma" class="section level1">
 <h1>Podešavanje radnog direktorijuma</h1>
 <p>Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji se nalazi u određenom folderu, često je potrebno definisati radni direktorijum. Time se praktično definiše <code>default</code> putanja koju će koristiti sve funkcije koje za argument koriste putanju do određenog foldera, ukoliko se ne podesi drugačije. Podešavanje radnog direktorijuma se vrši pozivom komande <code>setwd()</code></p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1">?<span class="kw">setwd</span>()</a></code></pre></div>
-<pre><code>## starting httpd help server ... done</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">setwd</span>(<span class="dt">dir =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1"><span class="co">#?setwd()</span></a>
+<a class="sourceLine" id="cb66-2" title="2"></a>
+<a class="sourceLine" id="cb66-3" title="3"><span class="co">#setwd(dir = &quot;C:/R_projects/Nauka_R/Slides&quot;)</span></a></code></pre></div>
 <p>Ukoliko postoji potreba da se proveri koja je aktuelna putanja, odnosno koji je aktuelni radni direktorijum, to se može učiniti pozivom komande <code>getwd()</code>.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="kw">getwd</span>()</a></code></pre></div>
-<pre><code>## [1] &quot;C:/R_projects/Nauka_R/Slides&quot;</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1"><span class="co">#getwd()</span></a></code></pre></div>
 <p>Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande <code>ls()</code></p>
 <blockquote>
 <h3>
@@ -1789,37 +1787,25 @@ Zadatak 1
 <li>Izlistati sve fajlove koji se nalaze u radnom direktorijumu.</li>
 </ul>
 </blockquote>
-<p>Rešenje:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">wDir &lt;-<span class="st"> &quot;D:/R_projects/[naziv foldera]&quot;</span> <span class="co"># (Napomena: Zagrade [] nisu potrebne!)</span></a>
-<a class="sourceLine" id="cb62-2" title="2"><span class="kw">setwd</span>(wDir)</a>
-<a class="sourceLine" id="cb62-3" title="3"></a>
-<a class="sourceLine" id="cb62-4" title="4"><span class="co">##  Kontrola:</span></a>
-<a class="sourceLine" id="cb62-5" title="5"><span class="kw">getwd</span>()</a></code></pre></div>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="kw">list.files</span>(<span class="st">&quot;[naziv pod-foldera ako postoji]/&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;iris.csv&quot;          &quot;Students_IG1.csv&quot;  &quot;Students_IG1.txt&quot;  &quot;Students_IG1.xlsx&quot;
-## [5] &quot;Students_IG2.xlsx&quot;</code></pre>
 <p>Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.</p>
 </div>
-<div id="učitavanje-i-eksportovanje-podataka-u-r-u" class="section level1">
-<h1>Učitavanje i eksportovanje podataka u R-u</h1>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb65-2" title="2"></a>
-<a class="sourceLine" id="cb65-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-=======
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb71-2" title="2"></a>
-<a class="sourceLine" id="cb71-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div id="učitavanje-podataka-u-r-u" class="section level1">
+<h1>Učitavanje podataka u R-u</h1>
+<p>Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb68-2" title="2"></a>
+<a class="sourceLine" id="cb68-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <div id="readxl-paket" class="section level4">
 <h4><code>readxl</code> paket</h4>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</a>
-<a class="sourceLine" id="cb72-2" title="2"><span class="kw">library</span>(readxl)</a>
-<a class="sourceLine" id="cb72-3" title="3"></a>
-<a class="sourceLine" id="cb72-4" title="4"><span class="co"># Dati primer za readxl</span></a></code></pre></div>
+<p>Učitavanje excel tabela je moguće učiniti putem paketa “readxl”:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</a>
+<a class="sourceLine" id="cb69-2" title="2"><span class="kw">library</span>(readxl)</a>
+<a class="sourceLine" id="cb69-3" title="3"></a>
+<a class="sourceLine" id="cb69-4" title="4">studenti &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> <span class="st">&quot;D:/R_projects/Nauka_R/Slides/data/Students_IG1.xlsx&quot;</span>, <span class="dt">sheet =</span> <span class="st">&quot;Students&quot;</span>)</a></code></pre></div>
 </div>
-<div id="pregledavanje-podataka" class="section level3">
-<h3>Pregledavanje podataka</h3>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">str</span>(studenti) <span class="co"># Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?</span></a></code></pre></div>
+<div id="pregled-podataka" class="section level2">
+<h2>Pregled podataka</h2>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="kw">str</span>(studenti) <span class="co"># Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?</span></a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    35 obs. of  14 variables:
 ##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ Prezime  : Factor w/ 30 levels &quot;Antonijev&quot;,&quot;Arvaji&quot;,..: 1 2 3 4 5 6 29 30 9 10 ...
@@ -1836,7 +1822,7 @@ Zadatak 1
 ##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
 ##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...</code></pre>
 <p>Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja potrebno opciju <code>stringsAsFactors</code> podesititi da bude <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1"><span class="kw">str</span>(studenti)</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">str</span>(studenti)</a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    35 obs. of  14 variables:
 ##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
 ##  $ Prezime  : Factor w/ 30 levels &quot;Antonijev&quot;,&quot;Arvaji&quot;,..: 1 2 3 4 5 6 29 30 9 10 ...
@@ -1852,53 +1838,442 @@ Zadatak 1
 ##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
 ##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
 ##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...</code></pre>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="kw">head</span>(studenti)</a></code></pre></div>
-<pre><code>##   ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
-## 1  1       Antonijev      Boris   1035        16    NA    NA      NA      NA
-## 2  2          Arvaji       Luka   1020        17    NA    NA      NA      NA
-## 3  3           Babic     Stefan   1051        16     0    NA      NA      NA
-## 4  4          Beljin      Miloš   1019        17     0    NA      NA      NA
-## 5  5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
-## 6  6           Brkic Aleksandar   1038        17     0    60      55      NA
-##   Januar Februar Jun Ocena Praksa
-## 1     NA      40  51     7      9
-## 2     NA      NA  NA    NA     NA
-## 3     NA      NA 100     7      8
-## 4     NA      10 100     8      8
-## 5     NA     100  NA     7      8
-## 6     NA      NA  NA     7     NA</code></pre>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="kw">tail</span>(studenti)</a></code></pre></div>
-<pre><code>##    ID     Prezime     Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
-## 30 30 Stanojkovic   Ðorde   1004        17    75    60      NA      NA     NA
-## 31 31  Stojanovic   Marta   1048        16     0    NA      NA      NA     20
-## 32 32  Stojanovic   Mitar   1058        17     0    NA      NA      NA     NA
-## 33 33       Tomic   Filip   1029        17     0    NA      NA      NA     65
-## 34 34   Cvetkovic Božidar   1006        17     0    NA      NA      NA     NA
-## 35 35   Cvetkovic Nemanja   1039        17    15   100      60      NA     NA
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">class</span>(studenti)</a></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="kw">head</span>(studenti, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##   ID         Prezime    Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 1  1       Antonijev  Boris   1035        16    NA    NA      NA      NA     NA
+## 2  2          Arvaji   Luka   1020        17    NA    NA      NA      NA     NA
+## 3  3           Babic Stefan   1051        16     0    NA      NA      NA     NA
+## 4  4          Beljin  Miloš   1019        17     0    NA      NA      NA     NA
+## 5  5 Božic Krajišnik Stefan   1041        16     0    NA      NA      NA     NA
+##   Februar Jun Ocena Praksa
+## 1      40  51     7      9
+## 2      NA  NA    NA     NA
+## 3      NA 100     7      8
+## 4      10 100     8      8
+## 5     100  NA     7      8</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1"><span class="kw">tail</span>(studenti, <span class="dv">5</span>)</a></code></pre></div>
+<pre><code>##    ID    Prezime     Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 31 31 Stojanovic   Marta   1048        16     0    NA      NA      NA     20
+## 32 32 Stojanovic   Mitar   1058        17     0    NA      NA      NA     NA
+## 33 33      Tomic   Filip   1029        17     0    NA      NA      NA     65
+## 34 34  Cvetkovic Božidar   1006        17     0    NA      NA      NA     NA
+## 35 35  Cvetkovic Nemanja   1039        17    15   100      60      NA     NA
 ##    Februar Jun Ocena Praksa
-## 30      NA  NA     7      9
 ## 31      51  NA     6      7
 ## 32      10 100     9     10
 ## 33      NA  NA     6      8
 ## 34      40  70     6      8
 ## 35      NA  NA     7      8</code></pre>
-<div id="selektovanje-podataka" class="section level4">
-<h4>Selektovanje podataka</h4>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw">dim</span>(studenti)</a></code></pre></div>
+<pre><code>## [1] 35 14</code></pre>
 </div>
-<div id="sumiranje" class="section level4">
-<h4>Sumiranje</h4>
+<div id="selektovanje-podataka" class="section level2">
+<h2>Selektovanje podataka</h2>
+<p>U okviru R-a postoji poseban sistem notacije kojim je moguće pristupiti vrednostima objekta. Kako bi pristupili podatku ili setu podataka (red-u i/ili kolona-ma), koristi se sledeće notacija sa [] zagradama:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="co"># studenti[ , ]</span></a></code></pre></div>
+<p>U okviru zagrrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj <strong>reda</strong> i drugi predstavlja broj <strong>kolone</strong>. Indeksi mogu biti napisani na veći broj načina, i to:</p>
+<ul>
+<li>Pozitivne celobrojne vrednosti</li>
+<li>Negativne celobrojne vrednosti</li>
+<li>Nula</li>
+<li>Razmak</li>
+<li>Logičke vrednosti</li>
+<li>Nazivi</li>
+</ul>
+<div id="pozitivne-celobrojne-vrednosti" class="section level3">
+<h3>Pozitivne celobrojne vrednosti</h3>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1">studenti[<span class="dv">1</span>, ]</a></code></pre></div>
+<pre><code>##   ID   Prezime   Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 1  1 Antonijev Boris   1035        16    NA    NA      NA      NA     NA
+##   Februar Jun Ocena Praksa
+## 1      40  51     7      9</code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1">studenti[, <span class="dv">2</span>]</a></code></pre></div>
+<pre><code>##  [1] Antonijev       Arvaji          Babic           Beljin         
+##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
+##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
+## [13] Jovicic         Kocic           Kocic           Lazic          
+## [17] Lazic           Milijaševic     Milic           Milic          
+## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
+## [25] Popovic         Radovancev      Smiljanic       Srejic         
+## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
+## [33] Tomic           Cvetkovic       Cvetkovic      
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1">studenti[<span class="dv">1</span>, <span class="dv">2</span>]</a></code></pre></div>
+<pre><code>## [1] Antonijev
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+<p>Na ovaj način izvršena je selekcija prvog reda i druge kolone. Pored zadavanja jedne vrednosti, možemo izvršiti selekciju podataka skupom indeksa.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1">studenti[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>)]</a></code></pre></div>
+<pre><code>##     Prezime   Ime
+## 1 Antonijev Boris</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1">studenti[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>)]</a></code></pre></div>
+<pre><code>##     Prezime   Ime br.ind god.upisa
+## 1 Antonijev Boris   1035        16</code></pre>
+<p>Rezultat upita je samo prikaz - kopija vrednosti. Rezultat možemo dodeliti novoj promenljivoj:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1">Boris &lt;-<span class="st"> </span>studenti[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">14</span>)]</a>
+<a class="sourceLine" id="cb93-2" title="2">Boris</a></code></pre></div>
+<pre><code>##   ID   Prezime   Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 1  1 Antonijev Boris   1035        16    NA    NA      NA      NA     NA
+##   Februar Jun Ocena Praksa
+## 1      40  51     7      9</code></pre>
+<p>Isti sistem notacije se koristi i kod drugih tipova podataka, npr. kod vektora:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" title="1">vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb95-2" title="2">vec[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<pre><code>## [1] 6 1 3</code></pre>
+<p>Bitno je zapamtiti da indeksiranje u R-u <strong>uvek počinje od 1</strong>, dok za razliku od nekih drugih programskih jezika počinje od 0.</p>
 </div>
-<div id="modifikovanje" class="section level4">
-<h4>Modifikovanje</h4>
+<div id="negativne-celobrojne-vrednosti" class="section level3">
+<h3>Negativne celobrojne vrednosti</h3>
+<p>Negativne vrednosti daju suprotni rezultat u odnosu na pozitivne celobrojne vrednosti. Rezultat je sve osim elemenata navedenih indeksom:</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" title="1">studenti[<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">35</span>), <span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<pre><code>##     Prezime   Ime br.ind god.upisa
+## 1 Antonijev Boris   1035        16</code></pre>
+<p>Kombincija pozitivnih i negativnih indeksa je moguća, dok nije moguće postaviti pozitivnu i negativnu vrednost u okviru istog inndeksa:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" title="1"><span class="co"># studenti[-c(-1,1), 2]</span></a>
+<a class="sourceLine" id="cb99-2" title="2"><span class="co"># Error in x[i] : only 0&#39;s may be mixed with negative subscripts</span></a>
+<a class="sourceLine" id="cb99-3" title="3"></a>
+<a class="sourceLine" id="cb99-4" title="4">studenti[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">-1</span>]</a></code></pre></div>
+<pre><code>##           Prezime    Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 1       Antonijev  Boris   1035        16    NA    NA      NA      NA     NA
+## 2          Arvaji   Luka   1020        17    NA    NA      NA      NA     NA
+## 3           Babic Stefan   1051        16     0    NA      NA      NA     NA
+## 4          Beljin  Miloš   1019        17     0    NA      NA      NA     NA
+## 5 Božic Krajišnik Stefan   1041        16     0    NA      NA      NA     NA
+##   Februar Jun Ocena Praksa
+## 1      40  51     7      9
+## 2      NA  NA    NA     NA
+## 3      NA 100     7      8
+## 4      10 100     8      8
+## 5     100  NA     7      8</code></pre>
 </div>
-<div id="kombinovanje-i-spajanje" class="section level4">
-<h4>Kombinovanje i spajanje</h4>
+<div id="nula" class="section level3">
+<h3>Nula</h3>
+<p>Kao što je rečeno indeksiranje elemenata počinje od 1, dok indeks 0 nije greška, već je rezultat objekat bez elemenata:</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" title="1">studenti[<span class="dv">0</span>, <span class="dv">0</span>]</a></code></pre></div>
+<pre><code>## data frame with 0 columns and 0 rows</code></pre>
 </div>
-<div id="section" class="section level4">
-<h4></h4>
+<div id="razmak" class="section level3">
+<h3>Razmak</h3>
+<p>Korišćenem razmaka - praznog indeksa, dobija se rezultat koji podrazumeva sve elemente datog reda ili kolone:</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" title="1">studenti[<span class="dv">1</span>, ]</a></code></pre></div>
+<pre><code>##   ID   Prezime   Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 1  1 Antonijev Boris   1035        16    NA    NA      NA      NA     NA
+##   Februar Jun Ocena Praksa
+## 1      40  51     7      9</code></pre>
 </div>
->>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
+<div id="logičke-vrednosti" class="section level3">
+<h3>Logičke vrednosti</h3>
+<p>Vrednost indeksa može biti i logička vrednost i tom slučaju rezultat je red i/ili kolona koja odgovara vrednosti TRUE:</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" title="1">studenti[<span class="dv">1</span>, <span class="kw">c</span>(<span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)]</a></code></pre></div>
+<pre><code>##     Prezime   Ime br.ind
+## 1 Antonijev Boris   1035</code></pre>
 </div>
+<div id="nazivi" class="section level3">
+<h3>Nazivi</h3>
+<p>Selekcija podataka - elementa je moguća i putem naziva kolona i/ili redova ako su dostupni:</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" title="1"><span class="kw">names</span>(studenti) </a></code></pre></div>
+<pre><code>##  [1] &quot;ID&quot;        &quot;Prezime&quot;   &quot;Ime&quot;       &quot;br.ind&quot;    &quot;god.upisa&quot; &quot;kol.1&quot;    
+##  [7] &quot;kol.2&quot;     &quot;kol.1.1&quot;   &quot;kol.2.2&quot;   &quot;Januar&quot;    &quot;Februar&quot;   &quot;Jun&quot;      
+## [13] &quot;Ocena&quot;     &quot;Praksa&quot;</code></pre>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" title="1">studenti[, <span class="st">&quot;Prezime&quot;</span>]</a></code></pre></div>
+<pre><code>##  [1] Antonijev       Arvaji          Babic           Beljin         
+##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
+##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
+## [13] Jovicic         Kocic           Kocic           Lazic          
+## [17] Lazic           Milijaševic     Milic           Milic          
+## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
+## [25] Popovic         Radovancev      Smiljanic       Srejic         
+## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
+## [33] Tomic           Cvetkovic       Cvetkovic      
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" title="1">studenti[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">c</span>(<span class="st">&quot;Prezime&quot;</span>, <span class="st">&quot;Ime&quot;</span>, <span class="st">&quot;br.ind&quot;</span>, <span class="st">&quot;god.upisa&quot;</span>)]</a></code></pre></div>
+<pre><code>##           Prezime    Ime br.ind god.upisa
+## 1       Antonijev  Boris   1035        16
+## 2          Arvaji   Luka   1020        17
+## 3           Babic Stefan   1051        16
+## 4          Beljin  Miloš   1019        17
+## 5 Božic Krajišnik Stefan   1041        16</code></pre>
+<p>Kao i kombinacija navedenog:</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" title="1">studenti[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">c</span>(<span class="kw">names</span>(studenti[, <span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>)]))]</a></code></pre></div>
+<pre><code>##           Prezime    Ime br.ind god.upisa
+## 1       Antonijev  Boris   1035        16
+## 2          Arvaji   Luka   1020        17
+## 3           Babic Stefan   1051        16
+## 4          Beljin  Miloš   1019        17
+## 5 Božic Krajišnik Stefan   1041        16</code></pre>
+</div>
+</div>
+<div id="selektovanje-podataka-putem-sintakse" class="section level2">
+<h2>Selektovanje podataka putem $ sintakse</h2>
+<p>Putem prethodnih primera pokazan je osnovni način selekcije elementa iz skupa podataka. Način selekcije podataka koji se najčešče koristi predstavlja upotrebu $ sintakse.<br />
+Potrebno je napisati naziv objekta - data frame-a a zatim napisati naziv kolone odvojen znakom “$”:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" title="1">studenti<span class="op">$</span>Prezime</a></code></pre></div>
+<pre><code>##  [1] Antonijev       Arvaji          Babic           Beljin         
+##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
+##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
+## [13] Jovicic         Kocic           Kocic           Lazic          
+## [17] Lazic           Milijaševic     Milic           Milic          
+## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
+## [25] Popovic         Radovancev      Smiljanic       Srejic         
+## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
+## [33] Tomic           Cvetkovic       Cvetkovic      
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+<p><em>Tips: Nakon napisanog znaka “$” moguće je pritisnuti taster TAB na tastaturi kako bi dobili listu naziva kolona.</em><br />
+Kako bi izvršili upit po redu, potrebno je napisati [] zagrade i navesti indeks reda.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" title="1">studenti<span class="op">$</span>Prezime[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>## [1] Antonijev
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" title="1">studenti<span class="op">$</span>Prezime[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<pre><code>## [1] Antonijev       Arvaji          Babic           Beljin         
+## [5] Božic Krajišnik
+## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic</code></pre>
+</div>
+<div id="sumiranje" class="section level2">
+<h2>Sumiranje</h2>
+<p>Sumiranje podataka je moguće uraditi po vrednostima reodova i/ili kolona. Postoji veliki broj funkcija, kao i paketa koji koriste svoje funkcije za sumiranje po određenim pravilima. Neke od osnovnih funkcija base paketa su:</p>
+<div id="base-funkcije" class="section level3">
+<h3>Base funkcije</h3>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" title="1"><span class="kw">summary</span>(studenti)</a></code></pre></div>
+<pre><code>##        ID             Prezime           Ime         br.ind       god.upisa    
+##  Min.   : 1.0   Cvetkovic : 2   Aleksandar: 4   Min.   :1003   Min.   :15.00  
+##  1st Qu.: 9.5   Kocic     : 2   Stefan    : 4   1st Qu.:1016   1st Qu.:16.50  
+##  Median :18.0   Lazic     : 2   Nemanja   : 3   Median :1027   Median :17.00  
+##  Mean   :18.0   Milic     : 2   Filip     : 2   Mean   :1028   Mean   :16.71  
+##  3rd Qu.:26.5   Stojanovic: 2   Miloš     : 2   3rd Qu.:1040   3rd Qu.:17.00  
+##  Max.   :35.0   Antonijev : 1   Andrijana : 1   Max.   :1058   Max.   :17.00  
+##                 (Other)   :24   (Other)   :19                                 
+##      kol.1            kol.2           kol.1.1          kol.2.2        Januar  
+##  Min.   :  0.00   Min.   : 60.00   Min.   :  5.00   Min.   :100   Min.   :20  
+##  1st Qu.:  0.00   1st Qu.: 80.00   1st Qu.: 57.50   1st Qu.:100   1st Qu.:30  
+##  Median :  0.00   Median : 90.00   Median : 80.00   Median :100   Median :55  
+##  Mean   : 14.64   Mean   : 86.36   Mean   : 69.09   Mean   :100   Mean   :46  
+##  3rd Qu.: 18.75   3rd Qu.:100.00   3rd Qu.: 95.00   3rd Qu.:100   3rd Qu.:60  
+##  Max.   :100.00   Max.   :100.00   Max.   :100.00   Max.   :100   Max.   :65  
+##  NA&#39;s   :7        NA&#39;s   :24       NA&#39;s   :24       NA&#39;s   :34    NA&#39;s   :30  
+##     Februar            Jun             Ocena            Praksa      
+##  Min.   :  8.00   Min.   : 51.00   Min.   : 6.000   Min.   : 7.000  
+##  1st Qu.: 24.00   1st Qu.: 70.00   1st Qu.: 7.000   1st Qu.: 8.000  
+##  Median : 51.00   Median : 85.00   Median : 7.000   Median : 8.000  
+##  Mean   : 55.31   Mean   : 83.83   Mean   : 7.576   Mean   : 8.387  
+##  3rd Qu.: 82.00   3rd Qu.:100.00   3rd Qu.: 9.000   3rd Qu.: 9.000  
+##  Max.   :100.00   Max.   :100.00   Max.   :10.000   Max.   :10.000  
+##  NA&#39;s   :22       NA&#39;s   :23       NA&#39;s   :2        NA&#39;s   :4</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" title="1"><span class="kw">mean</span>(studenti<span class="op">$</span>Ocena, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="co"># &quot;na.rm&quot; parametar se koristi kako bi se zanemarile NA vrednosti u podacima.</span></a></code></pre></div>
+<pre><code>## [1] 7.575758</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" title="1"><span class="kw">min</span>(studenti<span class="op">$</span>kol<span class="fl">.1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" title="1"><span class="kw">max</span>(studenti<span class="op">$</span>kol<span class="fl">.1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## [1] 100</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" title="1"><span class="kw">median</span>(studenti<span class="op">$</span>Praksa, <span class="dt">na.rm =</span> T)</a></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+</div>
+<div id="apply-i-lapply-funkcije" class="section level3">
+<h3>apply i lapply funkcije</h3>
+<p>apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat daju vektor, listu ili array.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" title="1">?<span class="kw">apply</span>()</a></code></pre></div>
+<pre><code>## starting httpd help server ... done</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" title="1">?<span class="kw">lapply</span>()</a></code></pre></div>
+<p>apply možemo koristiti kako bi izvršili sumiranje po svim redovima (drugi argument funkcije je 1) ili kolonama (drugi argument funkcije je 2).</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" title="1">studenti_bez_na &lt;-<span class="st"> </span>studenti</a>
+<a class="sourceLine" id="cb134-2" title="2">studenti_bez_na[<span class="kw">is.na</span>(studenti_bez_na)] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb134-3" title="3"><span class="kw">apply</span>(studenti_bez_na[, <span class="dv">6</span><span class="op">:</span><span class="dv">14</span>], <span class="dv">2</span>, mean)</a></code></pre></div>
+<pre><code>##     kol.1     kol.2   kol.1.1   kol.2.2    Januar   Februar       Jun     Ocena 
+## 11.714286 27.142857 21.714286  2.857143  6.571429 20.542857 28.742857  7.142857 
+##    Praksa 
+##  7.428571</code></pre>
+<p>lapply koristimo kada želimo da izvršimo sumiranje po svakom članu liste ili npr. svakoj koloni data.frame-a. Razlika u odnosu na apply je što je ovde rezltat lista,</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" title="1"><span class="kw">lapply</span>(studenti_bez_na[, <span class="dv">6</span><span class="op">:</span><span class="dv">14</span>], mean) </a></code></pre></div>
+<pre><code>## $kol.1
+## [1] 11.71429
+## 
+## $kol.2
+## [1] 27.14286
+## 
+## $kol.1.1
+## [1] 21.71429
+## 
+## $kol.2.2
+## [1] 2.857143
+## 
+## $Januar
+## [1] 6.571429
+## 
+## $Februar
+## [1] 20.54286
+## 
+## $Jun
+## [1] 28.74286
+## 
+## $Ocena
+## [1] 7.142857
+## 
+## $Praksa
+## [1] 7.428571</code></pre>
+</div>
+<div id="funkcije-colsums-i-rowsums" class="section level3">
+<h3>Funkcije colSums() i rowSums()</h3>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" title="1"><span class="kw">colSums</span>(studenti[, <span class="dv">6</span><span class="op">:</span><span class="dv">14</span>], <span class="dt">na.rm =</span> T) </a></code></pre></div>
+<pre><code>##   kol.1   kol.2 kol.1.1 kol.2.2  Januar Februar     Jun   Ocena  Praksa 
+##     410     950     760     100     230     719    1006     250     260</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" title="1"><span class="kw">rowSums</span>(studenti[, <span class="dv">6</span><span class="op">:</span><span class="dv">7</span>], <span class="dt">na.rm =</span> T) <span class="co"># Rezultat je zbir bodova na prvom i drugom kolokvijumu</span></a></code></pre></div>
+<pre><code>##  [1]   0   0   0   0   0  60 125   0   0   0   0 140  30  90   0   0 110 100 115
+## [20] 100  30   0  15   0   0 115   0   0  80 135   0   0   0   0 115</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" title="1"><span class="kw">colMeans</span>(studenti[, <span class="dv">6</span><span class="op">:</span><span class="dv">14</span>], <span class="dt">na.rm =</span> T) <span class="co"># Uočavamo razilku između srednje vrednosti kolona dobijene funkcijom apply i colSums. Razlika je u tome da smo u prvom slučaju NA vrednosti zamenili sa 0 (pa je delilac veći) u odnosu na funkciju colSums gde smo naznačili da zanemarujemo NA vrednosti.</span></a></code></pre></div>
+<pre><code>##      kol.1      kol.2    kol.1.1    kol.2.2     Januar    Februar        Jun 
+##  14.642857  86.363636  69.090909 100.000000  46.000000  55.307692  83.833333 
+##      Ocena     Praksa 
+##   7.575758   8.387097</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" title="1"><span class="kw">rowMeans</span>(studenti[, <span class="dv">6</span><span class="op">:</span><span class="dv">7</span>], <span class="dt">na.rm =</span> T)</a></code></pre></div>
+<pre><code>##  [1]   NaN   NaN   0.0   0.0   0.0  30.0  62.5   NaN   0.0   0.0   NaN  70.0
+## [13]  30.0  45.0   0.0   0.0  55.0  50.0  57.5 100.0  30.0   0.0  15.0   0.0
+## [25]   NaN  57.5   NaN   NaN  40.0  67.5   0.0   0.0   0.0   0.0  57.5</code></pre>
+<p>Funkcija by() Koriscenjem funkcije by(), možemo na jednostavan način uraditi sumiranje po određenim faktorskim kolona.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" title="1"><span class="kw">by</span>(studenti, studenti[, <span class="dv">5</span>], summary) <span class="co"># Sumarni rezultati po godini upisa</span></a></code></pre></div>
+<pre><code>## studenti[, 5]: 15
+##        ID                Prezime          Ime        br.ind       god.upisa 
+##  Min.   :11   Grujovic       :1   Katarina  :1   Min.   :1042   Min.   :15  
+##  1st Qu.:11   Antonijev      :0   Aleksandar:0   1st Qu.:1042   1st Qu.:15  
+##  Median :11   Arvaji         :0   Andrijana :0   Median :1042   Median :15  
+##  Mean   :11   Babic          :0   Boban     :0   Mean   :1042   Mean   :15  
+##  3rd Qu.:11   Beljin         :0   Boris     :0   3rd Qu.:1042   3rd Qu.:15  
+##  Max.   :11   Božic Krajišnik:0   Božidar   :0   Max.   :1042   Max.   :15  
+##               (Other)        :0   (Other)   :0                              
+##      kol.1         kol.2        kol.1.1       kol.2.2        Januar   
+##  Min.   : NA   Min.   : NA   Min.   : NA   Min.   : NA   Min.   : NA  
+##  1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
+##  Median : NA   Median : NA   Median : NA   Median : NA   Median : NA  
+##  Mean   :NaN   Mean   :NaN   Mean   :NaN   Mean   :NaN   Mean   :NaN  
+##  3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
+##  Max.   : NA   Max.   : NA   Max.   : NA   Max.   : NA   Max.   : NA  
+##  NA&#39;s   :1     NA&#39;s   :1     NA&#39;s   :1     NA&#39;s   :1     NA&#39;s   :1    
+##     Februar         Jun         Ocena       Praksa 
+##  Min.   : NA   Min.   :90   Min.   :8   Min.   :8  
+##  1st Qu.: NA   1st Qu.:90   1st Qu.:8   1st Qu.:8  
+##  Median : NA   Median :90   Median :8   Median :8  
+##  Mean   :NaN   Mean   :90   Mean   :8   Mean   :8  
+##  3rd Qu.: NA   3rd Qu.:90   3rd Qu.:8   3rd Qu.:8  
+##  Max.   : NA   Max.   :90   Max.   :8   Max.   :8  
+##  NA&#39;s   :1                                         
+## ------------------------------------------------------------ 
+## studenti[, 5]: 16
+##        ID                   Prezime          Ime        br.ind       god.upisa 
+##  Min.   : 1.00   Antonijev      :1   Stefan    :2   Min.   :1016   Min.   :16  
+##  1st Qu.: 4.50   Babic          :1   Aleksandar:1   1st Qu.:1036   1st Qu.:16  
+##  Median :23.50   Božic Krajišnik:1   Boris     :1   Median :1042   Median :16  
+##  Mean   :17.75   Mladenovic     :1   Filip     :1   Mean   :1041   Mean   :16  
+##  3rd Qu.:27.25   Popovic        :1   Marta     :1   3rd Qu.:1049   3rd Qu.:16  
+##  Max.   :31.00   Smiljanic      :1   Nikola    :1   Max.   :1053   Max.   :16  
+##                  (Other)        :2   (Other)   :1                              
+##      kol.1       kol.2        kol.1.1       kol.2.2        Januar  
+##  Min.   :0   Min.   : NA   Min.   : NA   Min.   : NA   Min.   :20  
+##  1st Qu.:0   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.:20  
+##  Median :0   Median : NA   Median : NA   Median : NA   Median :20  
+##  Mean   :0   Mean   :NaN   Mean   :NaN   Mean   :NaN   Mean   :20  
+##  3rd Qu.:0   3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA   3rd Qu.:20  
+##  Max.   :0   Max.   : NA   Max.   : NA   Max.   : NA   Max.   :20  
+##  NA&#39;s   :4   NA&#39;s   :8     NA&#39;s   :8     NA&#39;s   :8     NA&#39;s   :7   
+##     Februar            Jun            Ocena           Praksa 
+##  Min.   : 40.00   Min.   : 51.0   Min.   :6.000   Min.   :7  
+##  1st Qu.: 45.50   1st Qu.: 65.0   1st Qu.:6.000   1st Qu.:8  
+##  Median : 51.00   Median : 80.0   Median :7.000   Median :8  
+##  Mean   : 63.67   Mean   : 75.2   Mean   :6.571   Mean   :8  
+##  3rd Qu.: 75.50   3rd Qu.: 80.0   3rd Qu.:7.000   3rd Qu.:8  
+##  Max.   :100.00   Max.   :100.0   Max.   :7.000   Max.   :9  
+##  NA&#39;s   :5        NA&#39;s   :3       NA&#39;s   :1       NA&#39;s   :1  
+## ------------------------------------------------------------ 
+## studenti[, 5]: 17
+##        ID             Prezime           Ime         br.ind       god.upisa 
+##  Min.   : 2.00   Cvetkovic: 2   Aleksandar: 3   Min.   :1003   Min.   :17  
+##  1st Qu.:10.50   Kocic    : 2   Nemanja   : 3   1st Qu.:1014   1st Qu.:17  
+##  Median :17.50   Lazic    : 2   Miloš     : 2   Median :1022   Median :17  
+##  Mean   :18.35   Milic    : 2   Stefan    : 2   Mean   :1024   Mean   :17  
+##  3rd Qu.:25.50   Arvaji   : 1   Andrijana : 1   3rd Qu.:1032   3rd Qu.:17  
+##  Max.   :35.00   Beljin   : 1   Boban     : 1   Max.   :1058   Max.   :17  
+##                  (Other)  :16   (Other)   :14                              
+##      kol.1            kol.2           kol.1.1          kol.2.2   
+##  Min.   :  0.00   Min.   : 60.00   Min.   :  5.00   Min.   :100  
+##  1st Qu.:  0.00   1st Qu.: 80.00   1st Qu.: 57.50   1st Qu.:100  
+##  Median :  0.00   Median : 90.00   Median : 80.00   Median :100  
+##  Mean   : 17.08   Mean   : 86.36   Mean   : 69.09   Mean   :100  
+##  3rd Qu.: 30.00   3rd Qu.:100.00   3rd Qu.: 95.00   3rd Qu.:100  
+##  Max.   :100.00   Max.   :100.00   Max.   :100.00   Max.   :100  
+##  NA&#39;s   :2        NA&#39;s   :15       NA&#39;s   :15       NA&#39;s   :25   
+##      Januar         Februar           Jun            Ocena      
+##  Min.   :30.00   Min.   :  8.0   Min.   : 70.0   Min.   : 6.00  
+##  1st Qu.:48.75   1st Qu.: 13.5   1st Qu.: 77.5   1st Qu.: 7.00  
+##  Median :57.50   Median : 60.0   Median :100.0   Median : 8.00  
+##  Mean   :52.50   Mean   : 52.8   Mean   : 90.0   Mean   : 7.84  
+##  3rd Qu.:61.25   3rd Qu.: 82.0   3rd Qu.:100.0   3rd Qu.: 9.00  
+##  Max.   :65.00   Max.   :100.0   Max.   :100.0   Max.   :10.00  
+##  NA&#39;s   :22      NA&#39;s   :16      NA&#39;s   :20      NA&#39;s   :1      
+##      Praksa      
+##  Min.   : 7.000  
+##  1st Qu.: 8.000  
+##  Median : 8.000  
+##  Mean   : 8.522  
+##  3rd Qu.: 9.000  
+##  Max.   :10.000  
+##  NA&#39;s   :3</code></pre>
+</div>
+<div id="kreiranje-jednostavne-funkcije" class="section level3">
+<h3>Kreiranje jednostavne funkcije</h3>
+<p>U cilju sumiranja podataka po određenom pravilu, možemo napisati jednostavnu funkciju:</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" title="1">racunajSrednjuVrednost &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">data_frame =</span> data_frame, <span class="dt">izbaciNA =</span> <span class="ot">TRUE</span>){ <span class="co"># argumenti funkcije</span></a>
+<a class="sourceLine" id="cb148-2" title="2">  sr_vrednost  &lt;-<span class="st"> </span><span class="kw">mean</span>(data_frame<span class="op">$</span>Ocena, <span class="dt">na.rm =</span> izbaciNA)</a>
+<a class="sourceLine" id="cb148-3" title="3">  <span class="kw">return</span>(sr_vrednost)</a>
+<a class="sourceLine" id="cb148-4" title="4">}</a>
+<a class="sourceLine" id="cb148-5" title="5"></a>
+<a class="sourceLine" id="cb148-6" title="6"><span class="kw">racunajSrednjuVrednost</span>(<span class="dt">data_frame =</span> studenti, <span class="dt">izbaciNA =</span> <span class="ot">TRUE</span>) </a></code></pre></div>
+<pre><code>## [1] 7.575758</code></pre>
+<blockquote>
+<h3>
+Zadatak 2
+</h3>
+<ul>
+<li>Sumirati podatke i sračunati ukupan broj studenata koji su položili prvi kolokvijum.</li>
+<li>Sumirati podatke i sračunati ukupan broj studenata koji su položili oba kolokvijuma.</li>
+<li>Sumirati podatke i sračunati koliko su bodovi na prvom i drugom kolokvijumu u korelaciji sa krajnjom ocenom.</li>
+</ul>
+</blockquote>
+<p>Rešenje:</p>
+<p>Zadatak 1:</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" title="1"><span class="kw">length</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span>[studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>])</a></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<p>Zadatak 2:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" title="1"><span class="kw">length</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span>[studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>studenti_bez_na<span class="op">$</span>kol<span class="fl">.2</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>])</a></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>Zadatak 3:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" title="1"><span class="kw">cor</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span>, studenti_bez_na<span class="op">$</span>Ocena)</a></code></pre></div>
+<pre><code>## [1] 0.2730105</code></pre>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" title="1"><span class="kw">plot</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.1</span>, studenti_bez_na<span class="op">$</span>Ocena)</a></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAMAAABNUi8GAAAAb1BMVEUAAAAAADoAAGYAOjoAOpAAZrY6AAA6ADo6AGY6Ojo6kNtmAABmADpmOpBmkJBmtrZmtv+QOgCQOjqQZgCQkGaQtpCQ2/+2ZgC225C2/7a2///bkDrbtmbb25Db/7bb////tmb/25D//7b//9v////b0rt4AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAPYUlEQVR4nO3dDXuqyB2GcZJqdqtnu9qX0A3tii/f/zOWYYBoIhT+MONznPt3XW3Ts+okOffyMgqTXQBh2aO/AWAIgUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagULawoFmwCiPCnTZl8OzIlBICxToee+3z68fi7wckhUm0CLb+C/K9otZL4d0BQn0vO+yLFaH2S+HhAUJ9LTdtV+WPTt5AsUobEEhLdQxaLMJnXQMOmHSC0/o7t9/oLP409afxfdsP+++XDZ5FDyT+3//OvOgWYhh8NPo+fuPHOjAO1gEmjaNQAdejkDTJh8ox6CJi3gM2p4iDbzZyVk8vop4Fn/e974Jb3k5pCvYh0XWS74ckhXqGLTMdoP/nEAxitBJEvAdgUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUIagUKaUqBLXna86CXMXA/9OEKBLnnjhkVvAsEdJR5IJ9Alb32z6G10uCfPIxFo3BfDRAQa98UwkU6gHIPiDqFAOYvHd0qBAt8QKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQRKKQFCjTPsvV5n2W9q8Y/+1Wd/U/hEtFJDIGetlnt9aP3wcXqUDW6do/djB73ma6L738K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" /><!-- --></p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" title="1"><span class="kw">cor</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.2</span>, studenti_bez_na<span class="op">$</span>Ocena)</a></code></pre></div>
+<pre><code>## [1] 0.4086795</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" title="1"><span class="kw">plot</span>(studenti_bez_na<span class="op">$</span>kol<span class="fl">.2</span>, studenti_bez_na<span class="op">$</span>Ocena)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu ko je polozio oba kolokvijuma</p>
+</div>
+</div>
+<div id="modifikovanje---transformacija-vrednosti-podataka-modifying-values" class="section level2">
+<h2>Modifikovanje - Transformacija vrednosti podataka (Modifying values)</h2>
+<div id="promena-vrednosti" class="section level3">
+<h3>Promena vrednosti</h3>
+</div>
+<div id="logički-podskup-podataka" class="section level3">
+<h3>Logički podskup podataka</h3>
+</div>
+<div id="rad-sa-na-nedostajući-podaci" class="section level3">
+<h3>Rad sa NA (nedostajući podaci)</h3>
+</div>
+</div>
+<div id="kombinovanje-i-spajanje" class="section level2">
+<h2>Kombinovanje i spajanje</h2>
+<p>cbind i rbind</p>
+</div>
+</div>
+<div id="eksportovanje-podataka-u-r-u" class="section level1">
+<h1>Eksportovanje podataka u R-u</h1>
 </div>
 <div id="kreiranje-funkcija" class="section level1">
 <h1>Kreiranje funkcija</h1>

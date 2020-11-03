@@ -205,13 +205,13 @@ attributes(v10)
 #'
 #' Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji se nalazi u određenom folderu, često je potrebno definisati radni direktorijum. Time se praktično definiše `default` putanja koju će koristiti sve funkcije koje za argument koriste putanju do određenog foldera, ukoliko se ne podesi drugačije. Podešavanje radnog direktorijuma se vrši pozivom komande `setwd()`
 #'
-?setwd()
+#?setwd()
 
-setwd(dir = "C:/R_projects/Nauka_R/Slides")
+#setwd(dir = "C:/R_projects/Nauka_R/Slides")
 #'
 #' Ukoliko postoji potreba da se proveri koja je aktuelna putanja, odnosno koji je aktuelni radni direktorijum, to se može učiniti pozivom komande `getwd()`.
 #' 
-getwd()
+#getwd()
 #'
 #' Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
 #'
@@ -228,9 +228,9 @@ getwd()
 #' 
 #' 
 #+ include = TRUE
-studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
+studenti <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
 
-studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
+studenti <- read.csv(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 #'
 #' #### `readxl` paket
 #'
@@ -239,12 +239,12 @@ studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt"
 install.packages("readxl")
 library(readxl)
 
-studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
+studenti <- readxl::read_xlsx(path = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.xlsx", sheet = "Students")
 
 #'
 #'
 #'
-#' ## Pregled podataka (Summary)
+#' ## Pregled podataka
 #' 
 str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?
 
@@ -253,28 +253,189 @@ str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorsk
 
 str(studenti)
 
-head(studenti)
+class(studenti)
 
-tail(studenti)
+head(studenti, 5)
+
+tail(studenti, 5)
+
+dim(studenti)
 
 #'
 #' ## Selektovanje podataka
+#' 
+#' U okviru R-a postoji poseban sistem notacije kojim je moguće pristupiti vrednostima objekta. Kako bi pristupili podatku ili setu podataka (red-u i/ili kolona-ma), koristi se sledeće notacija sa [] zagradama:
+
+# studenti[ , ]
+
+#' U okviru zagrrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **reda** i drugi predstavlja broj **kolone**. Indeksi mogu biti napisani na veći broj načina, i to:
+#'  
+#' - Pozitivne celobrojne vrednosti
+#' - Negativne celobrojne vrednosti
+#' - Nula
+#' - Razmak
+#' - Logičke vrednosti
+#' - Nazivi   
+#' 
+
+#' ### Pozitivne celobrojne vrednosti
+#' 
+studenti[1, ]
+
+studenti[, 2]
+
+studenti[1, 2]
+
+#' Na ovaj način izvršena je selekcija prvog reda i druge kolone. Pored zadavanja jedne vrednosti, možemo izvršiti selekciju podataka skupom indeksa.
+studenti[1, c(2,3)]
+studenti[1, c(2:5)]
+
+#' Rezultat upita je samo prikaz - kopija vrednosti. Rezultat možemo dodeliti novoj promenljivoj:
+
+Boris <- studenti[1, c(1:14)]
+Boris
+
+#' Isti sistem notacije se koristi i kod drugih tipova podataka, npr. kod vektora:
+vec <- c(6, 1, 3, 6, 10, 5)
+vec[1:3]
+
+#' Bitno je zapamtiti da indeksiranje u R-u **uvek počinje od 1**, dok za razliku od nekih drugih programskih jezika počinje od 0.      
+
+#'    
+#' ### Negativne celobrojne vrednosti
+#' Negativne vrednosti daju suprotni rezultat u odnosu na pozitivne celobrojne vrednosti. Rezultat je sve osim elemenata navedenih indeksom:
+studenti[-c(2:35), 2:5]
+
+#' Kombincija pozitivnih i negativnih indeksa je moguća, dok nije moguće postaviti pozitivnu i negativnu vrednost u okviru istog inndeksa:
+# studenti[-c(-1,1), 2]
+# Error in x[i] : only 0's may be mixed with negative subscripts
+
+studenti[1:5, -1]
+
+#'
+#' ### Nula
+#' Kao što je rečeno indeksiranje elemenata počinje od 1, dok indeks 0 nije greška, već je rezultat objekat bez elemenata:
+#' 
+studenti[0, 0]
+
+#'
+#' ### Razmak
+#' Korišćenem razmaka - praznog indeksa, dobija se rezultat koji podrazumeva sve elemente datog reda ili kolone:
+#' 
+studenti[1, ]
+
+#' 
+#' ### Logičke vrednosti          
+#' Vrednost indeksa može biti i logička vrednost i tom slučaju rezultat je red i/ili kolona koja odgovara vrednosti TRUE:
+#' 
+studenti[1, c(FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)]
+
+#' 
+#' ### Nazivi 
+#' 
+#' Selekcija podataka - elementa je moguća i putem naziva kolona i/ili redova ako su dostupni:
+
+names(studenti) 
+studenti[, "Prezime"]
+studenti[1:5, c("Prezime", "Ime", "br.ind", "god.upisa")]
+
+#' Kao i kombinacija navedenog:
+studenti[1:5, c(names(studenti[, c(2:5)]))]
+
+#'
+#' ## Selektovanje podataka putem $ sintakse
+#' Putem prethodnih primera pokazan je osnovni način selekcije elementa iz skupa podataka. Način selekcije podataka koji se najčešče koristi predstavlja upotrebu $ sintakse.      
+#' Potrebno je napisati naziv objekta - data frame-a a zatim napisati naziv kolone odvojen znakom "$":
+#' 
+studenti$Prezime
+
+#' *Tips: Nakon napisanog znaka "$" moguće je pritisnuti taster TAB na tastaturi kako bi dobili listu naziva kolona.*      
+#' Kako bi izvršili upit po redu, potrebno je napisati [] zagrade i navesti indeks reda.
+#' 
+studenti$Prezime[1]
+studenti$Prezime[1:5]
+
 #' 
 #' 
 #'  
 #' ## Sumiranje
 #' 
-#'Summary, apply i lapply
-#' colSums, rowSums
+#' Sumiranje podataka je moguće uraditi po vrednostima reodova i/ili kolona. Postoji veliki broj funkcija, kao i paketa koji koriste svoje funkcije za sumiranje po određenim pravilima. Neke od osnovnih funkcija base paketa su:
 #' 
-#' i peske sabrati dve kolone 
+#' ### Base funkcije
+summary(studenti)
+
+mean(studenti$Ocena, na.rm = TRUE) # "na.rm" parametar se koristi kako bi se zanemarile NA vrednosti u podacima.
+
+min(studenti$kol.1, na.rm = TRUE)
+max(studenti$kol.1, na.rm = TRUE)
+
+median(studenti$Praksa, na.rm = T)
+
 #' 
-#' komanda by sa faktorskom promenljivom od godine upisa
+#' ### apply i lapply funkcije
+#' apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat daju vektor, listu ili array. 
+?apply()
+?lapply()
+#' apply možemo koristiti kako bi izvršili sumiranje po svim redovima (drugi argument funkcije je 1) ili kolonama (drugi argument funkcije je 2). 
 #' 
-#' koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu
-#' ko je polozio oba kolokvijuma 
+studenti_bez_na <- studenti
+studenti_bez_na[is.na(studenti_bez_na)] <- 0
+apply(studenti_bez_na[, 6:14], 2, mean)
+
+#' lapply koristimo kada želimo da izvršimo sumiranje po svakom članu liste ili npr. svakoj koloni data.frame-a. Razlika u odnosu na apply je što je ovde rezltat lista,
+#' 
+lapply(studenti_bez_na[, 6:14], mean) 
+
+#' ### Funkcije colSums() i rowSums()
+#' 
+colSums(studenti[, 6:14], na.rm = T) 
+rowSums(studenti[, 6:7], na.rm = T) # Rezultat je zbir bodova na prvom i drugom kolokvijumu
+
+colMeans(studenti[, 6:14], na.rm = T) # Uočavamo razilku između srednje vrednosti kolona dobijene funkcijom apply i colSums. Razlika je u tome da smo u prvom slučaju NA vrednosti zamenili sa 0 (pa je delilac veći) u odnosu na funkciju colSums gde smo naznačili da zanemarujemo NA vrednosti.
+rowMeans(studenti[, 6:7], na.rm = T)
+
 #'
-#'
+#' Funkcija by()
+#' Koriscenjem funkcije by(), možemo na jednostavan način uraditi sumiranje po određenim faktorskim kolona.
+by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
+
+#' ### Kreiranje jednostavne funkcije
+#' U cilju sumiranja podataka po određenom pravilu, možemo napisati jednostavnu funkciju:
+#' 
+racunajSrednjuVrednost <- function(data_frame = data_frame, izbaciNA = TRUE){ # argumenti funkcije
+  sr_vrednost  <- mean(data_frame$Ocena, na.rm = izbaciNA)
+  return(sr_vrednost)
+}
+
+racunajSrednjuVrednost(data_frame = studenti, izbaciNA = TRUE) 
+
+
+#' 
+#' > <h3>Zadatak 2</h3>
+#' > + Sumirati podatke i sračunati ukupan broj studenata koji su položili prvi kolokvijum.
+#' > + Sumirati podatke i sračunati ukupan broj studenata koji su položili oba kolokvijuma.
+#' > + Sumirati podatke i sračunati koliko su bodovi na prvom i drugom kolokvijumu u korelaciji sa krajnjom ocenom.
+#' 
+#' Rešenje: 
+#' 
+
+#' Zadatak 1:
+length(studenti_bez_na$kol.1[studenti_bez_na$kol.1 > 0])
+
+#' Zadatak 2:
+length(studenti_bez_na$kol.1[studenti_bez_na$kol.1 > 0 & studenti_bez_na$kol.2 > 0])
+
+#' Zadatak 3:
+cor(studenti_bez_na$kol.1, studenti_bez_na$Ocena)
+plot(studenti_bez_na$kol.1, studenti_bez_na$Ocena)
+
+cor(studenti_bez_na$kol.2, studenti_bez_na$Ocena)
+plot(studenti_bez_na$kol.2, studenti_bez_na$Ocena)
+
+
+
+
 #'
 #'
 #'
