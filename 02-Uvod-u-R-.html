@@ -1276,6 +1276,54 @@ window.buildTabsets = function(tocID) {
 };
 
 </script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -1789,36 +1837,24 @@ Zadatak 1
 <li>Izlistati sve fajlove koji se nalaze u radnom direktorijumu.</li>
 </ul>
 </blockquote>
-<p>Rešenje:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1">wDir &lt;-<span class="st"> &quot;D:/R_projects/[naziv foldera]&quot;</span> <span class="co"># (Napomena: Zagrade [] nisu potrebne!)</span></a>
-<a class="sourceLine" id="cb62-2" title="2"><span class="kw">setwd</span>(wDir)</a>
-<a class="sourceLine" id="cb62-3" title="3"></a>
-<a class="sourceLine" id="cb62-4" title="4"><span class="co">##  Kontrola:</span></a>
-<a class="sourceLine" id="cb62-5" title="5"><span class="kw">getwd</span>()</a></code></pre></div>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="kw">list.files</span>(<span class="st">&quot;[naziv pod-foldera ako postoji]/&quot;</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;iris.csv&quot;          &quot;Students_IG1.csv&quot;  &quot;Students_IG1.txt&quot;  &quot;Students_IG1.xlsx&quot;
-## [5] &quot;Students_IG2.xlsx&quot;</code></pre>
 <p>Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.</p>
 </div>
-<div id="učitavanje-i-eksportovanje-podataka-u-r-u" class="section level1">
-<h1>Učitavanje i eksportovanje podataka u R-u</h1>
-<<<<<<< HEAD
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb65-2" title="2"></a>
-<a class="sourceLine" id="cb65-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-=======
+<div id="učitavanje-podataka-u-r-u" class="section level1">
+<h1>Učitavanje podataka u R-u</h1>
+<p>Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1">studenti &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb71-2" title="2"></a>
 <a class="sourceLine" id="cb71-3" title="3">studenti &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <div id="readxl-paket" class="section level4">
 <h4><code>readxl</code> paket</h4>
+<p>Učitavanje excel tabela je moguće učiniti putem paketa “readxl”:</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">install.packages</span>(<span class="st">&quot;readxl&quot;</span>)</a>
 <a class="sourceLine" id="cb72-2" title="2"><span class="kw">library</span>(readxl)</a>
 <a class="sourceLine" id="cb72-3" title="3"></a>
-<a class="sourceLine" id="cb72-4" title="4"><span class="co"># Dati primer za readxl</span></a></code></pre></div>
+<a class="sourceLine" id="cb72-4" title="4">studenti &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> <span class="st">&quot;data/Students_IG1.xlsx&quot;</span>)</a></code></pre></div>
 </div>
-<div id="pregledavanje-podataka" class="section level3">
-<h3>Pregledavanje podataka</h3>
+<div id="pregled-podataka-summary" class="section level2">
+<h2>Pregled podataka (Summary)</h2>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">str</span>(studenti) <span class="co"># Obratite pažnju da su imena studenata skladištena kao faktorske kolone u okviru data.frame?</span></a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    35 obs. of  14 variables:
 ##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
@@ -1882,23 +1918,85 @@ Zadatak 1
 ## 33      NA  NA     6      8
 ## 34      40  70     6      8
 ## 35      NA  NA     7      8</code></pre>
-<div id="selektovanje-podataka" class="section level4">
-<h4>Selektovanje podataka</h4>
 </div>
-<div id="sumiranje" class="section level4">
-<h4>Sumiranje</h4>
+<div id="selektovanje-podataka" class="section level2">
+<h2>Selektovanje podataka</h2>
 </div>
-<div id="modifikovanje" class="section level4">
-<h4>Modifikovanje</h4>
+<div id="sumiranje" class="section level2">
+<h2>Sumiranje</h2>
+<p>Summary, apply i lapply colSums, rowSums</p>
+<p>i peske sabrati dve kolone</p>
+<p>komanda by sa faktorskom promenljivom od godine upisa</p>
+<p>koliko studenta je izaslo na kolokvijum, kolika je srednja vrednost na kolokvijumima uticala na krajnju ocenu ko je polozio oba kolokvijuma</p>
 </div>
-<div id="kombinovanje-i-spajanje" class="section level4">
-<h4>Kombinovanje i spajanje</h4>
+<div id="modifikovanje---transformacija-vrednosti-podataka-modifying-values" class="section level2">
+<h2>Modifikovanje - Transformacija vrednosti podataka (Modifying values)</h2>
+<div id="promena-vrednosti" class="section level3">
+<h3>Promena vrednosti</h3>
+<p>Modifikacija vrednosti podataka odnosi se na promenu vrednosti nekog podatka. Da bi neku vrednost bilo moguce promeniti, potrebno je prvo specificirati tačnu poziciju vrednosti koju žeimo promeniti. Na primer, ako želimo da upišemo kao godinu upisa broj 2017 umesto 17, i 2016 umesto 16, to cemo uraditi na sledeci nacin:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1">studenti[studenti<span class="op">$</span>god.upisa <span class="op">==</span><span class="st"> </span><span class="dv">17</span>, <span class="st">&quot;god.upisa&quot;</span>] &lt;-<span class="st"> </span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb81-2" title="2"></a>
+<a class="sourceLine" id="cb81-3" title="3">studenti[studenti<span class="op">$</span>god.upisa <span class="op">==</span><span class="st"> </span><span class="dv">16</span>, <span class="st">&quot;god.upisa&quot;</span>] &lt;-<span class="st"> </span><span class="dv">2016</span></a>
+<a class="sourceLine" id="cb81-4" title="4"></a>
+<a class="sourceLine" id="cb81-5" title="5">studenti<span class="op">$</span>god.upisa</a></code></pre></div>
+<pre><code>##  [1] 2016 2017 2016 2017 2016 2017 2017 2017 2017 2017   15 2017 2017 2017 2017
+## [16] 2017 2017 2017 2017 2017 2017 2016 2017 2017 2016 2017 2016 2016 2017 2017
+## [31] 2016 2017 2017 2017 2017</code></pre>
+<p>Ukoliko žeilimo da svim studentima koji su upisali fakultet 2017 godine dodelimo ocenu 5 iz IG1, to možemo uraditi na sledeći način:</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1">studenti[studenti<span class="op">$</span>god.upisa <span class="op">==</span><span class="st"> </span><span class="dv">17</span>, <span class="st">&quot;Ocena&quot;</span>] &lt;-<span class="st"> </span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb83-2" title="2">studenti &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_xlsx</span>(<span class="dt">path =</span> <span class="st">&quot;data/Students_IG1.xlsx&quot;</span>)</a></code></pre></div>
+<blockquote>
+<h3>
+Zadatak
+</h3>
+<ul>
+<li>Izmeniti rezultate krajnje ocene i prakse za svoje ime tako sto cete dodeliti ocenu 10.</li>
+</ul>
+</blockquote>
 </div>
-<div id="section" class="section level4">
-<h4></h4>
+<div id="logički-podskup-podataka" class="section level3">
+<h3>Logički podskup podataka</h3>
+<p>Kao što je već rečeno, vrednosti se mogu selektovati kreiranjem logičkog uputa. Odnosno kreiranjem logičkog upita dobija se vektor sa vrednostima TRUE i FALSE koji se mogu koristiti za određivanje pozicije vrednosti koju želimo izmeniti:</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1">generacija_<span class="dv">2017</span> &lt;-<span class="st"> </span>studenti<span class="op">$</span>god.upisa <span class="op">==</span><span class="st"> </span><span class="dv">2017</span></a>
+<a class="sourceLine" id="cb84-2" title="2">generacija_<span class="dv">2017</span></a></code></pre></div>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">studenti[generacija_<span class="dv">2017</span>, ]</a></code></pre></div>
+<pre><code>## # A tibble: 0 x 14
+## # ... with 14 variables: ID &lt;dbl&gt;, Prezime &lt;chr&gt;, Ime &lt;chr&gt;, br.ind &lt;dbl&gt;,
+## #   god.upisa &lt;dbl&gt;, kol.1 &lt;dbl&gt;, kol.2 &lt;dbl&gt;, kol.1.1 &lt;dbl&gt;, kol.2.2 &lt;dbl&gt;,
+## #   Januar &lt;dbl&gt;, Februar &lt;dbl&gt;, Jun &lt;dbl&gt;, Ocena &lt;dbl&gt;, Praksa &lt;dbl&gt;</code></pre>
+<p>Logički operatori su veoma efikasan način selekcije i u okviru R-a definisani su na sledeći način:</p>
+<p><img src="data:image/jpeg;base64,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" width="452" style="display: block; margin: auto;" /></p>
+<div id="bulovi-operatori" class="section level4">
+<h4>Bulovi operatori</h4>
+<p>Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da <code>NA</code> vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa <code>NA</code>vrednošću nam kao rezultat vraća <code>NA</code> vrednost.</p>
+<p>Na primer, ako želimo pogledati koji studenti su imali 100 bodova junskom roku i kranju ocenu 10, nećemo dobiti željeni rezultat, upravo zbog prisustva <code>NA</code> vrednosti</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1">studenti[studenti<span class="op">$</span>Jun <span class="op">==</span><span class="st"> </span><span class="dv">100</span> <span class="op">&amp;</span><span class="st"> </span>studenti<span class="op">$</span>Ocena <span class="op">==</span><span class="st"> </span><span class="dv">10</span>, ]</a></code></pre></div>
+<pre><code>## # A tibble: 4 x 14
+##      ID Prezime Ime   br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+##   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    NA &lt;NA&gt;    &lt;NA&gt;      NA        NA    NA    NA      NA      NA     NA
+## 2    NA &lt;NA&gt;    &lt;NA&gt;      NA        NA    NA    NA      NA      NA     NA
+## 3    NA &lt;NA&gt;    &lt;NA&gt;      NA        NA    NA    NA      NA      NA     NA
+## 4    NA &lt;NA&gt;    &lt;NA&gt;      NA        NA    NA    NA      NA      NA     NA
+## # ... with 4 more variables: Februar &lt;dbl&gt;, Jun &lt;dbl&gt;, Ocena &lt;dbl&gt;,
+## #   Praksa &lt;dbl&gt;</code></pre>
+<p>Međutim, ako</p>
 </div>
->>>>>>> 5814d90a2095178cc95d08731f19d507d9bbf9be
 </div>
+<div id="rad-sa-na-nedostajući-podaci" class="section level3">
+<h3>Rad sa NA (nedostajući podaci)</h3>
+</div>
+</div>
+<div id="kombinovanje-i-spajanje" class="section level2">
+<h2>Kombinovanje i spajanje</h2>
+<p>cbind i rbind</p>
+</div>
+</div>
+<div id="eksportovanje-podataka-u-r-u" class="section level1">
+<h1>Eksportovanje podataka u R-u</h1>
 </div>
 <div id="kreiranje-funkcija" class="section level1">
 <h1>Kreiranje funkcija</h1>
@@ -1915,7 +2013,7 @@ Zadatak 1
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1954,7 +2052,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

@@ -452,6 +452,10 @@ Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji 
 ?setwd()
 ```
 
+```
+## starting httpd help server ... done
+```
+
 ```r
 setwd(dir = "C:/R_projects/Nauka_R/Slides")
 ```
@@ -469,32 +473,12 @@ getwd()
 ## [1] "C:/R_projects/Nauka_R/Slides"
 ```
 
+
 Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
 
 > <h3>Zadatak 1</h3>
 > + Podesiti radni direktorijum.
 > + Izlistati sve fajlove koji se nalaze u radnom direktorijumu.
-
-Rešenje:
-
-```r
-wDir <- "D:/R_projects/[naziv foldera]" # (Napomena: Zagrade [] nisu potrebne!)
-setwd(wDir)
-
-##  Kontrola:
-getwd()
-
-```
-
-```r
-list.files("[naziv pod-foldera ako postoji]/")
-
-```
-
-```
-## [1] "iris.csv"          "Students_IG1.csv"  "Students_IG1.txt"  "Students_IG1.xlsx"
-## [5] "Students_IG2.xlsx"
-```
 
 Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristimo konstantno jedinstven direktorijum sa skriptama, podacima i drugim potrebnim fajlovima. Tada u radu i korišćenju funkcija možemo koristiti relativne putanje ka pod-fodlerima ako je potrebno, inače se podrazumeva data putanja kao apsolutna.
 
@@ -503,11 +487,15 @@ Podešavanje radnog direktorijuma je korisno koristiti ako prilikom rada koristi
 
 Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na principu zadavanja putanje ka podacima, kao i formata podataka, koji ne mora biti eksplicitno naveden. Neke od osnovnih funkcija su:
 
+
+
+
 ```r
 studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
 
 studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
 ```
+
 
 #### `readxl` paket
 
@@ -518,7 +506,7 @@ Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 install.packages("readxl")
 library(readxl)
 
-studenti <- 
+studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
 ```
 
 
@@ -622,12 +610,9 @@ tail(studenti)
 ## Selektovanje podataka
 
 
-
-
-
-
-
+ 
 ## Sumiranje
+
 Summary, apply i lapply
 colSums, rowSums
 
@@ -642,36 +627,108 @@ ko je polozio oba kolokvijuma
 
 
 
-
-
-
-
-
-
-
 ## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
 
 
 ### Promena vrednosti
 
+Modifikacija vrednosti podataka odnosi se na promenu vrednosti nekog podatka. Da bi neku vrednost bilo moguce promeniti, potrebno je prvo specificirati tačnu poziciju vrednosti koju žeimo promeniti. Na primer, ako želimo da upišemo kao godinu upisa broj 2017 umesto 17, i 2016 umesto 16, to cemo uraditi na sledeci nacin:
+
+
+```r
+studenti[studenti$god.upisa == 17, "god.upisa"] <- 2017
+
+studenti[studenti$god.upisa == 16, "god.upisa"] <- 2016
+
+studenti$god.upisa
+```
+
+```
+##  [1] 2016 2017 2016 2017 2016 2017 2017 2017 2017 2017   15 2017 2017 2017 2017
+## [16] 2017 2017 2017 2017 2017 2017 2016 2017 2017 2016 2017 2016 2016 2017 2017
+## [31] 2016 2017 2017 2017 2017
+```
+
+Ukoliko žeilimo da svim studentima koji su upisali fakultet 2017 godine dodelimo ocenu 5 iz IG1, to možemo uraditi na sledeći način:
+
+
+```r
+studenti[studenti$god.upisa == 17, "Ocena"] <- 5
+studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
+```
+
+> <h3>Zadatak</h3>
+> + Izmeniti rezultate krajnje ocene i prakse za svoje ime tako sto cete dodeliti ocenu 10.
+
 ### Logički podskup podataka
 
+Kao što je već rečeno, vrednosti se mogu selektovati kreiranjem logičkog uputa. Odnosno kreiranjem logičkog upita dobija se vektor sa vrednostima TRUE i FALSE koji se mogu koristiti za određivanje pozicije vrednosti koju želimo izmeniti:
+  
+
+
+```r
+generacija_2017 <- studenti$god.upisa == 2017
+generacija_2017
+```
+
+```
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+```
+
+```r
+studenti[generacija_2017, ]
+```
+
+```
+## # A tibble: 0 x 14
+## # ... with 14 variables: ID <dbl>, Prezime <chr>, Ime <chr>, br.ind <dbl>,
+## #   god.upisa <dbl>, kol.1 <dbl>, kol.2 <dbl>, kol.1.1 <dbl>, kol.2.2 <dbl>,
+## #   Januar <dbl>, Februar <dbl>, Jun <dbl>, Ocena <dbl>, Praksa <dbl>
+```
+
+
+Logički operatori su veoma efikasan način selekcije i u okviru R-a definisani su na sledeći način:
+
+
+<img src="Figures/logicki operatori.jpg" width="452" style="display: block; margin: auto;" />
+
+
+#### Bulovi operatori
+
+Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da `NA` vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa `NA`vrednošću nam kao rezultat vraća `NA` vrednost.
+
+Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 10, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
+
+
+```r
+studenti[studenti$Jun == 100 & studenti$Ocena == 10, ]
+```
+
+```
+## # A tibble: 4 x 14
+##      ID Prezime Ime   br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+##   <dbl> <chr>   <chr>  <dbl>     <dbl> <dbl> <dbl>   <dbl>   <dbl>  <dbl>
+## 1    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
+## 2    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
+## 3    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
+## 4    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
+## # ... with 4 more variables: Februar <dbl>, Jun <dbl>, Ocena <dbl>,
+## #   Praksa <dbl>
+```
+
+
+
+Međutim, ako
+
+
+ 
 ### Rad sa NA (nedostajući podaci)
 
 
-
-
-
-
-
-
-## Dodeljivanje atributa
-
-
-
-
-
 ## Kombinovanje i spajanje
+
 cbind i rbind
 
 
@@ -679,33 +736,5 @@ cbind i rbind
 # Eksportovanje podataka u R-u
 
 
-
 # Kreiranje funkcija
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
