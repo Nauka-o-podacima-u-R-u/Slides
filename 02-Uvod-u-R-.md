@@ -2,7 +2,7 @@
 title: "Uvod u R"
 author:
    - "Milutin Pejovic, Petar Bursac"
-date: "03 novembar 2020"
+date: "04 November 2020"
 output:
    html_document:
      keep_md: true
@@ -14,7 +14,17 @@ output:
      fig_caption: yes
 ---
 
+# Strukture podataka
+
+Podsetićemo se na početku osnovnih struktura podataka u R-u
+
+
+<img src="Figures/strukture_podataka.jpg" width="487" style="display: block; margin: auto;" />
+
+
 # Osnovni tipovi i klase podataka u R-u
+
+
 
 ## Atomic vectors
 
@@ -230,11 +240,7 @@ is.logical(v1)
 Kao što je poznato, vektor, matrica ili array su strukture podataka koje mogu sadržati samo jedan tip podataka. Stim u vezi, ukoliko se u nekom vektoru nađu dva tipa podataka, R će prema integrisanim pravilima (`character → double → integer → logical`) prinudno transformisati tip podataka.  
 
 
-
-```r
-#
-str(c("a", 1)) # komanda `str` pokazuje strukturu podataka
-```
+<img src="Figures/prinudna_promena.jpg" width="503" style="display: block; margin: auto;" />
 
 ```
 ##  chr [1:2] "a" "1"
@@ -318,7 +324,7 @@ v1
 Jedan od najvažnijih atributa koji se vezuje za osnovne strukture podataka u R-u je `klasa`, čime se definiše jedan od objektno orijentisanih pristupa definisanja strukture podataka poznat pod imenom `S3` klase. R podržava više sistema za objeknto orijentisano struktuiranje podataka kao što su `S3`, `S4` i `R6`. `S3` je osnovni sistem i podržan je u okviru osnovne istalacije R-a.  
 Dodavanjem atributa `class` R objekat postja `S3` objekat i od toga zavisi kako će se neke osnovne funkcije (`generic functions`) ophoditi prema tom objektu. Drugim rečima, rezultat neke operacije zavisi od klase podataka. 
 
-U okviru ovog poglavlja, razmotrićemo dve osnovne klase vekorskih podataka:
+U okviru ovog poglavlja, razmotrićemo tri osnovne klase vekorskih podataka:
 
 #### `factors`
 
@@ -390,7 +396,7 @@ as.numeric(v8)
 ```
 
 ```
-## [1] 18569
+## [1] 18570
 ```
 
 ```r
@@ -451,16 +457,7 @@ Ukoliko postoji potreba da se neka skripta veže za određeni set podataka koji 
 ```r
 #?setwd()
 
-<<<<<<< HEAD
-```
-## starting httpd help server ... done
-```
-
-```r
-setwd(dir = "C:/R_projects/Nauka_R/Slides")
-=======
 #setwd(dir = "C:/R_projects/Nauka_R/Slides")
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 ```
 
 
@@ -471,7 +468,6 @@ Ukoliko postoji potreba da se proveri koja je aktuelna putanja, odnosno koji je 
 ```r
 #getwd()
 ```
-
 
 
 Izlistavanje fajlova koji se nalaze u nekom direktorijumu se vrši pozivom komande `ls()`
@@ -491,17 +487,13 @@ Za učitavanje podataka u radno okruženje koriste se funkcije, koje rade na pri
 
 
 ```r
-studenti <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
+studenti <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", sep = ",", header = TRUE)
 
-studenti <- read.csv(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE)
+studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE, stringsAsFactors = FALSE)
 ```
 
 
-<<<<<<< HEAD
-#### `readxl` paket
-=======
 ## `readxl` paket
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 
@@ -510,11 +502,7 @@ Učitavanje excel tabela je moguće učiniti putem paketa "readxl":
 install.packages("readxl")
 library(readxl)
 
-<<<<<<< HEAD
-studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
-=======
-studenti <- readxl::read_xlsx(path = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.xlsx", sheet = "Students")
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
+studenti <- readxl::read_xlsx(path = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.xlsx", sheet = "Students")
 ```
 
 
@@ -531,8 +519,8 @@ str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorsk
 ```
 ## 'data.frame':	35 obs. of  14 variables:
 ##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Prezime  : Factor w/ 30 levels "Antonijev","Arvaji",..: 1 2 3 4 5 6 29 30 9 10 ...
-##  $ Ime      : Factor w/ 25 levels "Aleksandar","Andrijana",..: 4 13 22 15 22 1 1 3 23 17 ...
+##  $ Prezime  : chr  "Antonijev" "Arvaji" "Babic" "Beljin" ...
+##  $ Ime      : chr  "Boris" "Luka" "Stefan" "Miloš" ...
 ##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
 ##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
 ##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
@@ -549,28 +537,6 @@ str(studenti) # Obratite pažnju da su imena studenata skladištena kao faktorsk
 Ukoliko želimo da se određene kolone ne transformišu u faktorske prilikom učitavanja potrebno opciju `stringsAsFactors` podesititi da bude `FALSE`.
 
 
-
-```r
-str(studenti)
-```
-
-```
-## 'data.frame':	35 obs. of  14 variables:
-##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ Prezime  : Factor w/ 30 levels "Antonijev","Arvaji",..: 1 2 3 4 5 6 29 30 9 10 ...
-##  $ Ime      : Factor w/ 25 levels "Aleksandar","Andrijana",..: 4 13 22 15 22 1 1 3 23 17 ...
-##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
-##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
-##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
-##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
-##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
-##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
-##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
-##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
-##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...
-```
 
 ```r
 class(studenti)
@@ -627,6 +593,8 @@ dim(studenti)
 ```
 
 
+
+
 ## Selektovanje podataka
 
 U okviru R-a postoji poseban sistem notacije kojim je moguće pristupiti vrednostima objekta. Kako bi pristupili podatku ili setu podataka (red-u i/ili kolona-ma), koristi se sledeće notacija sa [] zagradama:
@@ -645,14 +613,7 @@ U okviru zagrada pišu se dva indeksa odvojena zarezom, pri predstavlja broj **r
 - Logičke vrednosti
 - Nazivi   
 
-<<<<<<< HEAD
- 
-## Sumiranje
-
-Summary, apply i lapply
-colSums, rowSums
-=======
-### Pozitivne celobrojne vrednosti
+#### Pozitivne celobrojne vrednosti
 
 
 
@@ -672,16 +633,15 @@ studenti[, 2]
 ```
 
 ```
-##  [1] Antonijev       Arvaji          Babic           Beljin         
-##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
-##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
-## [13] Jovicic         Kocic           Kocic           Lazic          
-## [17] Lazic           Milijaševic     Milic           Milic          
-## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
-## [25] Popovic         Radovancev      Smiljanic       Srejic         
-## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
-## [33] Tomic           Cvetkovic       Cvetkovic      
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+##  [1] "Antonijev"       "Arvaji"          "Babic"           "Beljin"         
+##  [5] "Božic Krajišnik" "Brkic"           "Vasovic"         "Vucic"          
+##  [9] "Garibovic"       "Gordic"          "Grujovic"        "Dimitrijevic"   
+## [13] "Jovicic"         "Kocic"           "Kocic"           "Lazic"          
+## [17] "Lazic"           "Milijaševic"     "Milic"           "Milic"          
+## [21] "Milosavljevic"   "Mladenovic"      "Nikolic"         "Paunic"         
+## [25] "Popovic"         "Radovancev"      "Smiljanic"       "Srejic"         
+## [29] "Stanojevic"      "Stanojkovic"     "Stojanovic"      "Stojanovic"     
+## [33] "Tomic"           "Cvetkovic"       "Cvetkovic"
 ```
 
 ```r
@@ -689,8 +649,7 @@ studenti[1, 2]
 ```
 
 ```
-## [1] Antonijev
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+## [1] "Antonijev"
 ```
 
 Na ovaj način izvršena je selekcija prvog reda i druge kolone. Pored zadavanja jedne vrednosti, možemo izvršiti selekciju podataka skupom indeksa.
@@ -743,7 +702,7 @@ vec[1:3]
 
 Bitno je zapamtiti da indeksiranje u R-u **uvek počinje od 1**, dok za razliku od nekih drugih programskih jezika počinje od 0.      
    
-### Negativne celobrojne vrednosti
+#### Negativne celobrojne vrednosti
 Negativne vrednosti daju suprotni rezultat u odnosu na pozitivne celobrojne vrednosti. Rezultat je sve osim elemenata navedenih indeksom:
 
 
@@ -782,7 +741,7 @@ studenti[1:5, -1]
 ```
 
 
-### Nula
+#### Nula
 Kao što je rečeno indeksiranje elemenata počinje od 1, dok indeks 0 nije greška, već je rezultat objekat bez elemenata:
 
 
@@ -796,7 +755,7 @@ studenti[0, 0]
 ```
 
 
-### Razmak
+#### Razmak
 Korišćenem razmaka - praznog indeksa, dobija se rezultat koji podrazumeva sve elemente datog reda ili kolone:
 
 
@@ -813,7 +772,7 @@ studenti[1, ]
 ```
 
 
-### Logičke vrednosti          
+#### Logičke vrednosti          
 Vrednost indeksa može biti i logička vrednost i tom slučaju rezultat je red i/ili kolona koja odgovara vrednosti TRUE:
 
 
@@ -827,8 +786,92 @@ studenti[1, c(FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 ## 1 Antonijev Boris   1035
 ```
 
+Vektor logičkih vrednosti moguće je kreirati primenom logičkih upita. Odnosno kreiranjem logičkog upita dobija se vektor sa vrednostima TRUE i FALSE koji se mogu koristiti za određivanje pozicije vrednosti koju želimo izmeniti:
+  
 
-### Nazivi 
+
+```r
+generacija_2017 <- studenti$god.upisa == 2017
+generacija_2017 # vektor logičkih vrednosti
+```
+
+```
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+```
+
+```r
+studenti[generacija_2017, ]
+```
+
+```
+##  [1] ID        Prezime   Ime       br.ind    god.upisa kol.1     kol.2    
+##  [8] kol.1.1   kol.2.2   Januar    Februar   Jun       Ocena     Praksa   
+## <0 rows> (or 0-length row.names)
+```
+
+
+Logički operatori su veoma efikasan način selekcije i u okviru R-a definisani su na sledeći način:
+
+
+#### Bulovi operatori
+
+#' Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da `NA` vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa `NA`vrednošću nam kao rezultat vraća `NA` vrednost.
+
+
+<img src="Figures/logicki operatori.jpg" width="452" style="display: block; margin: auto;" />
+
+
+
+Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 9, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
+
+
+
+```r
+studenti[studenti$Jun == 100 & studenti$Ocena == 9, ]
+```
+
+```
+##      ID    Prezime    Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## NA   NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## NA.1 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## 15   15      Kocic Stefan   1035        17     0    NA      NA      NA     NA
+## NA.2 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## NA.3 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## NA.4 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## NA.5 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## NA.6 NA       <NA>   <NA>     NA        NA    NA    NA      NA      NA     NA
+## 32   32 Stojanovic  Mitar   1058        17     0    NA      NA      NA     NA
+##      Februar Jun Ocena Praksa
+## NA        NA  NA    NA     NA
+## NA.1      NA  NA    NA     NA
+## 15        24 100     9      8
+## NA.2      NA  NA    NA     NA
+## NA.3      NA  NA    NA     NA
+## NA.4      NA  NA    NA     NA
+## NA.5      NA  NA    NA     NA
+## NA.6      NA  NA    NA     NA
+## 32        10 100     9     10
+```
+
+```r
+studenti[!is.na(studenti$Jun) & !is.na(studenti$Ocena) & studenti$Jun == 100 & studenti$Ocena == 9, ]
+```
+
+```
+##    ID    Prezime    Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+## 15 15      Kocic Stefan   1035        17     0    NA      NA      NA     NA
+## 32 32 Stojanovic  Mitar   1058        17     0    NA      NA      NA     NA
+##    Februar Jun Ocena Praksa
+## 15      24 100     9      8
+## 32      10 100     9     10
+```
+
+
+ 
+   
+#### Nazivi 
 
 Selekcija podataka - elementa je moguća i putem naziva kolona i/ili redova ako su dostupni:
 
@@ -848,16 +891,15 @@ studenti[, "Prezime"]
 ```
 
 ```
-##  [1] Antonijev       Arvaji          Babic           Beljin         
-##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
-##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
-## [13] Jovicic         Kocic           Kocic           Lazic          
-## [17] Lazic           Milijaševic     Milic           Milic          
-## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
-## [25] Popovic         Radovancev      Smiljanic       Srejic         
-## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
-## [33] Tomic           Cvetkovic       Cvetkovic      
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+##  [1] "Antonijev"       "Arvaji"          "Babic"           "Beljin"         
+##  [5] "Božic Krajišnik" "Brkic"           "Vasovic"         "Vucic"          
+##  [9] "Garibovic"       "Gordic"          "Grujovic"        "Dimitrijevic"   
+## [13] "Jovicic"         "Kocic"           "Kocic"           "Lazic"          
+## [17] "Lazic"           "Milijaševic"     "Milic"           "Milic"          
+## [21] "Milosavljevic"   "Mladenovic"      "Nikolic"         "Paunic"         
+## [25] "Popovic"         "Radovancev"      "Smiljanic"       "Srejic"         
+## [29] "Stanojevic"      "Stanojkovic"     "Stojanovic"      "Stojanovic"     
+## [33] "Tomic"           "Cvetkovic"       "Cvetkovic"
 ```
 
 ```r
@@ -890,7 +932,7 @@ studenti[1:5, c(names(studenti[, c(2:5)]))]
 ```
 
 
-## Selektovanje podataka putem $ sintakse
+### Selektovanje podataka putem $ sintakse
 Putem prethodnih primera pokazan je osnovni način selekcije elementa iz skupa podataka. Način selekcije podataka koji se najčešče koristi predstavlja upotrebu $ sintakse.      
 Potrebno je napisati naziv objekta - data frame-a a zatim napisati naziv kolone odvojen znakom "$":
 
@@ -901,16 +943,15 @@ studenti$Prezime
 ```
 
 ```
-##  [1] Antonijev       Arvaji          Babic           Beljin         
-##  [5] Božic Krajišnik Brkic           Vasovic         Vucic          
-##  [9] Garibovic       Gordic          Grujovic        Dimitrijevic   
-## [13] Jovicic         Kocic           Kocic           Lazic          
-## [17] Lazic           Milijaševic     Milic           Milic          
-## [21] Milosavljevic   Mladenovic      Nikolic         Paunic         
-## [25] Popovic         Radovancev      Smiljanic       Srejic         
-## [29] Stanojevic      Stanojkovic     Stojanovic      Stojanovic     
-## [33] Tomic           Cvetkovic       Cvetkovic      
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+##  [1] "Antonijev"       "Arvaji"          "Babic"           "Beljin"         
+##  [5] "Božic Krajišnik" "Brkic"           "Vasovic"         "Vucic"          
+##  [9] "Garibovic"       "Gordic"          "Grujovic"        "Dimitrijevic"   
+## [13] "Jovicic"         "Kocic"           "Kocic"           "Lazic"          
+## [17] "Lazic"           "Milijaševic"     "Milic"           "Milic"          
+## [21] "Milosavljevic"   "Mladenovic"      "Nikolic"         "Paunic"         
+## [25] "Popovic"         "Radovancev"      "Smiljanic"       "Srejic"         
+## [29] "Stanojevic"      "Stanojkovic"     "Stojanovic"      "Stojanovic"     
+## [33] "Tomic"           "Cvetkovic"       "Cvetkovic"
 ```
 
 *Tips: Nakon napisanog znaka "$" moguće je pritisnuti taster TAB na tastaturi kako bi dobili listu naziva kolona.*      
@@ -923,8 +964,7 @@ studenti$Prezime[1]
 ```
 
 ```
-## [1] Antonijev
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+## [1] "Antonijev"
 ```
 
 ```r
@@ -932,14 +972,779 @@ studenti$Prezime[1:5]
 ```
 
 ```
-## [1] Antonijev       Arvaji          Babic           Beljin         
-## [5] Božic Krajišnik
-## 30 Levels: Antonijev Arvaji Babic Beljin Božic Krajišnik Brkic ... Vucic
+## [1] "Antonijev"       "Arvaji"          "Babic"           "Beljin"         
+## [5] "Božic Krajišnik"
 ```
 
 
+
+### Selektovanje podataka u okviru `list` - e
+
+Selektovanje podataka u okviru liste vrši se korišćenjem operatora `[]` i `[[]]` ili prema nazivu elementa liste. 
+Na primer, kreiraćemo listu studenata sa dva elementa, oni koji su položili praksu i onih koji nisu položili praksu.
+
+
+
+```r
+praksa_list <- list(polozili = studenti[!is.na(studenti$Praksa), ], nisu_polozili = studenti[is.na(studenti$Praksa), ])
+```
+
+
+Ukoliko želimo selektovati prvi član liste primenom operatora `[]`, za rezultat ćemo takođe dobiti listu!
+
+
+
+```r
+praksa_list[1]
+```
+
+```
+## $polozili
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1   1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 3   3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031        17    40    85     100      NA
+## 8   8           Vucic      Boban   1018        17    NA    NA      NA      NA
+## 10 10          Gordic     Nataša   1015        17     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042        15    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040        17    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012        17    30    NA      NA      NA
+## 14 14           Kocic     Danilo   1024        17     0    90     100      NA
+## 15 15           Kocic     Stefan   1035        17     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009        17     0    NA       5      NA
+## 17 17           Lazic      Dušan   1026        17    30    80      90      NA
+## 18 18     Milijaševic     Vojkan   1021        17     0   100     100      NA
+## 19 19           Milic    Nemanja   1014        17    15   100      90      NA
+## 20 20           Milic       Saša   1023        17   100    NA      NA     100
+## 21 21   Milosavljevic    Nemanja   1003        17    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053        16     0    NA      NA      NA
+## 23 23         Nikolic      Ratko   1016        17    15    NA      NA      NA
+## 24 24          Paunic     Stefan   1049        17     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044        16    NA    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007        17    15   100      70      NA
+## 28 28          Srejic Aleksandar   1037        16    NA    NA      NA      NA
+## 29 29      Stanojevic Aleksandar   1033        17     0    80      80      NA
+## 30 30     Stanojkovic      Ðorde   1004        17    75    60      NA      NA
+## 31 31      Stojanovic      Marta   1048        16     0    NA      NA      NA
+## 32 32      Stojanovic      Mitar   1058        17     0    NA      NA      NA
+## 33 33           Tomic      Filip   1029        17     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006        17     0    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039        17    15   100      60      NA
+##    Januar Februar Jun Ocena Praksa
+## 1      NA      40  51     7      9
+## 3      NA      NA 100     7      8
+## 4      NA      10 100     8      8
+## 5      NA     100  NA     7      8
+## 7      NA      NA  NA     8      9
+## 8      NA       8  70     6      8
+## 10     NA      82  NA     8      7
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 14     NA      NA  NA     9      9
+## 15     NA      24 100     9      8
+## 16     NA      NA  NA     7      8
+## 17     NA      NA  NA     9      9
+## 18     NA      NA  NA    10     10
+## 19     NA      NA  NA     9      9
+## 20     NA      NA  NA    10     10
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 23     60      82  NA     8      9
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 26     NA      NA  NA     9      8
+## 28     NA      NA  65     6      8
+## 29     NA      NA  NA     9      9
+## 30     NA      NA  NA     7      9
+## 31     20      51  NA     6      7
+## 32     NA      10 100     9     10
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 35     NA      NA  NA     7      8
+```
+
+```r
+class(praksa_list[1])
+```
+
+```
+## [1] "list"
+```
+
+
+
+<img src="Figures/selektovanje_liste.jpg" width="469" style="display: block; margin: auto;" />
+
+
+Međutim, ukoliko želimo selektovati prvi član liste primenom operatora `[[]]`, za rezultat ćemo takođe dobiti `data.frame`!
+
+
+
+```r
+praksa_list[[1]]
+```
+
+```
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1   1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 3   3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031        17    40    85     100      NA
+## 8   8           Vucic      Boban   1018        17    NA    NA      NA      NA
+## 10 10          Gordic     Nataša   1015        17     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042        15    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040        17    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012        17    30    NA      NA      NA
+## 14 14           Kocic     Danilo   1024        17     0    90     100      NA
+## 15 15           Kocic     Stefan   1035        17     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009        17     0    NA       5      NA
+## 17 17           Lazic      Dušan   1026        17    30    80      90      NA
+## 18 18     Milijaševic     Vojkan   1021        17     0   100     100      NA
+## 19 19           Milic    Nemanja   1014        17    15   100      90      NA
+## 20 20           Milic       Saša   1023        17   100    NA      NA     100
+## 21 21   Milosavljevic    Nemanja   1003        17    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053        16     0    NA      NA      NA
+## 23 23         Nikolic      Ratko   1016        17    15    NA      NA      NA
+## 24 24          Paunic     Stefan   1049        17     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044        16    NA    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007        17    15   100      70      NA
+## 28 28          Srejic Aleksandar   1037        16    NA    NA      NA      NA
+## 29 29      Stanojevic Aleksandar   1033        17     0    80      80      NA
+## 30 30     Stanojkovic      Ðorde   1004        17    75    60      NA      NA
+## 31 31      Stojanovic      Marta   1048        16     0    NA      NA      NA
+## 32 32      Stojanovic      Mitar   1058        17     0    NA      NA      NA
+## 33 33           Tomic      Filip   1029        17     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006        17     0    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039        17    15   100      60      NA
+##    Januar Februar Jun Ocena Praksa
+## 1      NA      40  51     7      9
+## 3      NA      NA 100     7      8
+## 4      NA      10 100     8      8
+## 5      NA     100  NA     7      8
+## 7      NA      NA  NA     8      9
+## 8      NA       8  70     6      8
+## 10     NA      82  NA     8      7
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 14     NA      NA  NA     9      9
+## 15     NA      24 100     9      8
+## 16     NA      NA  NA     7      8
+## 17     NA      NA  NA     9      9
+## 18     NA      NA  NA    10     10
+## 19     NA      NA  NA     9      9
+## 20     NA      NA  NA    10     10
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 23     60      82  NA     8      9
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 26     NA      NA  NA     9      8
+## 28     NA      NA  65     6      8
+## 29     NA      NA  NA     9      9
+## 30     NA      NA  NA     7      9
+## 31     20      51  NA     6      7
+## 32     NA      10 100     9     10
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 35     NA      NA  NA     7      8
+```
+
+```r
+class(praksa_list[[1]])
+```
+
+```
+## [1] "data.frame"
+```
+
+
+Element liste moguće je selektovati i naznačavanjem imena liste u okviru operatora `[]`:
+
+
+
+```r
+praksa_list["polozili"]
+```
+
+```
+## $polozili
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1   1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 3   3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031        17    40    85     100      NA
+## 8   8           Vucic      Boban   1018        17    NA    NA      NA      NA
+## 10 10          Gordic     Nataša   1015        17     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042        15    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040        17    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012        17    30    NA      NA      NA
+## 14 14           Kocic     Danilo   1024        17     0    90     100      NA
+## 15 15           Kocic     Stefan   1035        17     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009        17     0    NA       5      NA
+## 17 17           Lazic      Dušan   1026        17    30    80      90      NA
+## 18 18     Milijaševic     Vojkan   1021        17     0   100     100      NA
+## 19 19           Milic    Nemanja   1014        17    15   100      90      NA
+## 20 20           Milic       Saša   1023        17   100    NA      NA     100
+## 21 21   Milosavljevic    Nemanja   1003        17    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053        16     0    NA      NA      NA
+## 23 23         Nikolic      Ratko   1016        17    15    NA      NA      NA
+## 24 24          Paunic     Stefan   1049        17     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044        16    NA    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007        17    15   100      70      NA
+## 28 28          Srejic Aleksandar   1037        16    NA    NA      NA      NA
+## 29 29      Stanojevic Aleksandar   1033        17     0    80      80      NA
+## 30 30     Stanojkovic      Ðorde   1004        17    75    60      NA      NA
+## 31 31      Stojanovic      Marta   1048        16     0    NA      NA      NA
+## 32 32      Stojanovic      Mitar   1058        17     0    NA      NA      NA
+## 33 33           Tomic      Filip   1029        17     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006        17     0    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039        17    15   100      60      NA
+##    Januar Februar Jun Ocena Praksa
+## 1      NA      40  51     7      9
+## 3      NA      NA 100     7      8
+## 4      NA      10 100     8      8
+## 5      NA     100  NA     7      8
+## 7      NA      NA  NA     8      9
+## 8      NA       8  70     6      8
+## 10     NA      82  NA     8      7
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 14     NA      NA  NA     9      9
+## 15     NA      24 100     9      8
+## 16     NA      NA  NA     7      8
+## 17     NA      NA  NA     9      9
+## 18     NA      NA  NA    10     10
+## 19     NA      NA  NA     9      9
+## 20     NA      NA  NA    10     10
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 23     60      82  NA     8      9
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 26     NA      NA  NA     9      8
+## 28     NA      NA  65     6      8
+## 29     NA      NA  NA     9      9
+## 30     NA      NA  NA     7      9
+## 31     20      51  NA     6      7
+## 32     NA      10 100     9     10
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 35     NA      NA  NA     7      8
+```
+
+```r
+praksa_list[["polozili"]]
+```
+
+```
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1   1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 3   3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031        17    40    85     100      NA
+## 8   8           Vucic      Boban   1018        17    NA    NA      NA      NA
+## 10 10          Gordic     Nataša   1015        17     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042        15    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040        17    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012        17    30    NA      NA      NA
+## 14 14           Kocic     Danilo   1024        17     0    90     100      NA
+## 15 15           Kocic     Stefan   1035        17     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009        17     0    NA       5      NA
+## 17 17           Lazic      Dušan   1026        17    30    80      90      NA
+## 18 18     Milijaševic     Vojkan   1021        17     0   100     100      NA
+## 19 19           Milic    Nemanja   1014        17    15   100      90      NA
+## 20 20           Milic       Saša   1023        17   100    NA      NA     100
+## 21 21   Milosavljevic    Nemanja   1003        17    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053        16     0    NA      NA      NA
+## 23 23         Nikolic      Ratko   1016        17    15    NA      NA      NA
+## 24 24          Paunic     Stefan   1049        17     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044        16    NA    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007        17    15   100      70      NA
+## 28 28          Srejic Aleksandar   1037        16    NA    NA      NA      NA
+## 29 29      Stanojevic Aleksandar   1033        17     0    80      80      NA
+## 30 30     Stanojkovic      Ðorde   1004        17    75    60      NA      NA
+## 31 31      Stojanovic      Marta   1048        16     0    NA      NA      NA
+## 32 32      Stojanovic      Mitar   1058        17     0    NA      NA      NA
+## 33 33           Tomic      Filip   1029        17     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006        17     0    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039        17    15   100      60      NA
+##    Januar Februar Jun Ocena Praksa
+## 1      NA      40  51     7      9
+## 3      NA      NA 100     7      8
+## 4      NA      10 100     8      8
+## 5      NA     100  NA     7      8
+## 7      NA      NA  NA     8      9
+## 8      NA       8  70     6      8
+## 10     NA      82  NA     8      7
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 14     NA      NA  NA     9      9
+## 15     NA      24 100     9      8
+## 16     NA      NA  NA     7      8
+## 17     NA      NA  NA     9      9
+## 18     NA      NA  NA    10     10
+## 19     NA      NA  NA     9      9
+## 20     NA      NA  NA    10     10
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 23     60      82  NA     8      9
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 26     NA      NA  NA     9      8
+## 28     NA      NA  65     6      8
+## 29     NA      NA  NA     9      9
+## 30     NA      NA  NA     7      9
+## 31     20      51  NA     6      7
+## 32     NA      10 100     9     10
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 35     NA      NA  NA     7      8
+```
+
+
+
+
+
+```r
+praksa_list[1]
+```
+
+```
+## $polozili
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 1   1       Antonijev      Boris   1035        16    NA    NA      NA      NA
+## 3   3           Babic     Stefan   1051        16     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019        17     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041        16     0    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031        17    40    85     100      NA
+## 8   8           Vucic      Boban   1018        17    NA    NA      NA      NA
+## 10 10          Gordic     Nataša   1015        17     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042        15    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040        17    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012        17    30    NA      NA      NA
+## 14 14           Kocic     Danilo   1024        17     0    90     100      NA
+## 15 15           Kocic     Stefan   1035        17     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009        17     0    NA       5      NA
+## 17 17           Lazic      Dušan   1026        17    30    80      90      NA
+## 18 18     Milijaševic     Vojkan   1021        17     0   100     100      NA
+## 19 19           Milic    Nemanja   1014        17    15   100      90      NA
+## 20 20           Milic       Saša   1023        17   100    NA      NA     100
+## 21 21   Milosavljevic    Nemanja   1003        17    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053        16     0    NA      NA      NA
+## 23 23         Nikolic      Ratko   1016        17    15    NA      NA      NA
+## 24 24          Paunic     Stefan   1049        17     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044        16    NA    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007        17    15   100      70      NA
+## 28 28          Srejic Aleksandar   1037        16    NA    NA      NA      NA
+## 29 29      Stanojevic Aleksandar   1033        17     0    80      80      NA
+## 30 30     Stanojkovic      Ðorde   1004        17    75    60      NA      NA
+## 31 31      Stojanovic      Marta   1048        16     0    NA      NA      NA
+## 32 32      Stojanovic      Mitar   1058        17     0    NA      NA      NA
+## 33 33           Tomic      Filip   1029        17     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006        17     0    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039        17    15   100      60      NA
+##    Januar Februar Jun Ocena Praksa
+## 1      NA      40  51     7      9
+## 3      NA      NA 100     7      8
+## 4      NA      10 100     8      8
+## 5      NA     100  NA     7      8
+## 7      NA      NA  NA     8      9
+## 8      NA       8  70     6      8
+## 10     NA      82  NA     8      7
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 14     NA      NA  NA     9      9
+## 15     NA      24 100     9      8
+## 16     NA      NA  NA     7      8
+## 17     NA      NA  NA     9      9
+## 18     NA      NA  NA    10     10
+## 19     NA      NA  NA     9      9
+## 20     NA      NA  NA    10     10
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 23     60      82  NA     8      9
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 26     NA      NA  NA     9      8
+## 28     NA      NA  65     6      8
+## 29     NA      NA  NA     9      9
+## 30     NA      NA  NA     7      9
+## 31     20      51  NA     6      7
+## 32     NA      10 100     9     10
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 35     NA      NA  NA     7      8
+```
+
+```r
+class(praksa_list[1])
+```
+
+```
+## [1] "list"
+```
+
+
+> <h3>Zadatak</h3>
+> + Kreirati listu tako što da studenti upisani iste godine čine jedan član liste. Za te potrebe koristiti komandu `list(prvi data.frame, drugi data.frame, treci data.frame)`
+
+
+
+
+
+## Modifikovanje podataka
+
+
+### Promena vrednosti
+
+Modifikacija vrednosti podataka odnosi se na promenu vrednosti nekog podatka. Da bi neku vrednost bilo moguce promeniti, potrebno je prvo specificirati tačnu poziciju vrednosti koju želimo promeniti. Na primer, ako želimo da upišemo kao godinu upisa broj 2017 umesto 17, i 2016 umesto 16, to cemo uraditi na sledeci nacin:
+
+
+```r
+studenti[studenti$god.upisa == 17, "god.upisa"] <- 2017
+
+studenti[studenti$god.upisa == 16, "god.upisa"] <- 2016
+
+studenti$god.upisa
+```
+
+```
+##  [1] 2016 2017 2016 2017 2016 2017 2017 2017 2017 2017   15 2017 2017 2017 2017
+## [16] 2017 2017 2017 2017 2017 2017 2016 2017 2017 2016 2017 2016 2016 2017 2017
+## [31] 2016 2017 2017 2017 2017
+```
+
+Ukoliko žeilimo da svim studentima koji su upisali fakultet 2017 godine dodelimo ocenu 5 iz IG1, to možemo uraditi na sledeći način:
+
+
+```r
+studenti[studenti$god.upisa == 2017, "Ocena"] <- 5
+studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE, stringsAsFactors = FALSE)
+```
+
+
+> <h3>Zadatak</h3>
+> + Izmeniti rezultate krajnje ocene i prakse za svoje ime tako sto cete dodeliti ocenu 10.
+
+#### Modifikovanje tipa podataka
+
+
+
+```r
+str(studenti)
+```
+
+```
+## 'data.frame':	35 obs. of  14 variables:
+##  $ ID       : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Prezime  : chr  "Antonijev" "Arvaji" "Babic" "Beljin" ...
+##  $ Ime      : chr  "Boris" "Luka" "Stefan" "Miloš" ...
+##  $ br.ind   : int  1035 1020 1051 1019 1041 1038 1031 1018 1027 1015 ...
+##  $ god.upisa: int  16 17 16 17 16 17 17 17 17 17 ...
+##  $ kol.1    : int  NA NA 0 0 0 0 40 NA 0 0 ...
+##  $ kol.2    : int  NA NA NA NA NA 60 85 NA NA NA ...
+##  $ kol.1.1  : int  NA NA NA NA NA 55 100 NA NA NA ...
+##  $ kol.2.2  : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Januar   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Februar  : int  40 NA NA 10 100 NA NA 8 NA 82 ...
+##  $ Jun      : int  51 NA 100 100 NA NA NA 70 100 NA ...
+##  $ Ocena    : int  7 NA 7 8 7 7 8 6 6 8 ...
+##  $ Praksa   : int  9 NA 8 8 8 NA 9 8 NA 7 ...
+```
+
+```r
+unique(studenti$god.upisa)
+```
+
+```
+## [1] 16 17 15
+```
+
+```r
+studenti$god.upisa <- factor(studenti$god.upisa, labels = c("2015", "2016", "2017"))
+```
+
+#### Modifikovanje redosleda podataka
+
+Ukoliko želimo da poređamo vrste u `data.frame`-u prema vrednostima u nekoj koloni, to možemo učiniti na sledeći način:
+
+
+
+```r
+studenti[order(studenti$Ocena, studenti$Praksa),] 
+```
+
+```
+##    ID         Prezime        Ime br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2
+## 31 31      Stojanovic      Marta   1048      2016     0    NA      NA      NA
+## 8   8           Vucic      Boban   1018      2017    NA    NA      NA      NA
+## 21 21   Milosavljevic    Nemanja   1003      2017    30    NA      NA      NA
+## 22 22      Mladenovic     Nikola   1053      2016     0    NA      NA      NA
+## 28 28          Srejic Aleksandar   1037      2016    NA    NA      NA      NA
+## 33 33           Tomic      Filip   1029      2017     0    NA      NA      NA
+## 34 34       Cvetkovic    Božidar   1006      2017     0    NA      NA      NA
+## 9   9       Garibovic      Tarik   1027      2017     0    NA      NA      NA
+## 3   3           Babic     Stefan   1051      2016     0    NA      NA      NA
+## 5   5 Božic Krajišnik     Stefan   1041      2016     0    NA      NA      NA
+## 16 16           Lazic      Darko   1009      2017     0    NA       5      NA
+## 24 24          Paunic     Stefan   1049      2017     0    NA      NA      NA
+## 25 25         Popovic      Filip   1044      2016    NA    NA      NA      NA
+## 35 35       Cvetkovic    Nemanja   1039      2017    15   100      60      NA
+## 1   1       Antonijev      Boris   1035      2016    NA    NA      NA      NA
+## 30 30     Stanojkovic      Ðorde   1004      2017    75    60      NA      NA
+## 6   6           Brkic Aleksandar   1038      2017     0    60      55      NA
+## 10 10          Gordic     Nataša   1015      2017     0    NA      NA      NA
+## 4   4          Beljin      Miloš   1019      2017     0    NA      NA      NA
+## 11 11        Grujovic   Katarina   1042      2015    NA    NA      NA      NA
+## 12 12    Dimitrijevic      Jovan   1040      2017    45    95      10      NA
+## 13 13         Jovicic  Andrijana   1012      2017    30    NA      NA      NA
+## 7   7         Vasovic Aleksandar   1031      2017    40    85     100      NA
+## 23 23         Nikolic      Ratko   1016      2017    15    NA      NA      NA
+## 15 15           Kocic     Stefan   1035      2017     0    NA      NA      NA
+## 26 26      Radovancev      Miloš   1007      2017    15   100      70      NA
+## 14 14           Kocic     Danilo   1024      2017     0    90     100      NA
+## 17 17           Lazic      Dušan   1026      2017    30    80      90      NA
+## 19 19           Milic    Nemanja   1014      2017    15   100      90      NA
+## 29 29      Stanojevic Aleksandar   1033      2017     0    80      80      NA
+## 32 32      Stojanovic      Mitar   1058      2017     0    NA      NA      NA
+## 18 18     Milijaševic     Vojkan   1021      2017     0   100     100      NA
+## 20 20           Milic       Saša   1023      2017   100    NA      NA     100
+## 2   2          Arvaji       Luka   1020      2017    NA    NA      NA      NA
+## 27 27       Smiljanic      Vojin   1016      2016    NA    NA      NA      NA
+##    Januar Februar Jun Ocena Praksa
+## 31     20      51  NA     6      7
+## 8      NA       8  70     6      8
+## 21     30     100  NA     6      8
+## 22     NA      NA  80     6      8
+## 28     NA      NA  65     6      8
+## 33     65      NA  NA     6      8
+## 34     NA      40  70     6      8
+## 9      NA      NA 100     6     NA
+## 3      NA      NA 100     7      8
+## 5      NA     100  NA     7      8
+## 16     NA      NA  NA     7      8
+## 24     55      NA  NA     7      8
+## 25     NA      NA  80     7      8
+## 35     NA      NA  NA     7      8
+## 1      NA      40  51     7      9
+## 30     NA      NA  NA     7      9
+## 6      NA      NA  NA     7     NA
+## 10     NA      82  NA     8      7
+## 4      NA      10 100     8      8
+## 11     NA      NA  90     8      8
+## 12     NA      80  NA     8      8
+## 13     NA      92  NA     8      8
+## 7      NA      NA  NA     8      9
+## 23     60      82  NA     8      9
+## 15     NA      24 100     9      8
+## 26     NA      NA  NA     9      8
+## 14     NA      NA  NA     9      9
+## 17     NA      NA  NA     9      9
+## 19     NA      NA  NA     9      9
+## 29     NA      NA  NA     9      9
+## 32     NA      10 100     9     10
+## 18     NA      NA  NA    10     10
+## 20     NA      NA  NA    10     10
+## 2      NA      NA  NA    NA     NA
+## 27     NA      NA  NA    NA     NA
+```
+
+
+#### Kombinovanje podataka
+
+Kombinovanjem podataka se odnosi na mogućnost spajanja dve tabele. Za te potrebe učitaćemo rezultate (konačne ocene) studenata postignute na predmetima IG1, Praksa i IG2. 
+
+
+
+```r
+ig1 <- readxl::read_xlsx(path = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.xlsx", sheet = "Students")
+head(ig1)
+```
+
+```
+## # A tibble: 6 x 14
+##      ID Prezime Ime   br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
+##   <dbl> <chr>   <chr>  <dbl>     <dbl> <dbl> <dbl>   <dbl>   <dbl>  <dbl>
+## 1     1 Antoni~ Boris   1035        16    NA    NA      NA      NA     NA
+## 2     2 Arvaji  Luka    1020        17    NA    NA      NA      NA     NA
+## 3     3 Babic   Stef~   1051        16     0    NA      NA      NA     NA
+## 4     4 Beljin  Miloš   1019        17     0    NA      NA      NA     NA
+## 5     5 Božic ~ Stef~   1041        16     0    NA      NA      NA     NA
+## 6     6 Brkic   Alek~   1038        17     0    60      55      NA     NA
+## # ... with 4 more variables: Februar <dbl>, Jun <dbl>, Ocena <dbl>,
+## #   Praksa <dbl>
+```
+
+```r
+ig1 <- ig1[, c("Prezime", "Ime", "Ocena", "Praksa")] # Selektovali smo samo kolone koje nas zanimaju.
+names(ig1) <- c("prezime", "ime", "ocena_ig1", "ocena_praksa")
+
+ig2 <- readxl::read_xlsx(path = "C:/R_projects/Nauka_R/Slides/data/Students_IG2.xlsx", sheet = "Students")
+head(ig1)
+```
+
+```
+## # A tibble: 6 x 4
+##   prezime         ime        ocena_ig1 ocena_praksa
+##   <chr>           <chr>          <dbl>        <dbl>
+## 1 Antonijev       Boris              7            9
+## 2 Arvaji          Luka              NA           NA
+## 3 Babic           Stefan             7            8
+## 4 Beljin          Miloš              8            8
+## 5 Božic Krajišnik Stefan             7            8
+## 6 Brkic           Aleksandar         7           NA
+```
+
+```r
+ig2 <- ig2[, c("Prezime", "Ime", "Ocena")] # Selektovali smo samo kolone koje nas zanimaju.
+names(ig2) <- c("prezime", "ime", "ocena_ig2")
+```
+
+Komanda `cbind` spaja dve tabele tako što drugu "nalepi" na prvu. Kao rezultat se dobija tabela sa ponovljenih kolonama koje su zajedničke. Uslov za korišćenje komande `cbind` je da dve tabele imaju isti broj vrsta. 
+
+
+```r
+ig <- cbind(ig1, ig2)
+ig
+```
+
+```
+##            prezime        ime ocena_ig1 ocena_praksa        prezime        ime
+## 1        Antonijev      Boris         7            9      Antonijev      Boris
+## 2           Arvaji       Luka        NA           NA         Arvaji       Luka
+## 3            Babic     Stefan         7            8          Babic     Stefan
+## 4           Beljin      Miloš         8            8         Beljin      Miloš
+## 5  Božic Krajišnik     Stefan         7            8 BožicKrajišnik     Stefan
+## 6            Brkic Aleksandar         7           NA          Brkic Aleksandar
+## 7          Vasovic Aleksandar         8            9        Vasovic Aleksandar
+## 8            Vucic      Boban         6            8          Vucic      Boban
+## 9        Garibovic      Tarik         6           NA      Garibovic      Tarik
+## 10          Gordic     Nataša         8            7         Gordic     Nataša
+## 11        Grujovic   Katarina         8            8       Grujovic   Katarina
+## 12    Dimitrijevic      Jovan         8            8   Dimitrijevic      Jovan
+## 13         Jovicic  Andrijana         8            8        Jovicic  Andrijana
+## 14           Kocic     Danilo         9            9          Kocic     Danilo
+## 15           Kocic     Stefan         9            8          Kocic     Stefan
+## 16           Lazic      Darko         7            8          Lazic      Darko
+## 17           Lazic      Dušan         9            9          Lazic      Dušan
+## 18     Milijaševic     Vojkan        10           10    Milijaševic     Vojkan
+## 19           Milic    Nemanja         9            9          Milic    Nemanja
+## 20           Milic       Saša        10           10          Milic       Saša
+## 21   Milosavljevic    Nemanja         6            8  Milosavljevic    Nemanja
+## 22      Mladenovic     Nikola         6            8     Mladenovic     Nikola
+## 23         Nikolic      Ratko         8            9        Nikolic      Ratko
+## 24          Paunic     Stefan         7            8         Paunic     Stefan
+## 25         Popovic      Filip         7            8        Popovic      Filip
+## 26      Radovancev      Miloš         9            8     Radovancev      Miloš
+## 27       Smiljanic      Vojin        NA           NA      Smiljanic      Vojin
+## 28          Srejic Aleksandar         6            8         Srejic Aleksandar
+## 29      Stanojevic Aleksandar         9            9     Stanojevic Aleksandar
+## 30     Stanojkovic      Ðorde         7            9    Stanojkovic      Ðorde
+## 31      Stojanovic      Marta         6            7     Stojanovic      Marta
+## 32      Stojanovic      Mitar         9           10     Stojanovic      Mitar
+## 33           Tomic      Filip         6            8          Tomic      Filip
+## 34       Cvetkovic    Božidar         6            8      Cvetkovic    Božidar
+## 35       Cvetkovic    Nemanja         7            8      Cvetkovic    Nemanja
+##    ocena_ig2
+## 1         NA
+## 2         NA
+## 3         NA
+## 4         NA
+## 5         NA
+## 6         NA
+## 7          6
+## 8          6
+## 9         NA
+## 10        NA
+## 11        NA
+## 12        NA
+## 13        NA
+## 14         8
+## 15        NA
+## 16         8
+## 17         8
+## 18         8
+## 19         9
+## 20        10
+## 21         9
+## 22        NA
+## 23         8
+## 24         6
+## 25        NA
+## 26         8
+## 27        NA
+## 28        NA
+## 29         7
+## 30        NA
+## 31        NA
+## 32         8
+## 33        NA
+## 34        NA
+## 35        NA
+```
+
+Analogno komandi `cbind`, postoji komanda `rbind` koja spaja dve tabele tako što ih nadovezuje jednu ispod druge. Uslov za korišćenje komande `rbind` je da dve tabele imaju isti broj kolona. 
+Ukoliko postoje zajedničke kolone poželjno je da se one ne ponavljaju. U tu svrhu koristićemo komandu `merge`:
+
+
+
+```r
+ig <- merge(ig1, ig2, by = c("prezime", "ime"))
+
+ig
+```
+
+```
+##          prezime        ime ocena_ig1 ocena_praksa ocena_ig2
+## 1      Antonijev      Boris         7            9        NA
+## 2         Arvaji       Luka        NA           NA        NA
+## 3          Babic     Stefan         7            8        NA
+## 4         Beljin      Miloš         8            8        NA
+## 5          Brkic Aleksandar         7           NA        NA
+## 6      Cvetkovic    Božidar         6            8        NA
+## 7      Cvetkovic    Nemanja         7            8        NA
+## 8   Dimitrijevic      Jovan         8            8        NA
+## 9      Garibovic      Tarik         6           NA        NA
+## 10        Gordic     Nataša         8            7        NA
+## 11      Grujovic   Katarina         8            8        NA
+## 12       Jovicic  Andrijana         8            8        NA
+## 13         Kocic     Danilo         9            9         8
+## 14         Kocic     Stefan         9            8        NA
+## 15         Lazic      Darko         7            8         8
+## 16         Lazic      Dušan         9            9         8
+## 17         Milic    Nemanja         9            9         9
+## 18         Milic       Saša        10           10        10
+## 19   Milijaševic     Vojkan        10           10         8
+## 20 Milosavljevic    Nemanja         6            8         9
+## 21    Mladenovic     Nikola         6            8        NA
+## 22       Nikolic      Ratko         8            9         8
+## 23        Paunic     Stefan         7            8         6
+## 24       Popovic      Filip         7            8        NA
+## 25    Radovancev      Miloš         9            8         8
+## 26     Smiljanic      Vojin        NA           NA        NA
+## 27        Srejic Aleksandar         6            8        NA
+## 28    Stanojevic Aleksandar         9            9         7
+## 29   Stanojkovic      Ðorde         7            9        NA
+## 30    Stojanovic      Marta         6            7        NA
+## 31    Stojanovic      Mitar         9           10         8
+## 32         Tomic      Filip         6            8        NA
+## 33       Vasovic Aleksandar         8            9         6
+## 34         Vucic      Boban         6            8         6
+```
+
+
+
 ## Sumiranje
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 Sumiranje podataka je moguće uraditi po vrednostima reodova i/ili kolona. Postoji veliki broj funkcija, kao i paketa koji koriste svoje funkcije za sumiranje po određenim pravilima. Neke od osnovnih funkcija base paketa su:
 
@@ -951,14 +1756,14 @@ summary(studenti)
 ```
 
 ```
-##        ID             Prezime           Ime         br.ind       god.upisa    
-##  Min.   : 1.0   Cvetkovic : 2   Aleksandar: 4   Min.   :1003   Min.   :15.00  
-##  1st Qu.: 9.5   Kocic     : 2   Stefan    : 4   1st Qu.:1016   1st Qu.:16.50  
-##  Median :18.0   Lazic     : 2   Nemanja   : 3   Median :1027   Median :17.00  
-##  Mean   :18.0   Milic     : 2   Filip     : 2   Mean   :1028   Mean   :16.71  
-##  3rd Qu.:26.5   Stojanovic: 2   Miloš     : 2   3rd Qu.:1040   3rd Qu.:17.00  
-##  Max.   :35.0   Antonijev : 1   Andrijana : 1   Max.   :1058   Max.   :17.00  
-##                 (Other)   :24   (Other)   :19                                 
+##        ID         Prezime              Ime                br.ind     god.upisa
+##  Min.   : 1.0   Length:35          Length:35          Min.   :1003   2015: 1  
+##  1st Qu.: 9.5   Class :character   Class :character   1st Qu.:1016   2016: 8  
+##  Median :18.0   Mode  :character   Mode  :character   Median :1027   2017:26  
+##  Mean   :18.0                                         Mean   :1028            
+##  3rd Qu.:26.5                                         3rd Qu.:1040            
+##  Max.   :35.0                                         Max.   :1058            
+##                                                                               
 ##      kol.1            kol.2           kol.1.1          kol.2.2        Januar  
 ##  Min.   :  0.00   Min.   : 60.00   Min.   :  5.00   Min.   :100   Min.   :20  
 ##  1st Qu.:  0.00   1st Qu.: 80.00   1st Qu.: 57.50   1st Qu.:100   1st Qu.:30  
@@ -989,9 +1794,6 @@ mean(studenti$Ocena, na.rm = TRUE) # "na.rm" parametar se koristi kako bi se zan
 min(studenti$kol.1, na.rm = TRUE)
 ```
 
-<<<<<<< HEAD
-## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
-=======
 ```
 ## [1] 0
 ```
@@ -1016,7 +1818,6 @@ median(studenti$Praksa, na.rm = T)
 ### apply i lapply funkcije
 apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat daju vektor, listu ili array. 
 
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 ```r
 ## ?apply()
@@ -1025,9 +1826,6 @@ apply i lapply funkcije kao ulaz koriste data.frame ili matricu i kao rezultat d
 
 apply možemo koristiti kako bi izvršili sumiranje po svim redovima (drugi argument funkcije je 1) ili kolonama (drugi argument funkcije je 2). 
 
-<<<<<<< HEAD
-Modifikacija vrednosti podataka odnosi se na promenu vrednosti nekog podatka. Da bi neku vrednost bilo moguce promeniti, potrebno je prvo specificirati tačnu poziciju vrednosti koju žeimo promeniti. Na primer, ako želimo da upišemo kao godinu upisa broj 2017 umesto 17, i 2016 umesto 16, to cemo uraditi na sledeci nacin:
-=======
 
 
 ```r
@@ -1083,26 +1881,11 @@ lapply(studenti_bez_na[, 6:14], mean)
 ### Funkcije colSums() i rowSums()
 
 
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 ```r
 colSums(studenti[, 6:14], na.rm = T) 
 ```
 
-<<<<<<< HEAD
-```r
-studenti[studenti$god.upisa == 17, "god.upisa"] <- 2017
-
-studenti[studenti$god.upisa == 16, "god.upisa"] <- 2016
-
-studenti$god.upisa
-```
-
-```
-##  [1] 2016 2017 2016 2017 2016 2017 2017 2017 2017 2017   15 2017 2017 2017 2017
-## [16] 2017 2017 2017 2017 2017 2017 2016 2017 2017 2016 2017 2016 2016 2017 2017
-## [31] 2016 2017 2017 2017 2017
-=======
 ```
 ##   kol.1   kol.2 kol.1.1 kol.2.2  Januar Februar     Jun   Ocena  Praksa 
 ##     410     950     760     100     230     719    1006     250     260
@@ -1136,42 +1919,27 @@ rowMeans(studenti[, 6:7], na.rm = T)
 ##  [1]   NaN   NaN   0.0   0.0   0.0  30.0  62.5   NaN   0.0   0.0   NaN  70.0
 ## [13]  30.0  45.0   0.0   0.0  55.0  50.0  57.5 100.0  30.0   0.0  15.0   0.0
 ## [25]   NaN  57.5   NaN   NaN  40.0  67.5   0.0   0.0   0.0   0.0  57.5
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 ```
 
-Ukoliko žeilimo da svim studentima koji su upisali fakultet 2017 godine dodelimo ocenu 5 iz IG1, to možemo uraditi na sledeći način:
 
-<<<<<<< HEAD
-=======
 ### Funkcija by()
 Koriscenjem funkcije by(), možemo na jednostavan način uraditi sumiranje po određenim faktorskim kolona.
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
-```r
-studenti[studenti$god.upisa == 17, "Ocena"] <- 5
-studenti <- readxl::read_xlsx(path = "data/Students_IG1.xlsx")
-```
 
-<<<<<<< HEAD
-> <h3>Zadatak</h3>
-> + Izmeniti rezultate krajnje ocene i prakse za svoje ime tako sto cete dodeliti ocenu 10.
-
-### Logički podskup podataka
-=======
 ```r
 by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
 ```
 
 ```
-## studenti[, 5]: 15
-##        ID                Prezime          Ime        br.ind       god.upisa 
-##  Min.   :11   Grujovic       :1   Katarina  :1   Min.   :1042   Min.   :15  
-##  1st Qu.:11   Antonijev      :0   Aleksandar:0   1st Qu.:1042   1st Qu.:15  
-##  Median :11   Arvaji         :0   Andrijana :0   Median :1042   Median :15  
-##  Mean   :11   Babic          :0   Boban     :0   Mean   :1042   Mean   :15  
-##  3rd Qu.:11   Beljin         :0   Boris     :0   3rd Qu.:1042   3rd Qu.:15  
-##  Max.   :11   Božic Krajišnik:0   Božidar   :0   Max.   :1042   Max.   :15  
-##               (Other)        :0   (Other)   :0                              
+## studenti[, 5]: 2015
+##        ID       Prezime              Ime                br.ind     god.upisa
+##  Min.   :11   Length:1           Length:1           Min.   :1042   2015:1   
+##  1st Qu.:11   Class :character   Class :character   1st Qu.:1042   2016:0   
+##  Median :11   Mode  :character   Mode  :character   Median :1042   2017:0   
+##  Mean   :11                                         Mean   :1042            
+##  3rd Qu.:11                                         3rd Qu.:1042            
+##  Max.   :11                                         Max.   :1042            
+##                                                                             
 ##      kol.1         kol.2        kol.1.1       kol.2.2        Januar   
 ##  Min.   : NA   Min.   : NA   Min.   : NA   Min.   : NA   Min.   : NA  
 ##  1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
@@ -1189,15 +1957,15 @@ by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
 ##  Max.   : NA   Max.   :90   Max.   :8   Max.   :8  
 ##  NA's   :1                                         
 ## ------------------------------------------------------------ 
-## studenti[, 5]: 16
-##        ID                   Prezime          Ime        br.ind       god.upisa 
-##  Min.   : 1.00   Antonijev      :1   Stefan    :2   Min.   :1016   Min.   :16  
-##  1st Qu.: 4.50   Babic          :1   Aleksandar:1   1st Qu.:1036   1st Qu.:16  
-##  Median :23.50   Božic Krajišnik:1   Boris     :1   Median :1042   Median :16  
-##  Mean   :17.75   Mladenovic     :1   Filip     :1   Mean   :1041   Mean   :16  
-##  3rd Qu.:27.25   Popovic        :1   Marta     :1   3rd Qu.:1049   3rd Qu.:16  
-##  Max.   :31.00   Smiljanic      :1   Nikola    :1   Max.   :1053   Max.   :16  
-##                  (Other)        :2   (Other)   :1                              
+## studenti[, 5]: 2016
+##        ID          Prezime              Ime                br.ind     god.upisa
+##  Min.   : 1.00   Length:8           Length:8           Min.   :1016   2015:0   
+##  1st Qu.: 4.50   Class :character   Class :character   1st Qu.:1036   2016:8   
+##  Median :23.50   Mode  :character   Mode  :character   Median :1042   2017:0   
+##  Mean   :17.75                                         Mean   :1041            
+##  3rd Qu.:27.25                                         3rd Qu.:1049            
+##  Max.   :31.00                                         Max.   :1053            
+##                                                                                
 ##      kol.1       kol.2        kol.1.1       kol.2.2        Januar  
 ##  Min.   :0   Min.   : NA   Min.   : NA   Min.   : NA   Min.   :20  
 ##  1st Qu.:0   1st Qu.: NA   1st Qu.: NA   1st Qu.: NA   1st Qu.:20  
@@ -1215,15 +1983,15 @@ by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
 ##  Max.   :100.00   Max.   :100.0   Max.   :7.000   Max.   :9  
 ##  NA's   :5        NA's   :3       NA's   :1       NA's   :1  
 ## ------------------------------------------------------------ 
-## studenti[, 5]: 17
-##        ID             Prezime           Ime         br.ind       god.upisa 
-##  Min.   : 2.00   Cvetkovic: 2   Aleksandar: 3   Min.   :1003   Min.   :17  
-##  1st Qu.:10.50   Kocic    : 2   Nemanja   : 3   1st Qu.:1014   1st Qu.:17  
-##  Median :17.50   Lazic    : 2   Miloš     : 2   Median :1022   Median :17  
-##  Mean   :18.35   Milic    : 2   Stefan    : 2   Mean   :1024   Mean   :17  
-##  3rd Qu.:25.50   Arvaji   : 1   Andrijana : 1   3rd Qu.:1032   3rd Qu.:17  
-##  Max.   :35.00   Beljin   : 1   Boban     : 1   Max.   :1058   Max.   :17  
-##                  (Other)  :16   (Other)   :14                              
+## studenti[, 5]: 2017
+##        ID          Prezime              Ime                br.ind     god.upisa
+##  Min.   : 2.00   Length:26          Length:26          Min.   :1003   2015: 0  
+##  1st Qu.:10.50   Class :character   Class :character   1st Qu.:1014   2016: 0  
+##  Median :17.50   Mode  :character   Mode  :character   Median :1022   2017:26  
+##  Mean   :18.35                                         Mean   :1024            
+##  3rd Qu.:25.50                                         3rd Qu.:1032            
+##  Max.   :35.00                                         Max.   :1058            
+##                                                                                
 ##      kol.1            kol.2           kol.1.1          kol.2.2   
 ##  Min.   :  0.00   Min.   : 60.00   Min.   :  5.00   Min.   :100  
 ##  1st Qu.:  0.00   1st Qu.: 80.00   1st Qu.: 57.50   1st Qu.:100  
@@ -1253,10 +2021,7 @@ by(studenti, studenti[, 5], summary) # Sumarni rezultati po godini upisa
 ### Kreiranje jednostavne funkcije
 U cilju sumiranja podataka po određenom pravilu, možemo napisati jednostavnu funkciju:
 
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
-Kao što je već rečeno, vrednosti se mogu selektovati kreiranjem logičkog uputa. Odnosno kreiranjem logičkog upita dobija se vektor sa vrednostima TRUE i FALSE koji se mogu koristiti za određivanje pozicije vrednosti koju želimo izmeniti:
-  
 
 ```r
 racunajSrednjuVrednost <- function(data_frame = data_frame, izbaciNA = TRUE){ # argumenti funkcije
@@ -1264,102 +2029,45 @@ racunajSrednjuVrednost <- function(data_frame = data_frame, izbaciNA = TRUE){ # 
   return(sr_vrednost)
 }
 
-<<<<<<< HEAD
-```r
-generacija_2017 <- studenti$god.upisa == 2017
-generacija_2017
-```
-
-```
-##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-## [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
-=======
 racunajSrednjuVrednost(data_frame = studenti, izbaciNA = TRUE) 
 ```
 
 ```
 ## [1] 7.575758
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 ```
 
-```r
-studenti[generacija_2017, ]
-```
 
-<<<<<<< HEAD
-```
-## # A tibble: 0 x 14
-## # ... with 14 variables: ID <dbl>, Prezime <chr>, Ime <chr>, br.ind <dbl>,
-## #   god.upisa <dbl>, kol.1 <dbl>, kol.2 <dbl>, kol.1.1 <dbl>, kol.2.2 <dbl>,
-## #   Januar <dbl>, Februar <dbl>, Jun <dbl>, Ocena <dbl>, Praksa <dbl>
-```
-=======
-> <h3>Zadatak 2</h3>
+> <h3>Zadatak</h3>
 > + Sumirati podatke i sračunati ukupan broj studenata koji su položili prvi kolokvijum.
 > + Sumirati podatke i sračunati ukupan broj studenata koji su položili oba kolokvijuma.
 > + Sumirati podatke i sračunati koliko su bodovi na prvom i drugom kolokvijumu u korelaciji sa krajnjom ocenom.
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 Rešenje: 
 
-<<<<<<< HEAD
-Logički operatori su veoma efikasan način selekcije i u okviru R-a definisani su na sledeći način:
-
-
-<img src="Figures/logicki operatori.jpg" width="452" style="display: block; margin: auto;" />
-=======
 Zadatak 1:
 
 
 ```r
 length(studenti_bez_na$kol.1[studenti_bez_na$kol.1 > 0])
 ```
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 ```
 ## [1] 11
 ```
 
-<<<<<<< HEAD
-#### Bulovi operatori
-=======
 Zadatak 2:
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
-Bulovi operatori nam omogućuju da kombinujemo logičke izraze. Međutim, tu treba imati na umu da `NA` vrednosti mogu uticati na rezultat izraza. Bilo koji izraz sa `NA`vrednošću nam kao rezultat vraća `NA` vrednost.
 
-<<<<<<< HEAD
-Na primer, ako želimo pogledati  koji studenti su imali 100 bodova junskom roku i kranju ocenu 10, nećemo dobiti željeni rezultat, upravo zbog prisustva `NA` vrednosti
-=======
 ```r
 length(studenti_bez_na$kol.1[studenti_bez_na$kol.1 > 0 & studenti_bez_na$kol.2 > 0])
 ```
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 ```
 ## [1] 7
 ```
 
-<<<<<<< HEAD
-```r
-studenti[studenti$Jun == 100 & studenti$Ocena == 10, ]
-```
-=======
 Zadatak 3:
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
-```
-## # A tibble: 4 x 14
-##      ID Prezime Ime   br.ind god.upisa kol.1 kol.2 kol.1.1 kol.2.2 Januar
-##   <dbl> <chr>   <chr>  <dbl>     <dbl> <dbl> <dbl>   <dbl>   <dbl>  <dbl>
-## 1    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
-## 2    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
-## 3    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
-## 4    NA <NA>    <NA>      NA        NA    NA    NA      NA      NA     NA
-## # ... with 4 more variables: Februar <dbl>, Jun <dbl>, Ocena <dbl>,
-## #   Praksa <dbl>
-```
 
 ```r
 cor(studenti_bez_na$kol.1, studenti_bez_na$Ocena)
@@ -1369,73 +2077,65 @@ cor(studenti_bez_na$kol.1, studenti_bez_na$Ocena)
 ## [1] 0.2730105
 ```
 
-<<<<<<< HEAD
-Međutim, ako
-=======
 ```r
 plot(studenti_bez_na$kol.1, studenti_bez_na$Ocena)
 ```
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
-![](02-Uvod-u-R-_files/figure-html/unnamed-chunk-45-1.png)<!-- -->
+![](02-Uvod-u-R-_files/figure-html/unnamed-chunk-62-1.png)<!-- -->
 
-<<<<<<< HEAD
- 
-### Rad sa NA (nedostajući podaci)
-=======
 ```r
 cor(studenti_bez_na$kol.2, studenti_bez_na$Ocena)
 ```
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
 ```
 ## [1] 0.4086795
 ```
 
-<<<<<<< HEAD
-## Kombinovanje i spajanje
-
-cbind i rbind
-=======
 ```r
 plot(studenti_bez_na$kol.2, studenti_bez_na$Ocena)
 ```
 
-![](02-Uvod-u-R-_files/figure-html/unnamed-chunk-45-2.png)<!-- -->
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
+![](02-Uvod-u-R-_files/figure-html/unnamed-chunk-62-2.png)<!-- -->
 
-
-
-# Eksportovanje podataka u R-u
-
-## Modifikovanje - Transformacija vrednosti podataka (Modifying values)
-
-
-<<<<<<< HEAD
-# Kreiranje funkcija
-=======
-### Promena vrednosti
-### Logički podskup podataka
-### Rad sa NA (nedostajući podaci)
-
-
-
-## Kombinovanje i spajanje
-
-cbind i rbind
 
 
 
 # Eksportovanje podataka u R-u
 
+Osnovna funkcija za eksportovanje podataka u R-u je `write.table`. Međutim, češće se koriste tzv. `wrapper` funkcije koje pozivaju funkciju `write.table` ali sa predefinisanim `default` parametrima, kao na primer `write.csv`.
 
-# Kreiranje funkcija
 
 
----
-title: "02-Uvod-u-R-.r"
-author: "Petar"
-date: "2020-11-03"
----
->>>>>>> e0ceb3b8d992b5d6eaf4e7df47c31d0e80d411ff
 
+```r
+write.csv(studenti, file = "studenti_export.csv", row.names = FALSE)
+```
+
+
+## `writexl` paket
+
+Paket `writexl` je veoma jednostavan paket za kreiranje `excel` fajlova. Ima svega nekoliko veoma korisnih funkcija.
+
+
+```r
+install.packages("writexl")
+library(writexl)
+```
+
+```r
+writexl::write_xlsx(studenti, path = "studenti_excel.xlsx")
+```
+
+
+ 
+## Čuvanje i učitavanje R podataka
+
+Podaci (objekti svih vrsta) kreirani u okviru R-a, mogu biti sačuvani kao `Rdata` (ukoliko je više objekata) ili `rda` (`rds`) (ukoliko je jedan objekat)
+
+
+```r
+save(studenti, file = "C:/R_projects/Nauka_R/Slides/studenti_export.rda")
+```
+
+  
+      
