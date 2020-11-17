@@ -1,0 +1,585 @@
+---
+title: "Zadatak"
+author: "Milutin Pejović"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+      keep_md: true
+      theme: "simplex"
+      toc: true
+      highlight: tango
+      toc_depth: 5
+      toc_float: true
+      fig_caption: yes
+
+---
+
+```{r echo = FALSE, message=FALSE}
+library(tidyverse)
+library(magrittr)
+library(DT)
+library(ggplot2)
+library(remedy)
+library(here)
+library(ggplot2)
+```
+
+
+```{r include = FALSE}
+# source("./bin/chunk-options.R")
+```
+
+
+
+<style>
+body {
+text-align: justify}
+</style>
+
+# O podacima
+Podaci obuhvataju rezultate procesiranja tri GPS vektora koji se sustiču u tački stabilizovanoj na klizištu Umka. Druge tačke ovih vektora nalaze se u Beogradu, Indjiji i Grockoj. Rezultati procesiranja vektora dobijeni su iz softvera `Leica Spider` i odnose se na interval od 12h i 24h. To znači da je na svakih 12h i 24h zapisan jedan rezultat procesiranja vektora. Rezultati su zapisani u tekstualnom fajlu sa ekstenzijom `.rtl`. Pojedinačne informacije u okviru jednog rezultata su odvojene zarezom (`","`)
+
+
+## Leica proprietary Definition
+
+A NMEA-like format for transmission of geographic coordinates, coordinate quality and variance-covariance information.
+
+```{r echo = FALSE}
+data.frame(
+  Format = c("$GPLMM",	"hhmmss.ss" ,	"mmddyy" ,	"llll.ll" ,	"a",	"yyyyy.yy" ,	"a",	"x",	"xx" ,	"x.x" ,	"x.x" ,	"M",	"x.x" ,	"x.x" ,	"x.x" ,	"x.x" ,	"x.x" ,	"x.x" ,	"x.x",	"x.x",	"* hh", "<CR>",	"<LF>"), 
+  Content = c("Header",
+"UTC of Position Fix",
+"UTC date",
+"Latitude",
+"Hemisphere “N”/“S”",
+"Longitude",
+"  “E”/“W”",
+"GPS Quality Indicator",
+"Number of Satellites in Use",
+"Coordinate Quality",
+"Antenna altitude above/below mean sea level",
+"Units of altitude meters (fixed text “M”)",
+"GDOP",
+"A posteriori variance factor. Show to 4 decimal places.",
+"Element C11 from the co-factor matrix. Shown to 4 decimal places, in metres. Corresponds to the latitude component. ",
+"Element C12 from the co-factor matrix. Shown to 4 decimal places, in metres.",
+"Element C13 from the co-factor matrix. Shown to 4 decimal places, in metres.",
+"Element C22 from the co-factor matrix. Shown to 4 decimal places, in metres. Corresponds to the longitude component.",
+"Element C23 from the co-factor matrix. Shown to 4 decimal places, in metres.",
+"Element C33 from the co-factor matrix. Shown to 4 decimal places, in metres. Corresponds to the height component. ",
+"Checksum",
+"Carriage Return",
+" Line Feed"
+)) %>%
+  datatable(., rownames = FALSE, options = list(pageLength = 23, scrollY=T) )
+                         
+```
+
+GPS Quality Indicator
+
+* 0 = fix not available or invalid.
+* 1 = No Realtime position, navigation fix.
+* 2 = Realtime position, ambiguities not fixed.
+* 3 = Realtime position, ambiguities fixed.
+* 5 = Realtime position, float ambiguities.
+
+# Učitavanje podataka iz fajla
+
+## Radni direktorijum
+
+Radni direktorijum je folder na vašem računaru koji se smatra *važećim* prilikom učitavanja i kreiranja fajlova iz `R`-a, ukoliko se striktno ne navede putanja do nekog drugog foldera. Definisanje radnog direktorijuma vrši se komandom `setwd()`.
+
+Na primer:
+```{r eval = FALSE}
+getwd() # vraća putanju do radnog direktorijuma
+
+setwd("C:/R_projects/Nauka_R/test")
+```
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+Ukoliko je definisan `R` projekat, prilikom pokretanja projekta, `root` folder projekta se smatra radnim direktorijumom.
+</div>
+
+Putanja do drugog direktorijuma se može zadavati i relativno u odnosu na definisani radni direktnorijum.
+
+```javascript
+getwd()
+[1] "C:/Users/Uwe/Documents/Rdevel/coverage"
+setwd("../stackoverflow/")   # .. znači idi jedan nivo/direktorijum više
+getwd()
+[1] "C:/Users/Uwe/Documents/Rdevel/stackoverflow"
+setwd("../..")   # znači idi dva nivoa/direktorijuma više
+getwd()
+[1] "C:/Users/Uwe/Documents"
+```
+
+ili
+
+```javascript
+getwd()
+[1] "C:/Users/Uwe/Documents"
+setwd("./Rdevel/")   # . označava trenutni direktorijum
+getwd()
+[1] "C:/Users/Uwe/Documents/Rdevel""
+```
+
+
+> ### R paket `here`
+> R paket `here` je namnjen navodjenju putanja unutar jednog direktorijuma u kojem ne kreiran `R` projekat **projektni** direktorijum. On omogućava kreiranje putanja koje su nezavisne od naziva foldera koji se mogu razlikovati od korisnika do korisnika, već navodi autora projekta da struktuira projektni folder i da pomoću komande `here` navodi funkcije koje zahtevaju putanje do fajlova. Veoma koristan tekst na tu temu se nalazi na sledećem linku [Project-Oriented Workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/).
+> 
+> ```{r eval = TRUE}
+> # install.packages("here")
+> library(here)
+> here()
+> ```
+> 
+> Pomoću paketa `here` mogu se kreirati relativne putanje jednostavnom sintaksom.
+> 
+> ```{r}
+> here("data")
+> ```
+> 
+
+
+
+## Učitavanje podataka
+
+### Pregledavanje sadržaja direktorijuma
+Pregledavanje postojećih fajlova u radnom direktorijumu može se izvršiti komandom `list.files`. Medjutim, ukoliko se želi pogledati neki pod-direktorijum mora se dodati tačna putanja (koja može biti i relativna u odnosu na radni direktorijum)
+```{r}
+list.files()
+```
+
+```{r}
+list.files(here("data"))
+```
+
+
+Postoji familija `R` funkcija namenjenih učitavanju tabelarnih podataka iz fajla. Osnovna funcija je `read.table`. Kao rezultat učitavanja dobija se  `data.frame`. 
+
+```javascript
+read.table(file, header = FALSE, sep = "", quote = "\"'",
+           dec = ".", numerals = c("allow.loss", "warn.loss", "no.loss"),
+           row.names, col.names, as.is = !stringsAsFactors,
+           na.strings = "NA", colClasses = NA, nrows = -1,
+           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+           strip.white = FALSE, blank.lines.skip = TRUE,
+           comment.char = "#",
+           allowEscapes = FALSE, flush = FALSE,
+           stringsAsFactors = default.stringsAsFactors(),
+           fileEncoding = "", encoding = "unknown", text, skipNul = FALSE)
+```
+
+
+
+```{r include = TRUE, eval = FALSE}
+umka.data <- list.files(here::here("data","Umka_BG_12h"))
+
+umka.1 <- read.table(here::here("data", "Umka_BG_12h", umka.data[7]), sep = ",")
+
+str(umka.1)
+
+head(umka.1, 2) # Prve dve vrste
+tail(umka.1, 3) # Poslednje tri vrste
+ 
+umka.names <- c("header", "UTC_fix", "UTC_date", "latitude", "hemisphere", "longitude", "E/W", "GPS_quality", "n_satellites", "coord_quality", "antenna_altitude", "Altitude_units", "GDOP", "variance_factor", "C11", "C12", "C13", "C22", "C23", "C33")
+
+names(umka.1) <- umka.names
+
+str(umka.1)
+```
+
+
+> ### Zadatak 1
+>
+> - Pregledati sadržaj foldera `data/Umka_BG_12h`
+> - Učitati sedmi fajl iz foldera `data/Umka_BG_12h` i pregledati strukturu učitanih podataka. 
+> - Pregledati prve dve i poslednje tri vrste u tabeli učitanih podatka.
+> - Kreirati vektor sa imenima kolona ("header", "UTC_fix", "UTC_date", "latitude", "hemisphere", "longitude", "E/W", "GPS_quality", "n_satellites", "coord_quality", "antenna_altitude", "Altitude_units", "GDOP", "variance_factor", "C11", "C12", "C13", "C22", "C23", "C33")
+> - Dodeliti imena kolonama nakon učitavanja
+> - Dodeliti imena kolonama prilikom učitavanja.
+>
+> > #### Rešenje za Zadatak 1
+> >
+> > ```{r eval = FALSE}
+> > umka.data <- list.files(here::here("data"))
+> > 
+> > umka.1 <- read.table(here::here("data", umka.data[4]), sep = ",")
+> > 
+> > str(umka.1)
+> > 
+> > head(umka.1, 2) # Prve dve vrste
+> > tail(umka.1, 3) # Poslednje tri vrste
+> > 
+> > umka.names <- c("header", "UTC_fix", "UTC_date", "latitude", "hemisphere", "longitude", "E/W", "GPS_quality", "n_satellites", "coord_quality", "antenna_altitude", "Altitude_units", "GDOP", "variance_factor", "C11", "C12", "C13", "C22", "C23", "C33")
+> > 
+> > names(umka.1) <- umka.names
+> > 
+> > str(umka.1)
+> >```
+>
+
+
+## Pregledavanje podataka
+
+```{r include = FALSE, eval = TRUE}
+umka.data <- list.files(here::here("data"))
+umka.1 <- read.table(here::here("data", umka.data[4]), sep = ",")
+umka.names <- c("header", "UTC_fix", "UTC_date", "latitude", "hemisphere", "longitude", "E/W", "GPS_quality", "n_satellites", "coord_quality", "antenna_altitude", "Altitude_units", "GDOP", "variance_factor", "C11", "C12", "C13", "C22", "C23", "C33")
+names(umka.1) <- umka.names
+```
+
+
+
+```{r eval = FALSE}
+class(umka.1) # Uvid u klasu objekta umka.1
+
+dim(umka.1) # Uvid u dimenzije objekta umka.1
+
+complete.cases(umka.1) # Proverava da li u vrstama ima NA vrednosti
+
+is.na(umka.1) # Proverava svaku vrednlost
+```
+
+```{r include = FALSE}
+umka.data.list <- list()                                                   # 1. output
+for(i in 1:length(umka.data)){                                             # 2. sequence
+  umka.data.list[[i]] <- read.table(here("data", umka.data[i]), sep = ",") # 3. body
+}
+
+str(umka.data.list)
+
+umka.data.list[[3]]
+
+lapply(umka.data.list, dim)
+
+for(i in 1:length(umka.data.list)){
+  names(umka.data.list[[i]]) <- umka.names
+}
+
+
+umka12 <- rbind(umka.data.list[[1]], umka.data.list[[2]])
+
+umka.df <- data.frame()
+
+for(i in 1:length(umka.data.list)){
+  umka.df <- rbind(umka.df, umka.data.list[[i]])
+}
+
+dim(umka.df)
+
+umka.df$high_GDOP <- umka.df$GDOP > 2.6
+
+umka.df[umka.df$high_GDOP, "GPS_quality"]
+
+```
+
+
+> ### Zadatak 2
+>
+> - Učitati sve fajlove iz foldera `data` korišćenjem petlje `for`. (Fajlove učitati kao elemente liste)
+> - Pregledati treći član liste
+> - Proveriti dimenzije svih elemenata liste.
+> - Dodeliti imena (umka.names) svakom elementu liste
+> - Spojiti dva elementa liste u jedan `data.frame`
+> - Spojiti sve elemente liste u jedan `data.frame` koristeći petlju `for`.
+> - kreirati novu kolonu `high_GDOP` koja sadrži logički podatak da li je `GDOP` veci od 2.7.
+> - Pregledati vrednosti kolone `GPS_quality` za vrednosti u kojima je kolona `high_GDOP` `TRUE`.
+>
+> > #### Rešenje zadatka 2
+> > ```{r eval = FALSE}
+> > # Za potrebe učitavanja više fajlova, koristićemo petlju `for`. Svaka petlja `for` se sastoji iz tri komponente: rezultat (output), sekvenca (sequence), telo (body).
+> > umka.data.list <- list()                                                   # 1. output
+> > for(i in 1:length(umka.data)){                                             # 2. sequence
+> >   umka.data.list[[i]] <- read.table(here("data", umka.data[i]), sep = ",") # 3. body
+> > }
+> > 
+> > str(umka.data.list)
+> > 
+> > umka.data.list[[3]]
+> > 
+> > lapply(umka.data.list, dim)
+> > 
+> > for(i in 1:length(umka.data.list)){
+> >   names(umka.data.list[[i]]) <- umka.names
+> > }
+> > 
+> > 
+> > umka12 <- rbind(umka.data.list[[1]], umka.data.list[[2]])
+> > 
+> > umka.df <- data.frame()
+> > 
+> > for(i in 1:length(umka.data.list)){
+> >   umka.df <- rbind(umka.df, umka.data.list[[i]])
+> > }
+> > 
+> > do.call(rbind, umka.data.list) # ?do.call
+> > 
+> > dim(umka.df)
+> > 
+> > umka.df$high_GDOP <- umka.df$GDOP > 2.6
+> > 
+> > umka.df[umka.df$high_GDOP, "GPS_quality"]
+> > 
+> > ```
+>
+
+
+# Datum i vreme
+
+Podaci o vremenskom datumu u `R`-u su predstavljeni kao broj dana od 1970-01-01, podrazumevajući negativne vrednosti za prethodne datume.
+
+```{r}
+Sys.Date( ) # vraća trenutni datum
+
+as.numeric(Sys.Date()) # konverzija u numeric - broj dana od 01-01-1970
+
+date() # vraća trenutni datum i vreme
+```
+
+Korišćenjem komande `format`,  vremenski podatak može biti prikazan u različim formatima.
+
+```{r}
+today <- Sys.Date()
+format(today, format="%B %d %Y")
+```
+
+|Simbol  | Značenje  	              | Primer  |
+|--------|--------------------------|---------|
+|%d 	   | Dan u mesecu    (0-31) 	| 01-31   |
+|%a      | Dan u nedelji (skraćeno) | Mon     |
+|%A 		 | Dan u nedelji          	|	Monday  |
+|%m 	   | Mesec (00-12) 	          | 00-12   |
+|%b      | Mesec (skraćeno )        | Jan     |
+|%B      | Mesec                    | January |
+|%y      | Godina (dvocifrena)      | 07      |
+|%Y      | Godina (četvorocifrena)  | 2007    |
+
+## Konverzija teksta u datum
+
+Za konverziju tekstualnog zapisa datuma u datumski podatak, može se koristiti komanda `as.Date( )`.
+
+```{r}
+mydates <- as.Date(c("2007-06-22", "2004-02-13"))
+
+class(mydates)
+
+days <- mydates[1] - mydates[2] # proteklo vreme izmedju dva datuma u danima.
+
+```
+
+Parametar `format` omogućava preciznije opisivanje zapisa u cilju tačnog parsiranja teksta.
+
+```{r}
+strDates <- c("01/05/1965", "08/16/1975")
+dates <- as.Date(strDates, format = "%m/%d/%Y")
+
+# Podrazumevani format je yyyy-mm-dd
+
+```
+
+
+
+```{r include = FALSE, eval = TRUE}
+# UTC_date kolona ima format mmddyy
+umka.df$UTC_date
+
+# Da bi se konvertovala u datum mora se opisati format
+
+# Ali prethodno mora biti konvertovana u tekstualni podatak
+typeof(umka.df$UTC_date)
+
+umka.df$UTC_date <- as.character(umka.df$UTC_date)
+
+# Pojavljuje se drugi problem, neki zapisi imaju 5 karaktera: Jedan za mesece, dva za dane, dva za godine.
+
+# Napraviti logicki vektor identifikuje vrste koje imaju 5 karaktera.
+five_char <- nchar(umka.df$UTC_date) == 5
+
+# Iskoristiti tu kolonu u selekciji i konverziji zapisa u 6-to karakterni
+# Potrebno je dodati nulu ispred jednocifrenih meseci
+# Komanda `paste` je iskorišćena za kreiranje tekstualnog podatka
+
+umka.df$UTC_date[five_char] <- paste(0, umka.df$UTC_date[five_char], sep = "")
+
+# Na kraju konverzija u datum se može uraditi komandom `as.Date()`
+
+umka.df$UTC_date <- as.Date(umka.df$UTC_date, format = "%m%d%y")
+```
+
+
+
+> ### Zadatak 3
+>
+> - Pregledati kolonu `UTC_date` i utvrditi `tip` podatka
+> - Utvrditi problem i predloziti način konverzije
+> - Kreirati funkciju koja transformise `UTC_date` kolonu u vremenski podatak.
+> - Sačuvati kreiranu funkciju u posebnom fajlu i učitati je komandom `source`.
+> - učitati imena baznih tačaka (Beograd, Umka, Indjija) iz `excel` fajla i selektovati odgovarajuću tačku
+> - Kreirati nove kolone koje sadrže koordinate bazne tačke
+> - ....
+> - ....
+>
+> > #### Rešenje zadatka 3
+> > ```{r eval = FALSE}
+> > # UTC_date kolona ima format mmddyy
+> > umka.df$UTC_date
+> > 
+> > # Da bi se konvertovala u datum mora se opisati format
+> > 
+> > # Ali prethodno mora biti konvertovana u tekstualni podatak
+> > typeof(umka.df$UTC_date)
+> > 
+> > umka.df$UTC_date <- as.character(umka.df$UTC_date)
+> > 
+> > # Pojavljuje se drugi problem, neki zapisi imaju 5 karaktera: Jedan za mesece, dva za dane, dva za godine.
+> > 
+> > # Napraviti logicki vektor identifikuje vrste koje imaju 5 karaktera.
+> > five_char <- nchar(umka.df$UTC_date) == 5
+> > 
+> > # Iskoristiti tu kolonu u selekciji i konverziji zapisa u 6-to karakterni
+> > # Potrebno je dodati nulu ispred jednocifrenih meseci
+> > # Komanda `paste` je iskorišćena za kreiranje tekstualnog podatka
+> > 
+> > umka.df$UTC_date[five_char] <- paste(0, umka.df$UTC_date[five_char], sep = "")
+> > 
+> > # Na kraju konverzija u datum se može uraditi komandom `as.Date()`
+> > 
+> > umka.df$UTC_date <- as.Date(umka.df$UTC_date, format = "%m%d%y")
+> > ```
+>
+
+
+```{r include = FALSE}
+# Zanimljivo
+ggplot(data = umka.df) + geom_point(aes(x = latitude, y = longitude)) + theme_bw()#+ geom_point(aes(x = latitude, y = longitude))
+  #geom_count(aes(x = GDOP, y = n_satellites)) #geom_jitter(aes(x = GDOP, y = n_satellites)) + theme_bw()
+```
+
+> ### Zadatak 4
+> - Kreirati R markdown dokument koji će biti struktuiran po zadacima.
+
+## Vizualizacija podataka
+
+### `base` plot
+
+```{r}
+plot(latitude ~ longitude, data = umka.df)
+```
+
+Koristei komandu `par` mogu se definisati dodatni parametri izgleda grafika.
+
++ `pch`: simbol tačke (otvoreni krug je po defaultu)
++ `lty`: simbol linije
++ `lwd`: debljina linije
++ `col`: boja, (moguće je definisati rednim brojem, nazivom ili kodom).
++ `las`: orijentacija naziva osa
++ `bg`: boja pozadine
++ `mar`: margine
++ `oma`: spoljne margine
++ `mfrow`: broj grafika po redu
++ `mfcol`: broj grafika po koloni
+
+
+### Lattice
+
+```{r}
+library(lattice)
+
+xyplot(latitude ~ longitude | GDOP, data = umka.df)
+
+
+
+xyplot(longitude  ~ UTC_date,
+       data = umka.df,
+       type = "l",
+       lty = c(1, 2, 2, 1),
+       lwd = c(1, 1, 1, 3),
+       col.line = c(rep("black",3), "red"))
+
+```
+
+druge funkcije:
+
+
++ `xyplot`: scatterplot
++ `bwplot`: box-and-whiskers plots (“boxplots”)
++ `histogram`: histograms
++ `stripplot`: like a boxplot but with actual points
++ `dotplot`: plot dots on “violin strings”
++ `splom`: scatterplot matrix; like pairs in base graphics system
++ `levelplot`, contourplot: for plotting “image” data
+
+
+### `ggplot2`
+
+`ggplot2` je daleko najpopularnije okruženje za kreiranje grafika. `ggplot2` predstavlja implementaciju poznatog pristupa poznatog po nazivu "The Grammar of Graphics" koji je predstavljen u istoimenoj knjizi autora Leland Wilkinson-a. Ovaj pristup je zasnovan na lejerskoj kompoziciji grafika.
+Prema tome, svaki grafik je sastavljen od sledecih komponenti:
+
++ Layer
+  - Data
+  - Mapping
+  - Statistical transformation (stat)
+  - Geometric object (geom)
+  - Position adjustment (position)
+  - Scale
++ Coordinate system (coord)
++ Faceting (facet)
++ Defaults
+  - Data
+  - Mapping
+
+
+
+
+```{r}
+umka.df %>% count(n_satellites == 45)
+
+
+ggplot(data = umka.df) + geom_boxplot(mapping = aes(x = as.factor(n_satellites), y = coord_quality))
+```
+
+
+### Vizualizacija raspodele jedne promenljive
+
+#### Kategorijska
+
+Kategorijske promenljive u `R` okruženju se čuvaju kao faktori. Vizualizacija distribucije kategorijske promenljive obično podrazumeva prikaz ukupnog broja pojavljivanja pojedinog nivoa (klase) u okviru faktorske promenljive
+
+#### `histogram`
+
+#### `distribution`
+
+#### `base` plot
+
+#### `Lattice` plot
+
+#### `ggplot` plot
+
+
+### Vizualizija dve kontinualne promenljive
+
+#### `scatter` plot
+
+#### `line` plot
+
+### Vizualizacija odnosa jedne kategoričke i jedne kontinualne promenljive
+
+### Vizualizacija više promenljivih
+
+### Vizualizacija odnosa
+
+### Kombinacija paketa `dplyr`, `magrittr` i `ggplot`
+
+
+
+
+
+
+
+
+
+

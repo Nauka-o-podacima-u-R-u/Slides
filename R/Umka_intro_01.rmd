@@ -1,0 +1,202 @@
+---
+title: "Izravnanje GPS vektora"
+author: "Milutin Pejović"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+      keep_md: true
+      theme: "simplex"
+      toc: true
+      highlight: tango
+      toc_depth: 5
+      toc_float: true
+      fig_caption: yes
+
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# devtools::install_github("thomasp85/ggforce")
+library(Matrix)
+library(tidyverse)
+library(magrittr)
+library(DT)
+library(ggplot2)
+library(remedy)
+library(here)
+library(ggplot2)
+library(gridExtra)
+library(ggpubr)
+library(lattice)
+library(plotly)
+library(ggforce)
+library(ggthemes)
+library(readxl)
+library(sf)
+library(sp)
+library(rgdal)
+library(here)
+```
+
+
+```{r include = FALSE}
+# source("./bin/chunk-options.R")
+```
+
+
+```{r include = FALSE, eval = FALSE}
+<style>
+body {
+text-align: justify}
+</style>
+
+```
+
+## Učitavanje podataka
+
+
+```{r}
+##################################### Ucitavanje Umka_Bg vektor #####################################################
+
+umka_bg_files <- list.files(here::here("data", "Umka_BG_24h"))
+
+umka.names <- c("header", "UTC_fix", "UTC_date", "latitude", "hemisphere", "longitude", "E/W", "GPS_quality", "n_satellites", "coord_quality", "antenna_altitude", "Altitude_units", "GDOP", "variance_factor", "C11", "C12", "C13", "C22", "C23", "C33")
+
+
+umka_bg_list <- list()                                                        
+for(i in 1:length(umka_bg_files)){                                             
+  umka_bg_list[[i]] <- read.table(here("data", "Umka_BG_24h", umka_bg_files[i]), sep = ",", na.strings = NA, fill = TRUE, header =  FALSE, col.names = umka.names) 
+  }
+
+umka_bg_df <- data.frame()
+for(i in 1:length(umka_bg_list)){
+  umka_bg_df <- rbind(umka_bg_df, umka_bg_list[[i]])
+}
+
+#################################### Ucitavanje Umka_Grocka vektor ###################################################
+
+umka_gr_files <- list.files(here::here("data", "Umka_Grocka_24h"))
+
+umka_gr_list <- list()                                                  
+for(i in 1:length(umka_gr_files)){                                         
+  umka_gr_list[[i]] <- read.table(here("data", "Umka_Grocka_24h", umka_gr_files[i]), sep = ",", na.strings = NA, fill = TRUE, header =  FALSE, col.names = umka.names)     # 3. body
+}
+
+
+umka_gr_df <- data.frame()
+for(i in 1:length(umka_gr_list)){
+  umka_gr_df <- rbind(umka_gr_df, umka_gr_list[[i]])
+}
+
+################################### Ucitavanje Umka_Indjija vektor ####################################################
+
+umka_in_files <- list.files(here::here("data", "Umka_Indjija_24h"))
+
+umka_in_list <- list()                                                       
+for(i in 1:length(umka_in_files)){                                            
+  umka_in_list[[i]] <- read.table(here("data", "Umka_Indjija_24h", umka_in_files[i]), sep = ",", na.strings = NA, fill = TRUE, header =  FALSE, col.names = umka.names)     # 3. body
+}
+
+umka_in_df <- data.frame()
+for(i in 1:length(umka_in_list)){
+  umka_in_df <- rbind(umka_in_df, umka_in_list[[i]])
+}
+
+###################################################################################################################
+```
+
+```{r}
+# Spajanje svih u jedan data.frame
+umka.df <- rbind(umka_bg_df, umka_gr_df, umka_in_df)
+
+# Obelezavanje merenja koja imaju fixed i float resenje
+# umka.df$GPS_quality <- factor(umka.df$GPS_quality, labels = c("fixed", "float"))
+
+# Kreiranje atributa GPS_vector koji identifikuje pripadnost odredjenom vektoru
+umka.df$GPS_vector <- factor(c(rep("Beograd", dim(umka_bg_df)[1]), rep("Grocka", dim(umka_gr_df)[1]), rep("Indjija", dim(umka_in_df)[1])))
+
+# Izbacivanje merenja koja imaju NA vrednosti
+umka.df <- umka.df[complete.cases(umka.df), ]
+
+# Konverzija promenljive `n_satellites` u kategorijsku (faktor)
+umka.df$n_satellites <- as.factor(umka.df$n_satellites)
+```
+
+### Konverzija `UTC_date` u datumski podatak
+
+```{r include = TRUE, eval = TRUE}
+# UTC_date kolona ima format mmddyy
+# umka.df$UTC_date
+
+# Da bi se konvertovala u datum mora se opisati format
+
+# Ali prethodno mora biti konvertovana u tekstualni podatak
+# typeof(umka.df$UTC_date)
+
+umka.df$UTC_date <- as.character(umka.df$UTC_date)
+
+# Pojavljuje se drugi problem, neki zapisi imaju 5 karaktera: Jedan za mesece, dva za dane, dva za godine.
+
+# Napraviti logicki vektor identifikuje vrste koje imaju 5 karaktera.
+five_char <- nchar(umka.df$UTC_date) == 5
+
+# Iskoristiti tu kolonu u selekciji i konverziji zapisa u 6-to karakterni
+# Potrebno je dodati nulu ispred jednocifrenih meseci
+# Komanda `paste` je iskorišćena za kreiranje tekstualnog podatka
+
+umka.df$UTC_date[five_char] <- paste(0, umka.df$UTC_date[five_char], sep = "")
+
+# Na kraju konverzija u datum se može uraditi komandom `as.Date()`
+
+umka.df$UTC_date <- as.Date(umka.df$UTC_date, format = "%m%d%y")
+```
+
+
+
+```{r include = FALSE}
+# Indeks odskacucih rezultata
+# which(umka.df$latitude > 4440.135)
+
+# Prikaz odskacucih rezultata
+# datatable(umka.df[which(umka.df$latitude > 4440.135), ])
+
+# Eliminacija odskacucih rezultata
+# umka.df <- umka.df[-which(umka.df$latitude > 4440.135), ]
+```
+
+
+## Priprema podataka za izravnanje GPS vektora
+
+Cilj ove vezbe je uraditi izravnanje GPS vektora koji se sustiču u tački `Umka` i to u svakoj epohi, tj. za svaki ciklus merenja (u ovom slučaju to je na svakih 24h). Pre svega, treba imati u vidu da su merene veličine u stvari koordinatne razlike izmedju fiksnih tačaka (`Beograd`, `Grocka` i `Indjija`) i tačke `Umka`. Imajući to u vidu, potrebno da definišemo funkcionalni i stohastički model koji opisuje sistem merenih veličina preko nepoznatih parametara (koordinata tačke `Umka`). To podrazumeva kreiranje matrice modela (A matrica - ista za svaku epohu), kreiranje vektora merenih veličina (koordinatnih razlika) i vektora slobodnih članova (l i f - razlikuju se od epohe do epohe), kreiranje stohastičkog modela (Kl - razlikuje se od epohe do epohe). Za tim je potrebno primeniti algoritam MNK izravnanja na svaku epohu i oceniti koordinate. Pri tome, treba imati u vidu kako su podaci organizovani i kako ih pripremiti za primenu algoritma izravnanja. 
+
+Imajući u vidu šta je sve potrebno pripremiti, šta je nepromenljivo od epohe do epohe, a šta se menja, logično je pripremiti podatke tako što ćemo proširiti `data.frame` `umka.df` kolonama koje sadrže elemente matrica koje se menjaju od epohe do epohe, a to su:
+
++ Približne vrednosti nepoznatih parametara
++ Rezultati merenja koordinatnih razlika
++ Približne vrednostima merenih veličina
++ Vektor slobodnih članova.
+
+Za ovo su nam potrebni i vrednosti merenih koordinata u svakoj epohi i koordinate fiksnih tačaka (u pravouglom geocentričnom koordinatnom sistemu).
+
+Nakon toga, moguće je primeniti algoritam MNK izravnanja na svaku vrstu `data.frame`-a `umka.df`.
+
+
+Pre svega, potrebno je sagledati da li je za svaku epohu ispunjen uslov da postoje rezultati merenja tri vektora.
+
+Da bi smo to uradili neophodno je uraditi pripremu podataka koja podrazumeva:
+
++ Promenu zapisa koordinata iz `stepmin,sec`, u decimalni zapis (`step+min/60+sec/3600`)
++ Transformaciju koordinata iz ($\phi, \lambda, h$) u $X,Y,Z$ (pravougle geocentrične)
++ Pripremiti podatke za kreiranje kovariacione matrice
++ Proširiti `data.frame` `umka.df` neophodnim podacima:
+- Koordinate stanica Beograd, Grocka i Indjija (Učitati ih iz `excel` fajla)
+- Merene koordinatne razlike (razlike koordinatana za svaku epohu)
+- Približne koordinate tačke `Umka` za svaku epohu (izračunati kao sredinu koordinata iz tri vektora u svakoj epohi)
+- Približne vrednosti merenih koordinatnih razlika
+- Vrednosti vektora slobodnih članova
+
+
+### Transformacija podataka korišćenjem `dplyr` paketa 
+
+```{r echo = FALSE, fig.align="center", out.width = '70%'}
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/datascience_workflow.png")
+```

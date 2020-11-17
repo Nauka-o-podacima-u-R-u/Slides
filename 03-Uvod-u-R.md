@@ -2,7 +2,7 @@
 title: "Uvod u R"
 author:
    - "Milutin Pejovic, Petar Bursac"
-date: "10 November 2020"
+date: "15 November 2020"
 output:
    html_document:
      keep_md: true
@@ -173,6 +173,85 @@ sum(studenti$ispit) # Koliko studenata je polozilo oba ispita
 
 
 
+```r
+# Ucitavanje merenja
+merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+# Kreiranje pomocne kolone (faktorske) koja pokazuje pripadnost redova stanici
+merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
+
+# Kreiranje liste prema pomocnoj faktorskoj promenljivoj (stanica)
+merenja_list <- split(merenja, merenja$stanica)
+
+# Kreiranje praznog data.frame-a
+merenja_df <- data.frame(od = rep(NA, length(merenja_list)), 
+                          do = rep(NA, length(merenja_list)), 
+                          dh = rep(NA, length(merenja_list)), 
+                          duzina = rep(NA, length(merenja_list)))
+
+# popunjavanje data.frame-a
+for(i in 1:length(merenja_list)){
+  merenja_df$od[i] <- as.character(merenja_list[[i]]$tacka[1])
+  merenja_df$do[i] <- as.character(merenja_list[[i]]$tacka[2])
+  merenja_df$dh[i] <- ((merenja_list[[i]]$merenje[2]-merenja_list[[i]]$merenje[1])+(merenja_list[[i]]$merenje[3]-merenja_list[[i]]$merenje[4]))/2
+  merenja_df$duzina[i] <- sum(merenja_list[[i]]$duzina)/2 
+}
+
+# Kreiranje fajla
+writexl::write_xlsx(merenja_df, path = "merenja_df.xlsx")
+
+# SUMIRANJE OD REPERA DO REPERA
+
+reperi <- c("B1", "B3", "B4", "B5")
+
+merenja_df$isReperOD <- merenja_df$od %in% reperi
+merenja_df$isReperDO <- merenja_df$do %in% reperi
+
+
+# broj vis razlika izmedju repera
+ndh = sum(merenja_df$isReperOD)
+
+#indeks pozicije "od" repera,
+ind.od <- which(merenja_df$isReperOD == T)
+# indeks pozicije "do" repera
+ind.do <- which(merenja_df$isReperDO == T)
+
+# Visinske razlike
+
+# Naziv "od" repera
+od <- merenja_df$od[ind.od]
+
+# Naziv "do" repera
+do <- merenja_df$do[ind.do]
+
+# Racunanje visinskih razlika od repera do repera
+dh <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  dh[i] <- sum(merenja_df$dh[ind.od[i]:ind.do[i]])
+}
+
+# Racunanje broja stanica od repera do repera
+n <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  n[i] <- length(ind.od[i]:ind.do[i])
+}
+
+
+# Racunanje duzina od repera do repera
+duzina <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  duzina[i] <- sum(merenja_df$duzina[ind.od[i]:ind.do[i]])
+}
+
+# Kreiranje data.frame-a
+merenja_df_reperi <- data.frame(od = od, do = do, dh = dh, n = n, duzina = duzina)
+
+# Kreiranje fajla
+writexl::write_xlsx(merenja_df_reperi, path = "merenja_df_reperi.xlsx")
+```
 
 
 
