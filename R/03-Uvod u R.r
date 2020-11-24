@@ -1,5 +1,6 @@
 #' ---
 #' title: "Uvod u R"
+#' subtitle: Kontrola toka i oblikovanje podataka
 #' author:
 #'    - "Milutin Pejovic, Petar Bursac"
 #' date: "`r format(Sys.time(), '%d %B %Y')`"
@@ -97,10 +98,14 @@ sum(studenti$ispit) # Koliko studenata je polozilo oba ispita
 #' 
 #' > 3. Za tim, potrebno je rezultujući `data.frame` dodatno transformisati (sumirati) tako da sadrži samo merenja od repera do repera, sa sledećim kolonama: od (reper), do (reper), dh (ukupna visinska razlika između repera), n (broj stanica od repera do repera) i duzina (ukupna duzina od repera do repera).
 #' 
-#+ eval = FALSE, include = TRUE 
+#' ## Prvi način - korišćenjem petlje `for`
+#' 
+#' ### Kreiranje prve tabele - visinske razlike po stanici
+#' 
+#+ eval = TRUE, include = TRUE 
 
 # Ucitavanje merenja
-merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Kreiranje pomocne kolone (faktorske) koja pokazuje pripadnost redova stanici
 merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
@@ -109,7 +114,7 @@ merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
 merenja_list <- split(merenja, merenja$stanica)
 
 # Kreiranje praznog data.frame-a
-merenja_df <- data.frame(od = rep(NA, length(merenja_list)), 
+merenja_df <- data.frame( od = rep(NA, length(merenja_list)), 
                           do = rep(NA, length(merenja_list)), 
                           dh = rep(NA, length(merenja_list)), 
                           duzina = rep(NA, length(merenja_list)))
@@ -118,14 +123,18 @@ merenja_df <- data.frame(od = rep(NA, length(merenja_list)),
 for(i in 1:length(merenja_list)){
   merenja_df$od[i] <- as.character(merenja_list[[i]]$tacka[1])
   merenja_df$do[i] <- as.character(merenja_list[[i]]$tacka[2])
-  merenja_df$dh[i] <- ((merenja_list[[i]]$merenje[2]-merenja_list[[i]]$merenje[1])+(merenja_list[[i]]$merenje[3]-merenja_list[[i]]$merenje[4]))/2
+  merenja_df$dh[i] <- ((merenja_list[[i]]$merenje[1]-merenja_list[[i]]$merenje[2])+(merenja_list[[i]]$merenje[4]-merenja_list[[i]]$merenje[3]))/2
   merenja_df$duzina[i] <- sum(merenja_list[[i]]$duzina)/2 
 }
 
-# Kreiranje fajla
+merenja_df
+
+#' Kreiranje fajla
+#+ eval = FALSE
 writexl::write_xlsx(merenja_df, path = "merenja_df.xlsx")
 
-# SUMIRANJE OD REPERA DO REPERA
+#' 
+#' ### Kreiranje sumarne tabele - visinske razlike od repera do repera
 
 reperi <- c("B1", "B3", "B4", "B5")
 
@@ -134,7 +143,7 @@ merenja_df$isReperDO <- merenja_df$do %in% reperi
 
 
 # broj vis razlika izmedju repera
-ndh = sum(merenja_df$isReperOD)
+ndh <- sum(merenja_df$isReperOD)
 
 #indeks pozicije "od" repera,
 ind.od <- which(merenja_df$isReperOD == T)
@@ -163,7 +172,6 @@ for(i in 1:ndh){
   n[i] <- length(ind.od[i]:ind.do[i])
 }
 
-
 # Racunanje duzina od repera do repera
 duzina <- rep(NA, ndh)
 
@@ -172,31 +180,117 @@ for(i in 1:ndh){
 }
 
 # Kreiranje data.frame-a
-merenja_df_reperi <- data.frame(od = od, do = do, dh = dh, n = n, duzina = duzina)
+merenja_df_sum <- data.frame(od = od, do = do, dh = dh, n = n, duzina = duzina)
 
-# Kreiranje fajla
-writexl::write_xlsx(merenja_df_reperi, path = "merenja_df_reperi.xlsx")
 
+merenja_df_sum
+
+
+#' Kreiranje fajla
+#+ eval = FALSE
+writexl::write_xlsx(merenja_df_sum, path = "merenja_df_reperi.xlsx")
+
+#'
+#' # Transformacija podataka korišćenjem `dplyr` paketa 
+#'
+#'
+#'
+#' Kao što ste već videli, oblikovanje podataka često podrazumeva kreiranje novih promenljivih (atribute ili kolone), sumiranje podataka u novu tabelu, reimenovati ili rasporediti podatke u tabeli. Za te potrebe razvijeni su brojni alati koji omogućavaju laku manupulaciju podacima, a najpoznatiji paket u R okruženju je `dplyr` paket iz `tidyverse` famijije paketa. Da bi se koristio paket `dplyr` neophodno ga je instalirati. Medjutim, preporučuje se instalacija celog `tidyverse` paketa, koji uključuje celu grupu korisnih paketa.
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '25%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/tidyverse-logo.png")
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/tidyverse_website.png")
+#' 
+#' 
+#' Instalacija `tidyverse` paketa
+#+ eval = FALSE
+install.packages("tidyverse")
+library(tidyverse)
+#'
+#'
+#' `dplyr` paket ima nekoliko osnovnih funkcionalnosti koje rešavaju najčešće probleme, kao što su:
+#' 
+#' **selekcija pojedinačnih merenja (instanci ili vrsta u tabeli) komandom `dplyr::filter()`**
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/filter.png")
+#' 
+#' **selekcija atributa (kolona) komandom `dplyr::select()`**
+#'   
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/rstudio-cheatsheet-select.png")    
+#'     
+#'      
+#' **Kreiranje novih promenljivih komandom `dplyr::mutate()`**      
+#'        
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/mutate.png")         
+#'          
+#' 
+#' **Sumiranje podataka komandom `dplyr::summarise()`**
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/summarise.png")
+#' 
+#' 
+#' **Grupisanje podataka `dplyr::group_by()` (često u kombinaciji sa `summarise`)**
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/group_by.png")
+#' 
+#' 
+#' **Kombninovanje (spajanje) tabela komandom `dplyr::_join`**
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/combine-options1.png")
+#' 
+#' 
+#' **Sortiranje podataka komandom `dplyr::arrange()`** 
+#' 
+#+ echo = FALSE, fig.align="center", out.width = '70%'
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/reorder-data-frame-rows-in-r.png")
+#'
+#' 
+#'   
+#' ## Drugi način - korišćenjem `dplyr` paketa
 #' 
 #' 
 #' 
+#+ warning = FALSE, message = FALSE 
 library(tidyverse)
 library(magrittr)
 
 # Ucitavanje merenja
-merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
-merenja_df <- merenja %>% dplyr::mutate(stanica = factor(rep(1:(dim(merenja)[1]/4), each = 4))) %>% 
-  dplyr::group_by(stanica) %>%
-  dplyr::summarise(od = as.character(tacka[1]),
+merenja_df <- merenja %>% 
+  dplyr::mutate(stanica = factor(rep(1:(dim(merenja)[1]/4), each = 4))) %>%  # Kreiranje novih kolona
+  dplyr::group_by(stanica) %>% # grupisanje podataka prema nekoj promenljivoj
+  dplyr::summarise(od = as.character(tacka[1]), # sumiranje podataka
                    do = as.character(tacka[2]),
-                   dh = ((merenje[2]-merenje[1])+(merenje[3]-merenje[4]))/2,
+                   dh = ((merenje[1]-merenje[2])+(merenje[4]-merenje[3]))/2,
                    duzina = sum(duzina)/2)
-                   
+
+merenja_df
+
+
+#' 
+#' 
+#' > <h3>Obrati pažnju na `%>%` </h3>
+#' > Operator `%>%` (`pipe`) je moćan operator koji nam omogućava da sekvencijalno povezujemo operacije i da na taj način izbegnemo kreiranje nepotrebnih promenljivih. `Pipe` je dostupan preko paketa `magrittr`, što znači da je potrebno instalirati paket `magrittr` ako želimo da koristimo `pipe`. Međutim, `pipe` je takođe dostupan preko `tidyverse` paketa. Više detalja na [linku](https://r4ds.had.co.nz/pipes.html).
+#'  
+
+#'   
+#' ### Kreiranje sumarne tabele - visinske razlike od repera do repera
+#'                    
 reperi <- c("B1", "B3", "B4", "B5")
 
 merenja_df <- merenja_df %>% dplyr::mutate(isReperOD = merenja_df$od %in% reperi,
                              isReperDO = merenja_df$do %in% reperi)
+
+
 
 #indeks pozicije "od" repera,
 ind.od <- which(merenja_df$isReperOD == T)
@@ -206,12 +300,157 @@ ind.do <- which(merenja_df$isReperDO == T)
 # broj vis razlika izmedju repera
 ndh = sum(merenja_df$isReperOD)
 
-merenja_df_sum <- data.frame(od = rep(NA, ndh),
-                             do = rep(NA, ndh),
-                             dh = rep(NA, ndh),
-                             duzina = rep(NA, ndh),
-                             n = rep(NA, ndh)) 
+# Promenljiva koja pokazuje koja merenja pripadaju odredjenom nivelmanskom vlaku
+vlak <- c()
+for(i in 1:ndh){
+  vlak <- c(vlak, rep(i, ind.do[i]-(ind.od[i]-1)))
+}
+
+merenja_df$vlak <- factor(vlak) 
+
+# Sumiranje visinskih razlika po vlaku
+merenja_df %>% dplyr::select(od, do, dh, duzina, vlak) %>%
+               dplyr::group_by(vlak) %>% 
+               dplyr::summarize(dh_mean = sum(dh))
+
+# Sumiranje visinskih razlika po vlaku sa dodatnim kolonama
+merenja_df_sum <- merenja_df %>% dplyr::select(od, do, dh, duzina, vlak) %>%
+                                 dplyr::group_by(vlak) %>% 
+                                 dplyr::summarize(od = od[1],
+                                                  do = do[length(vlak)],
+                                                  dh = sum(dh),
+                                                  stanica = n())
+
+merenja_df_sum
+
+
+#' # Kreiranje funkcija
+#' 
+#' R omogućava kreranje funkcija koje nam omogućavaju da automatizujemo određene korake u našem algoritmu. Kreiranje funkcija je poželjno u slučajevima kada imamo određeni deo koda koji je potrebno ponoviti više puta. Na taj način, umesto da kopiramo kod više puta, moguće je kreirati funkciju koja će izvršiti taj deo koda pozivanjem kreirane funkcije. Generalno, kreiranje funkcija se sastoji iz tri koraka:
+#' 
+#' + Dodeljivanje `imena`
+#' + Definisanje `argumenata`
+#' + Programiranje `tela` funckije (body) koje se sastoji od koda koji treba da se izvrši
+#' 
+#' Na primer ukoliko zelimo da napravimo funkciju koja pretvara decimalni zapis ugla u stepenima u radijane, to ćemo učiniti na sledeći način
+#'
+#+
+
+
+step2rad <- function(ang_step){
+  ang_step*pi/180
+}
+
+step2rad(180)
+
+#' Ukoliko zelimo da napravimo funkciju koja pretvara decimalni zapis ugla u zapis step-min-sec to ćemo uraditi na sledeći način:
+
+dec2dms <- function(ang){ # ime funkcije je `dec2dms`, a argument `ang`
+  deg <- floor(ang) 
+  minut <- floor((ang-deg)*60)
+  sec <- ((ang-deg)*60-minut)*60
+  return(paste(deg, minut, round(sec, 0), sep = " "))
+}
+
+dec2dms(ang = 35.26589)
+
+dec2dms(45.52658)
+
+#' 
+#' Ukoliko želimo da napravimo funkciju od koda koji smo kreirali za potrebe oblikovanja ulaznih podataka to ćemo uraditi na sledeći način. 
+#'    
+
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+nivelman <- function(niv_merenja, reperi){ # ime funkcije je nivelman, a argumenti niv_merenja (ulazna merenja) i reperi (naziv repera)
+  
+  # kopiramo kod koji smo kreirali ()
+  merenja_df <- niv_merenja %>% dplyr::mutate(stanica = factor(rep(1:(dim(niv_merenja)[1]/4), each = 4))) %>% 
+    dplyr::group_by(stanica) %>%
+    dplyr::summarise(od = as.character(tacka[1]),
+                     do = as.character(tacka[2]),
+                     dh = ((merenje[2]-merenje[1])+(merenje[3]-merenje[4]))/2,
+                     duzina = sum(duzina)/2)
+  
+  merenja_df <- merenja_df %>% dplyr::mutate(isReperOD = merenja_df$od %in% reperi,
+                                             isReperDO = merenja_df$do %in% reperi)
+  
+  #indeks pozicije "od" repera,
+  ind.od <- which(merenja_df$isReperOD == T)
+  # indeks pozicije "do" repera
+  ind.do <- which(merenja_df$isReperDO == T)  
+  
+  # broj vis razlika izmedju repera
+  ndh = sum(merenja_df$isReperOD)
+  
+  # Promenljiva koja pokazuje koja merenja pripadaju odredjenom nivelmanskom vlaku
+  vlak <- c()
+  for(i in 1:ndh){
+    vlak <- c(vlak, rep(i, ind.do[i]-(ind.od[i]-1)))
+  }
+  
+  merenja_df$vlak <- factor(vlak) 
+  
+  
+  merenja_df_sum <- merenja_df %>% dplyr::select(od, do, dh, duzina, vlak) %>%
+    dplyr::group_by(vlak) %>% 
+    dplyr::summarize(od = od[1],
+                     do = do[length(vlak)],
+                     dh = sum(dh),
+                     stanica = length(vlak))
+  
+  merenja_df <- merenja_df %>% dplyr::select(od, do, dh, duzina)
+  
+  results <- list(tabela_1 = merenja_df, tabela_2 = merenja_df_sum)
+  return(results) # Ukoliko je u okviru funkcije kreirano više promenljivih, komandom `return` biramo koja promenljiva će biti rezultat naše funkcije
+}
+
+
+nivelman(niv_merenja = merenja, reperi = c("B1", "B3", "B4", "B5"))
+
+#'
+#' 
+#'   
+#' > <h3>Zadatak 1</h3>
+#' > + Učitati excel fajl sa svim merenjima u mreži (`niv_merenja.xlsx`). Fajl je organizovan tako  da su merenja u pojedinačnim vlakovima smeštena u odvojenim excel sheet-ovima. Za učitavanje excel fajla sa više sheet-ova koristiti uputstva data na linku `readxl` paketa: https://readxl.tidyverse.org/articles/articles/readxl-workflows.html#iterate-over-multiple-worksheets-in-a-workbook. Rezultat učitanih merenja je lista!
+#' > + Primeniti funkciju na svim elementima liste.
+#' > + Spojiti odgovarajuće tabele u jednu, tako da na kraju imamo dve tabele, jednu koja se odnosi na merenja na stanici i jednu sumarnu tabelu.
+
+
+#'
+#' 
+#'  
+
+# Imena svih repera u mrezi:
+
+library(tidyverse)
+library(magrittr)
+library(here)
+library(readxl)
+library(purrr)
+
+reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116",	"D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22",	"A23", "A24")
+
+merenja_path <- here::here("data", "niv_merenja.xlsx")
+
+merenja <- merenja_path %>%
+  readxl::excel_sheets() %>%
+  purrr::set_names() %>%
+  purrr::map(read_excel, path = merenja_path)
+
+mreza_all <- lapply(merenja, function(x) nivelman(x, reperi = reperi))
+
+mreza_by_station <- lapply(mreza_all, function(x) x[[1]])
+
+mreza_oddo <- lapply(mreza_all, function(x) x[[2]])
+
+mreza_by_station <- do.call(rbind, mreza_by_station)
+
+mreza_oddo <- do.call(rbind, mreza_oddo)
+
+# or 
 
 
 
-
+  
+#'     

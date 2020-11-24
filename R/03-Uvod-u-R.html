@@ -11,7 +11,7 @@
 
 <meta name="author" content="Milutin Pejovic, Petar Bursac" />
 
-<meta name="date" content="2020-11-18" />
+<meta name="date" content="2020-11-24" />
 
 <title>Uvod u R</title>
 
@@ -1629,7 +1629,7 @@ div.tocify {
 <h1 class="title toc-ignore">Uvod u R</h1>
 <h3 class="subtitle">Kontrola toka i oblikovanje podataka</h3>
 <h4 class="author">Milutin Pejovic, Petar Bursac</h4>
-<h4 class="date">18 November 2020</h4>
+<h4 class="date">24 November 2020</h4>
 
 </div>
 
@@ -1763,7 +1763,7 @@ Zadatak
 <div id="kreiranje-prve-tabele---visinske-razlike-po-stanici" class="section level3">
 <h3>Kreiranje prve tabele - visinske razlike po stanici</h3>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Ucitavanje merenja</span></a>
-<a class="sourceLine" id="cb14-2" title="2">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;./data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb14-2" title="2">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb14-3" title="3"></a>
 <a class="sourceLine" id="cb14-4" title="4"><span class="co"># Kreiranje pomocne kolone (faktorske) koja pokazuje pripadnost redova stanici</span></a>
 <a class="sourceLine" id="cb14-5" title="5">merenja<span class="op">$</span>stanica &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">dim</span>(merenja)[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>), <span class="dt">each =</span> <span class="dv">4</span>))</a>
@@ -1900,7 +1900,7 @@ Zadatak
 <a class="sourceLine" id="cb21-2" title="2"><span class="kw">library</span>(magrittr)</a>
 <a class="sourceLine" id="cb21-3" title="3"></a>
 <a class="sourceLine" id="cb21-4" title="4"><span class="co"># Ucitavanje merenja</span></a>
-<a class="sourceLine" id="cb21-5" title="5">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;./data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb21-5" title="5">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb21-6" title="6"></a>
 <a class="sourceLine" id="cb21-7" title="7">merenja_df &lt;-<span class="st"> </span>merenja <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-8" title="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">stanica =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">dim</span>(merenja)[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>), <span class="dt">each =</span> <span class="dv">4</span>))) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># Kreiranje novih kolona</span></a>
@@ -2015,12 +2015,12 @@ Obrati pažnju na <code>%&gt;%</code>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">dec2dms</span>(<span class="fl">45.52658</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;45 31 36&quot;</code></pre>
 <p>Ukoliko želimo da napravimo funkciju od koda koji smo kreirali za potrebe oblikovanja ulaznih podataka to ćemo uraditi na sledeći način.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;./data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">merenja &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="dt">file =</span> <span class="st">&quot;C:/R_projects/Nauka_R/Slides/data/nivelman.txt&quot;</span>, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb36-2" title="2"></a>
 <a class="sourceLine" id="cb36-3" title="3">nivelman &lt;-<span class="st"> </span><span class="cf">function</span>(niv_merenja, reperi){ <span class="co"># ime funkcije je nivelman, a argumenti niv_merenja (ulazna merenja) i reperi (naziv repera)</span></a>
 <a class="sourceLine" id="cb36-4" title="4">  </a>
 <a class="sourceLine" id="cb36-5" title="5">  <span class="co"># kopiramo kod koji smo kreirali ()</span></a>
-<a class="sourceLine" id="cb36-6" title="6">  merenja_df &lt;-<span class="st"> </span>niv_merenja <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">stanica =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">dim</span>(merenja)[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>), <span class="dt">each =</span> <span class="dv">4</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb36-6" title="6">  merenja_df &lt;-<span class="st"> </span>niv_merenja <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">stanica =</span> <span class="kw">factor</span>(<span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">dim</span>(niv_merenja)[<span class="dv">1</span>]<span class="op">/</span><span class="dv">4</span>), <span class="dt">each =</span> <span class="dv">4</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb36-7" title="7"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(stanica) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb36-8" title="8"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">od =</span> <span class="kw">as.character</span>(tacka[<span class="dv">1</span>]),</a>
 <a class="sourceLine" id="cb36-9" title="9">                     <span class="dt">do =</span> <span class="kw">as.character</span>(tacka[<span class="dv">2</span>]),</a>
@@ -2100,9 +2100,78 @@ Zadatak 1
 </blockquote>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="co"># Imena svih repera u mrezi:</span></a>
 <a class="sourceLine" id="cb39-2" title="2"></a>
-<a class="sourceLine" id="cb39-3" title="3">reperi &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B1&quot;</span>, <span class="st">&quot;B3&quot;</span>, <span class="st">&quot;B4&quot;</span>, <span class="st">&quot;B5&quot;</span>, <span class="st">&quot;B6&quot;</span>, <span class="st">&quot;B7&quot;</span>, <span class="st">&quot;B8&quot;</span>, <span class="st">&quot;B9&quot;</span>, <span class="st">&quot;S1&quot;</span>, <span class="st">&quot;S2&quot;</span>, <span class="st">&quot;S3&quot;</span>, <span class="st">&quot;D1&quot;</span>, <span class="st">&quot;H1&quot;</span>, <span class="st">&quot;J1&quot;</span>, <span class="st">&quot;M1&quot;</span>, <span class="st">&quot;P1&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;H7&quot;</span>, <span class="st">&quot;N7&quot;</span>, <span class="st">&quot;D10&quot;</span>, <span class="st">&quot;E10&quot;</span>, <span class="st">&quot;I10&quot;</span>, <span class="st">&quot;P10&quot;</span>, <span class="st">&quot;P13&quot;</span>, <span class="st">&quot;L116&quot;</span>,    <span class="st">&quot;D19&quot;</span>, <span class="st">&quot;G19&quot;</span>, <span class="st">&quot;J19&quot;</span>, <span class="st">&quot;M19&quot;</span>, <span class="st">&quot;P19&quot;</span>, <span class="st">&quot;E26&quot;</span>, <span class="st">&quot;P26&quot;</span>, <span class="st">&quot;D29&quot;</span>, <span class="st">&quot;J29&quot;</span>, <span class="st">&quot;M29&quot;</span>, <span class="st">&quot;P29&quot;</span>, <span class="st">&quot;D32&quot;</span>, <span class="st">&quot;H32&quot;</span>, <span class="st">&quot;D38&quot;</span>, <span class="st">&quot;G38&quot;</span>, <span class="st">&quot;J38&quot;</span>, <span class="st">&quot;M38&quot;</span>, <span class="st">&quot;P38&quot;</span>, <span class="st">&quot;A11&quot;</span>, <span class="st">&quot;A12&quot;</span>, <span class="st">&quot;A13&quot;</span>, <span class="st">&quot;A14&quot;</span>, <span class="st">&quot;A21&quot;</span>, <span class="st">&quot;A22&quot;</span>, <span class="st">&quot;A23&quot;</span>, <span class="st">&quot;A24&quot;</span>)</a>
-<a class="sourceLine" id="cb39-4" title="4"></a>
-<a class="sourceLine" id="cb39-5" title="5"><span class="co"># </span></a></code></pre></div>
+<a class="sourceLine" id="cb39-3" title="3"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb39-4" title="4"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb39-5" title="5"><span class="kw">library</span>(here)</a></code></pre></div>
+<pre><code>## here() starts at C:/R_projects/Nauka_R/Slides</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">library</span>(readxl)</a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="kw">library</span>(purrr)</a>
+<a class="sourceLine" id="cb41-3" title="3"></a>
+<a class="sourceLine" id="cb41-4" title="4">reperi &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;B1&quot;</span>, <span class="st">&quot;B3&quot;</span>, <span class="st">&quot;B4&quot;</span>, <span class="st">&quot;B5&quot;</span>, <span class="st">&quot;B6&quot;</span>, <span class="st">&quot;B7&quot;</span>, <span class="st">&quot;B8&quot;</span>, <span class="st">&quot;B9&quot;</span>, <span class="st">&quot;S1&quot;</span>, <span class="st">&quot;S2&quot;</span>, <span class="st">&quot;S3&quot;</span>, <span class="st">&quot;D1&quot;</span>, <span class="st">&quot;H1&quot;</span>, <span class="st">&quot;J1&quot;</span>, <span class="st">&quot;M1&quot;</span>, <span class="st">&quot;P1&quot;</span>, <span class="st">&quot;D7&quot;</span>, <span class="st">&quot;H7&quot;</span>, <span class="st">&quot;N7&quot;</span>, <span class="st">&quot;D10&quot;</span>, <span class="st">&quot;E10&quot;</span>, <span class="st">&quot;I10&quot;</span>, <span class="st">&quot;P10&quot;</span>, <span class="st">&quot;P13&quot;</span>, <span class="st">&quot;L116&quot;</span>,    <span class="st">&quot;D19&quot;</span>, <span class="st">&quot;G19&quot;</span>, <span class="st">&quot;J19&quot;</span>, <span class="st">&quot;M19&quot;</span>, <span class="st">&quot;P19&quot;</span>, <span class="st">&quot;E26&quot;</span>, <span class="st">&quot;P26&quot;</span>, <span class="st">&quot;D29&quot;</span>, <span class="st">&quot;J29&quot;</span>, <span class="st">&quot;M29&quot;</span>, <span class="st">&quot;P29&quot;</span>, <span class="st">&quot;D32&quot;</span>, <span class="st">&quot;H32&quot;</span>, <span class="st">&quot;D38&quot;</span>, <span class="st">&quot;G38&quot;</span>, <span class="st">&quot;J38&quot;</span>, <span class="st">&quot;M38&quot;</span>, <span class="st">&quot;P38&quot;</span>, <span class="st">&quot;A11&quot;</span>, <span class="st">&quot;A12&quot;</span>, <span class="st">&quot;A13&quot;</span>, <span class="st">&quot;A14&quot;</span>, <span class="st">&quot;A21&quot;</span>, <span class="st">&quot;A22&quot;</span>, <span class="st">&quot;A23&quot;</span>, <span class="st">&quot;A24&quot;</span>)</a>
+<a class="sourceLine" id="cb41-5" title="5"></a>
+<a class="sourceLine" id="cb41-6" title="6">merenja_path &lt;-<span class="st"> </span>here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;niv_merenja.xlsx&quot;</span>)</a>
+<a class="sourceLine" id="cb41-7" title="7"></a>
+<a class="sourceLine" id="cb41-8" title="8">merenja &lt;-<span class="st"> </span>merenja_path <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb41-9" title="9"><span class="st">  </span>readxl<span class="op">::</span><span class="kw">excel_sheets</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb41-10" title="10"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">set_names</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb41-11" title="11"><span class="st">  </span>purrr<span class="op">::</span><span class="kw">map</span>(read_excel, <span class="dt">path =</span> merenja_path)</a>
+<a class="sourceLine" id="cb41-12" title="12"></a>
+<a class="sourceLine" id="cb41-13" title="13">mreza_all &lt;-<span class="st"> </span><span class="kw">lapply</span>(merenja, <span class="cf">function</span>(x) <span class="kw">nivelman</span>(x, <span class="dt">reperi =</span> reperi))</a></code></pre></div>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1">mreza_by_station &lt;-<span class="st"> </span><span class="kw">lapply</span>(mreza_all, <span class="cf">function</span>(x) x[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb44-2" title="2"></a>
+<a class="sourceLine" id="cb44-3" title="3">mreza_oddo &lt;-<span class="st"> </span><span class="kw">lapply</span>(mreza_all, <span class="cf">function</span>(x) x[[<span class="dv">2</span>]])</a>
+<a class="sourceLine" id="cb44-4" title="4"></a>
+<a class="sourceLine" id="cb44-5" title="5">mreza_by_station &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, mreza_by_station)</a>
+<a class="sourceLine" id="cb44-6" title="6"></a>
+<a class="sourceLine" id="cb44-7" title="7">mreza_oddo &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, mreza_oddo)</a>
+<a class="sourceLine" id="cb44-8" title="8"></a>
+<a class="sourceLine" id="cb44-9" title="9"><span class="co"># or </span></a></code></pre></div>
 </div>
 
 

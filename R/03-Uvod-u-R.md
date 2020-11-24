@@ -3,7 +3,7 @@ title: "Uvod u R"
 subtitle: Kontrola toka i oblikovanje podataka
 author:
    - "Milutin Pejovic, Petar Bursac"
-date: "18 November 2020"
+date: "24 November 2020"
 output:
    html_document:
      keep_md: true
@@ -180,7 +180,7 @@ sum(studenti$ispit) # Koliko studenata je polozilo oba ispita
 
 ```r
 # Ucitavanje merenja
-merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Kreiranje pomocne kolone (faktorske) koja pokazuje pripadnost redova stanici
 merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
@@ -395,7 +395,7 @@ library(tidyverse)
 library(magrittr)
 
 # Ucitavanje merenja
-merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 merenja_df <- merenja %>% 
   dplyr::mutate(stanica = factor(rep(1:(dim(merenja)[1]/4), each = 4))) %>%  # Kreiranje novih kolona
@@ -563,12 +563,12 @@ Ukoliko želimo da napravimo funkciju od koda koji smo kreirali za potrebe oblik
 
 
 ```r
-merenja <- read.table(file = "./data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 nivelman <- function(niv_merenja, reperi){ # ime funkcije je nivelman, a argumenti niv_merenja (ulazna merenja) i reperi (naziv repera)
   
   # kopiramo kod koji smo kreirali ()
-  merenja_df <- niv_merenja %>% dplyr::mutate(stanica = factor(rep(1:(dim(merenja)[1]/4), each = 4))) %>% 
+  merenja_df <- niv_merenja %>% dplyr::mutate(stanica = factor(rep(1:(dim(niv_merenja)[1]/4), each = 4))) %>% 
     dplyr::group_by(stanica) %>%
     dplyr::summarise(od = as.character(tacka[1]),
                      do = as.character(tacka[2]),
@@ -653,11 +653,99 @@ nivelman(niv_merenja = merenja, reperi = c("B1", "B3", "B4", "B5"))
 > + Spojiti odgovarajuće tabele u jednu, tako da na kraju imamo dve tabele, jednu koja se odnosi na merenja na stanici i jednu sumarnu tabelu.
 
 
+ 
+
+
 ```r
 # Imena svih repera u mrezi:
 
-reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116",	"D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22",	"A23", "A24")
-
-# 
+library(tidyverse)
+library(magrittr)
+library(here)
 ```
 
+```
+## here() starts at C:/R_projects/Nauka_R/Slides
+```
+
+```r
+library(readxl)
+library(purrr)
+
+reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116",	"D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22",	"A23", "A24")
+
+merenja_path <- here::here("data", "niv_merenja.xlsx")
+
+merenja <- merenja_path %>%
+  readxl::excel_sheets() %>%
+  purrr::set_names() %>%
+  purrr::map(read_excel, path = merenja_path)
+
+mreza_all <- lapply(merenja, function(x) nivelman(x, reperi = reperi))
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```r
+mreza_by_station <- lapply(mreza_all, function(x) x[[1]])
+
+mreza_oddo <- lapply(mreza_all, function(x) x[[2]])
+
+mreza_by_station <- do.call(rbind, mreza_by_station)
+
+mreza_oddo <- do.call(rbind, mreza_oddo)
+
+# or 
+```
+
+    
