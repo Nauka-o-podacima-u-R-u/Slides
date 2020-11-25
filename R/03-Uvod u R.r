@@ -57,7 +57,7 @@ if(is(x, "numeric")) x/2
 #'
 #'
 #'
-studenti <- read.csv(file = "C:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE, stringsAsFactors = FALSE)
+studenti <- read.csv(file = "D:/R_projects/Nauka_R/Slides/data/Students_IG1.txt", header = TRUE, stringsAsFactors = FALSE)
 
 studenti$ispit <- NA # Prvo cemo kreirati kolonu "ispit" koja ima sve NA vrednosti
 
@@ -105,7 +105,7 @@ sum(studenti$ispit) # Koliko studenata je polozilo oba ispita
 #+ eval = TRUE, include = TRUE 
 
 # Ucitavanje merenja
-merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Kreiranje pomocne kolone (faktorske) koja pokazuje pripadnost redova stanici
 merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
@@ -198,10 +198,10 @@ writexl::write_xlsx(merenja_df_sum, path = "merenja_df_reperi.xlsx")
 #' Kao što ste već videli, oblikovanje podataka često podrazumeva kreiranje novih promenljivih (atribute ili kolone), sumiranje podataka u novu tabelu, reimenovati ili rasporediti podatke u tabeli. Za te potrebe razvijeni su brojni alati koji omogućavaju laku manupulaciju podacima, a najpoznatiji paket u R okruženju je `dplyr` paket iz `tidyverse` famijije paketa. Da bi se koristio paket `dplyr` neophodno ga je instalirati. Medjutim, preporučuje se instalacija celog `tidyverse` paketa, koji uključuje celu grupu korisnih paketa.
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '25%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/tidyverse-logo.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/tidyverse-logo.png")
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/tidyverse_website.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/tidyverse_website.png")
 #' 
 #' 
 #' Instalacija `tidyverse` paketa
@@ -215,42 +215,42 @@ library(tidyverse)
 #' **selekcija pojedinačnih merenja (instanci ili vrsta u tabeli) komandom `dplyr::filter()`**
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/filter.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/filter.png")
 #' 
 #' **selekcija atributa (kolona) komandom `dplyr::select()`**
 #'   
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/rstudio-cheatsheet-select.png")    
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/rstudio-cheatsheet-select.png")    
 #'     
 #'      
 #' **Kreiranje novih promenljivih komandom `dplyr::mutate()`**      
 #'        
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/mutate.png")         
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/mutate.png")         
 #'          
 #' 
 #' **Sumiranje podataka komandom `dplyr::summarise()`**
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/summarise.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/summarise.png")
 #' 
 #' 
 #' **Grupisanje podataka `dplyr::group_by()` (često u kombinaciji sa `summarise`)**
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/group_by.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/group_by.png")
 #' 
 #' 
 #' **Kombninovanje (spajanje) tabela komandom `dplyr::_join`**
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/combine-options1.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/combine-options1.png")
 #' 
 #' 
 #' **Sortiranje podataka komandom `dplyr::arrange()`** 
 #' 
 #+ echo = FALSE, fig.align="center", out.width = '70%'
-knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/reorder-data-frame-rows-in-r.png")
+knitr::include_graphics("D:/R_projects/Nauka_R/Slides/Figures/reorder-data-frame-rows-in-r.png")
 #'
 #' 
 #'   
@@ -263,7 +263,7 @@ library(tidyverse)
 library(magrittr)
 
 # Ucitavanje merenja
-merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 merenja_df <- merenja %>% 
   dplyr::mutate(stanica = factor(rep(1:(dim(merenja)[1]/4), each = 4))) %>%  # Kreiranje novih kolona
@@ -360,7 +360,7 @@ dec2dms(45.52658)
 #' Ukoliko želimo da napravimo funkciju od koda koji smo kreirali za potrebe oblikovanja ulaznih podataka to ćemo uraditi na sledeći način. 
 #'    
 
-merenja <- read.table(file = "C:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+merenja <- read.table(file = "D:/R_projects/Nauka_R/Slides/data/nivelman.txt", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 nivelman <- function(niv_merenja, reperi){ # ime funkcije je nivelman, a argumenti niv_merenja (ulazna merenja) i reperi (naziv repera)
   
@@ -419,7 +419,54 @@ nivelman(niv_merenja = merenja, reperi = c("B1", "B3", "B4", "B5"))
 
 #'
 #' 
-#'  
+#' > <h4>Zadatak 1 - Resenje 1</h4>
+
+# Imena svih repera u mrezi:
+reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116",	"D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22",	"A23", "A24")
+
+# Putanja ka fajlu (3 nacina)
+merenja_path <- "D:/R_projects/Nauka_R/Slides/data/niv_merenja.xlsx"
+merenja_path <- here::here("data", "niv_merenja.xlsx")
+files_data <- list.files("D:/R_projects/Nauka_R/Slides/data/", full.names = TRUE)
+merenja_path <- files_data[6]
+
+# Nazivi sheet-ova
+nazivi_sheets <- merenja_path %>%
+  readxl::excel_sheets()
+
+# Ucitavanje svakog sheet-a i smestanje u listu
+lista_sheets <- list()
+for(i in 1:length(nazivi_sheets)){
+  lista_sheets[[i]] <- readxl::read_excel(path = merenja_path, sheet = nazivi_sheets[i])
+}
+names(lista_sheets) <- nazivi_sheets # postavljanje naziva elemenata liste
+# lista_sheets
+
+# Primena funkcije nivelman
+lista_nivelman <- list()
+for(i in 1:length(lista_sheets)){
+  lista_nivelman[[i]] <- nivelman(niv_merenja = lista_sheets[[i]], reperi = reperi)
+}
+# lista_nivelman
+
+# Visinske razlike po stanici - Tabela 1
+tabela_1 <- data.frame()
+for(i in 1:length(lista_nivelman)){
+  tabela_1 <- rbind(tabela_1, lista_nivelman[[i]][[1]])
+}
+# tabela_1
+
+# Visinske razlike od repera do repera - Tabela 2
+tabela_2 <- data.frame()
+for(i in 1:length(lista_nivelman)){
+  tabela_2 <- rbind(tabela_2, lista_nivelman[[i]][[2]])
+}
+# tabela_2 
+
+
+
+#' > <h4>Zadatak 1 - Resenje 2</h4>
+
 
 # Imena svih repera u mrezi:
 
@@ -438,19 +485,35 @@ merenja <- merenja_path %>%
   purrr::set_names() %>%
   purrr::map(read_excel, path = merenja_path)
 
-mreza_all <- lapply(merenja, function(x) nivelman(x, reperi = reperi))
+# Drugi nacin
+# https://stackoverflow.com/questions/12945687/read-all-worksheets-in-an-excel-workbook-into-an-r-list-with-data-frames
+library(rio)
+data_list <- import_list("D:/R_projects/Nauka_R/Slides/data/niv_merenja.xlsx", rbind = TRUE) # parametrom rbind (row bind - spojiti redove) dobijamo sve clanove liste spojene u jedan data.frame
 
+# Nazivi repera
+Tacke <- unique(data_list$tacka)
+substr(Tacke,1,1)
+toupper(substr(Tacke,1,1))
+Tacke_sve <- tapply(Tacke, toupper(substr(Tacke,1,1)),identity)
+# tapply() is a very powerful function that lets you break a vector into pieces and then apply some function to each of the pieces
+Reperi <- unlist(Tacke_sve[9:21][]) %>% as.data.frame() %>% dplyr::rename(tac = ".")
+reperi <- as.vector(Reperi$tac)
+
+# Primena funkcije nivelman nad svim clanovima liste 
+mreza_all <- lapply(merenja, function(x) nivelman(niv_merenja = x, reperi = reperi))
+
+# Visinske razlike po stanici - Tabela 1
 mreza_by_station <- lapply(mreza_all, function(x) x[[1]])
 
+# Visinske razlike od repera do repera - Tabela 2
 mreza_oddo <- lapply(mreza_all, function(x) x[[2]])
 
-mreza_by_station <- do.call(rbind, mreza_by_station)
+# Tabela merenja po stanici
+mreza_by_station <- do.call(rbind, mreza_by_station) 
+mreza_by_station %<>% as.data.frame()
 
+# Sumarna tabela
 mreza_oddo <- do.call(rbind, mreza_oddo)
+mreza_oddo %<>% dplyr::mutate(vlak = row_number()) %>% as.data.frame()    
 
-# or 
-
-
-
-  
 #'     
