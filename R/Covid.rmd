@@ -1,0 +1,92 @@
+---
+title: "COVID-19 data analysis"
+author:
+  - "Milutin Pejovic, Petar Bursac"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+   html_document:
+     keep_md: true
+     theme: "simplex"
+     highlight: tango
+     toc: true
+     toc_depth: 5
+     toc_float: true
+     fig_caption: yes
+---
+
+
+# Data 
+
+## Učitavanje podataka
+
+
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readxl)
+library(magrittr)
+
+covid <- readxl::read_xlsx(here::here("data", "dnevni-izvestaj-covid-19.xlsx")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_LICA_NA_RESPIRATORU_ZA_DATI_DATUM", "n_resp")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_HOSPITALIZOVANIH_LICA_ZA_DATI_DATUM", "n_host")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_POZITIVNIH_LICA_ZA_DATI_DATUM", "n_positive")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "UKUPAN_BROJ_POZITIVNIH_LICA_OD_POCETKA_PANDEMIJE", "total_positive")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_TESTIRANIH_LICA_ZA_DATI_DATUM", "n_test")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "UKUPAN_BROJ_TESTIRANIH_LICA_OD_POCETKA_PANDEMIJE", "total_test")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_PREMINULIH_LICA_ZA_DATI_DATUM", "n_died")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_PREMINULIH_MUSKARACA_ZA_DATI_DATUM", "n_men_died")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "BROJ_PREMINULIH_ZENA_ZA_DATI_DATUM", "n_women_died")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "UKUPAN_BROJ_PREMINULIH_LICA_OD_POCETKA_PANDEMIJE", "total_died")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROSEK_GODINA_LICA_PREMINULIH_ZA_DATI_DATUM", "avereage_age_died")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROCENAT_ZARAZENIH_LICA_ U_ODNOSU_NA_BROJ_TESTIRANIH_LICA_ZA_DATI DATUM", "perc_pos_test")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROCENAT_ZARAZENIH_LICA_OD_POCETKA_PANDEMIJE_U_ODNOSU_NA_UKUPAN_BROJ_TESTIRANIH_LICA", "total_perc_pos_test")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROCENAT_HOSPITALIZOVANIH_LICA_U ODNOSU_NA_UKUPAN_BROJ_ZARAZENIH_ZA_DATI_DATUM", "perc_host_pos")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROCENAT_LICA_NA_RESPIRATORU_U_ODNOSU_NA_UKUPAN_BROJ_HOSPITALIZOVANIH", "perc_resp_host")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "UKUPAN_BROJ_IZLECENIH_LICA_OD_POCETKA_PANDEMIJE", "total_cured")) %>%
+  dplyr::mutate(Opis = str_replace(Opis, "PROCENAT_IZLECENIH_LICA_U_ODNOSU_NA_UKUPAN_BROJ_ZARAZENIH_OD_POCETKA_PANDEMIJE", "total_perc_cured_pos")) %>%
+  dplyr::mutate(date = as.Date(paste(Godina, Mesec, Dan, sep = "-"))) %>%
+  dplyr::select(date, vrednost = Vrednost, opis = Opis) %>% 
+  tidyr::pivot_wider(names_from = opis, values_from = vrednost)
+
+head(covid)
+
+# ggplot(data = covid, aes(x = date, y = n_positive)) + geom_line() + geom_point()
+
+# ggplot(data = covid) + geom_
+
+```
+
+Opisi promenljivih
+
+```{r, message=FALSE, warning=FALSE}
+
+library(kableExtra)
+
+vars <- readxl::read_xlsx(here::here("data", "dnevni-izvestaj-covid-19.xlsx"), sheet = 2)
+
+vars %>% 
+  knitr::kable(caption = "Opis promenljivih") %>% 
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = TRUE)
+
+
+```
+
+
+
+```{r}
+
+ggplot(covid, aes(x = date, y = n_positive)) + geom_point(position = "jitter")
+
+writexl::write_xlsx(covid, here::here("data", "covid.xlsx"))
+
+table2 <- readxl::read_xlsx(here::here("data", "covid19.xlsx"), sheet = 1) %>% 
+  dplyr::mutate(date = as.Date(paste(GODINA, MESEC, DAN, sep = "-"))) %>%
+  dplyr::select(date, opstina = OPSTINA, pol = POL, starost = STAROST)
+
+writexl::write_xlsx(table2, here::here("data", "covid_2.xlsx"))
+  
+
+```
+covid
+
+covid <- 
