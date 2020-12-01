@@ -68,3 +68,7 @@ listCovid_date[[42]]
 library(mapview)
 mapview(listCovid_date[[42]][[3]], zcol = "starost_mean", layer.name = "Prosecan broj godina starosti: ")
 
+# ::::::::::::::::::::::::::::::::::::::
+### Vizuelizacija
+# ::::::::::::::::::::::::::::::::::::::
+

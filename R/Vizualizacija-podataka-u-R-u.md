@@ -1,7 +1,7 @@
 ---
 title: "Uvod u vizualizaciju podataka u R-u"
 author: "Milutin Pejović"
-date: "26 November 2020"
+date: "01 decembar 2020"
 output:
   html_document:
       keep_md: true
@@ -331,6 +331,7 @@ ggplot(data = mpg) + geom_point(aes(x = class, y = drv))
 
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
 U terminologiji pristupa `The grammar of graphics` (`ggplot`)`Aestetic` se odnosi na vizelne osobine prikaza neke promenljive. Tu mislimo pre svega na boju (`color`), oblik (`shape`) ili veličinu (`size`). Naravno i pozicija na grafiku predstavlja jednu osobinu prikaza, medjutim ona se smatra `default` osobinom. Različite informacije koje nose podaci mogu se prikazati pomoću `aestetic` parametara. Generalno, `Aestetic mapping` nam omogućava prikazivanje više promenljivih na jednom grafiku. `Aestetic` parametri se definišu u okviru komande `aes()`. Na primer, ukoliko želimo da prikažemo i promenljivu `class` na našem grafiku, u okviru `aestetic` parametara ćemo definisati da boja zavisi od promenljive `class`. 
 
 
@@ -340,6 +341,7 @@ ggplot(data = mpg) +
 ```
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+
 Na ovom grafiku vidimo da se tačke koje odstupaju odnose na "coupe" (2seats) automobile. 
 
 Slično, ista promenljiva može biti prikazana korišćenjem parametra `size`:
@@ -355,6 +357,7 @@ ggplot(data = mpg) +
 ```
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
 Definisanjem `aestetic` parametara, `ggplot` automatski dodeljuje jednu vrednost svakoj vrednosti promenljive kroz proces koji se zove `scaling`. Pored toga, legenda se automatski generiše. Naravno, prikaz legende je moguće menjati.
 
 Postoje i drugi `aestetic` parametri, kao na primer `alpha` kojim se definiše transparentnost prikaza. 
@@ -399,7 +402,7 @@ Na primer, iste podatke možemo prikazati pomoću dva različita geometrijska ob
 <img src="Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-16-1.png" width="50%" />
 
 
-Svaki geometrijski objekat se dodaje na osnovni grafik u vidu lejera, pa ga često nazivamo i geometrijski lejer. U okviru geometrijskog lejera definiše se parametar `mapping` u okviru koga se definišu `aestetic` parametri. Međutim, nisu svi aestetic parametri zajednički za sve geometrije. Na primer, nije moguće definisati `aestetic` parametar `shape` za geometriju linije. Umesto toga, postoji `aestetic` parametar `linetype`. 
+Svaki geometrijski objekat se dodaje na osnovni grafik u vidu lejera, pa ga često nazivamo i geometrijski lejer. U okviru geometrijskog lejera definiše se parametar `mapping` u okviru koga se definišu `aestetic` parametri.      Međutim, nisu svi aestetic parametri zajednički za sve geometrije. Na primer, nije moguće definisati `aestetic` parametar `shape` za geometriju linije. Umesto toga, postoji `aestetic` parametar `linetype`. 
 
 
 ```r
@@ -478,7 +481,7 @@ ggplot(data = mpg) +
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
-
+          
 Međutim, ovde se može primetiti da su isti parametri korišćeni u oba lejera. Ako zamislimo, neki grafik sa više lejera koji koriste iste `aestetic` parametre, i ako želimo promeniti neki parametar, on se mora menjati na više mesta u našem kodu. Da bi se to izbeglo, moguće je definisati `aestetic` parametre izvan geometrijskih lejera (u okviru `ggplot` funkcije). Tako definisani aestetic parametri se smatraju "globalnim" i primenjuju se u svim geoemtrijskim lejerima u okviru grafika.
 
 
@@ -493,6 +496,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 ```
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+
 Međutim, to ne znači da se dodatni `aestetic` parametri ne mogu definisati u okviru svakog geometrijskog lejera. Tako na primer, promeljiva `class` se može uključiti u lejer `geom_point` na sledeći način:
 
 
@@ -512,4 +516,96 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 > + Pokušajte da reprodukujete sledeće grafike:
 
 ![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(se = FALSE) # se - confidence interval 
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(group = drv), se = FALSE) + # f = front-wheel drive, r = rear wheel drive, 4 = 4wd
+  geom_point() 
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+
+```r
+# grupisanje po vrednosti kategoričke promenljive - atribut drv
+```
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(group = drv, colour = drv), se = FALSE) +   
+  geom_point(mapping = aes(colour = drv))
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+
+```r
+# ILI 
+
+#ggplot(mpg, aes(x = displ, y = hwy, colour = drv)) +
+#  geom_point() +
+#  geom_smooth(se = FALSE)
+```
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = drv)) +
+  geom_smooth(se = FALSE)
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(colour = drv)) +
+  geom_smooth(aes(linetype = drv), se = FALSE)
+```
+
+```
+## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
+
+
+```r
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(size = 4, color = "white") +
+  geom_point(aes(colour = drv))
+```
+
+![](Vizualizacija-podataka-u-R-u_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+
+
+
+
+
 
