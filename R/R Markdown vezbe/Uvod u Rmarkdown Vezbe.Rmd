@@ -1,0 +1,385 @@
+---
+title: "Uvod u Rmarkdown Vežbe"
+author: "Petar Bursać"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+      keep_md: true
+      theme: "simplex"
+      toc: true
+      highlight: tango
+      toc_depth: 5
+      toc_float: true
+      fig_caption: yes
+      code_folding: "show"
+
+---
+
+# Uvod
+
+`Rmarkdown` je okruženje u okviru `R` programskog jezika koje nam omogućava da kreiramo dokumente koji objedinjuju R kod, rezultate koda i prateći tekst. U okviru `Rmarkdown`-a moguće je kreirati različite dokumente u različitim formatima, kao što su html, pdf, word, prezentaciju itd. 
+
+`Rmarkdown` je prevashodno namenjen da:
+
+1.  Da omogući lakšu komunikaciju između onoga ko radi na rešavanju nekog problema i onoga ko će da donese odluku na osnovu rezultata, omogućavajući onome ko donosi odluke da se fokusira na rezultate i tekst, a ne na kod. 
+
+1.  Da omogući komunikaciju između ljudi (uključujući i budućeg tebe) tako što će kod biti praćen određenim tekstom koji će objašnjavati kako se došlo do određenih rezultata.
+    
+1.  Da omogući bolju dokumentaciju onoga što je urađeno.
+
+
+U okviru ovog dokumenta dat je prikaz osnovnih alata, kao i par trikova u cilju izrade kvalitetnih i interaktivnih R Markdown izveštaja.
+
+
+# Formatiranje teksta
+***
+U okviru R Markdown-a, formatiranje teksta je jednostavno i koriste se sledeći tagovi:
+
+  - **Boldiran** tekst se piše pomoću ** **.
+  - *Iskošen* teskt se piše pomoću * *.
+  - [Linkovi](https://www.grf.bg.ac.rs/home) se dodaju pomoću [] i ().
+
+  
+```{r, eval = FALSE}
+Kod je napisan na sledeći način:
+
+  - **Boldiran** tekst se piše pomoću ** **.
+  - *Iskošen* teskt se piše pomoću * *.
+  - [Linkovi](https://www.grf.bg.ac.rs/home) se dodaju pomoću [] i ().
+
+```
+
+
+# Horizontalne linije 
+***
+Dodavanje horizontalne linije koja odvaja delove dokumenta je moguća putem tri zvezdice ***:
+
+```{r, eval = FALSE}
+***
+```
+
+
+
+# Auto numerisanje naslova 
+***
+Naslovi i podnaslovi nivoa 1, 2, 3 se postavljaju putem #, ## i ###. Auto numerisanje naslova i podnaslova je moguće korišćenjem sledećeg taga u zaglavlju dokumenta:
+
+```{r, eval=FALSE}
+---
+title: "Naslov dokumenta"
+output: 
+  html_document:
+    number_sections: TRUE
+---
+
+# Prvi naslov
+## Prvi podnaslov
+## Drugi podnaslov
+
+# Drugi naslov
+```
+
+
+
+# Prazan red 
+***
+Dodavanje razmaka - prazan red između paragrafa kao i ostalog sadržaja je moguće korišćenjem taga `<br>`, putem `.rmd` koda: 
+```{r, eval=FALSE}
+Prva rečenica
+<br><br><br><br>
+Druga rečenica
+```
+
+dobijamo ovakav `html` rezultat:
+
+***
+
+Prva rečenica
+<br><br><br><br>
+Druga rečenica
+
+***
+
+
+# Centriranje slika 
+***
+Centriranje slika se postiže sledećim kodom:
+```{r eval=FALSE}
+<center>
+![FigName](Rlogo.png)
+</center>
+```
+
+I kao rezultat: 
+<center>
+![FigName](Rlogo.png)
+</center>
+
+
+# Naziv slike 
+***
+Naziv slike pišemo u okviru taga unutar chunk-a, primer:
+```{r, eval=FALSE}
+{r, fig.align="center", fig.width=6, fig.height=6, fig.cap="Slika: Veoma važan naziv slike."}
+```
+
+```{r, message=FALSE, warning=FALSE, fig.align="center", fig.width=6, fig.height=6, fig.cap="Slika: Veoma važan naziv slike."}
+library(tidyverse)
+mpg %>%
+  ggplot( aes(x=reorder(class, hwy), y=hwy, fill=class)) + 
+    geom_boxplot() +
+    xlab("class") +
+    theme(legend.position="none")
+```
+
+
+# Formule
+***
+Formule se pišu korišćenjem LATEX formata:
+
+$A = (\pi * \lambda \times r^{4}) / \alpha$
+
+Latex sintaksa se piše unutar `$`
+```{r, eval=FALSE}
+$A = (\pi * \lambda \times r^{4}) / \alpha $
+```
+
+
+# 2 slike u 2 kolone
+***
+Plotovanje dve slike, jedna pored druge je moguće korišćenjem sledećeg koda, koji se piše u okviru header-a chunk-a:
+
+```{r, eval=FALSE}
+``{r out.width=c('50%', '50%'), fig.show='hold'}
+boxplot(1:10)
+plot(rnorm(10))
+`
+```
+
+```{r out.width=c('50%', '50%'), fig.show='hold', echo=FALSE}
+boxplot(1:10)
+plot(rnorm(10))
+```
+
+
+# Više kolona
+***
+
+
+<div class = "row">
+<div class = "col-md-4">
+<br><br>Since R Markdown use the [bootstrap framework](https://getbootstrap.com/docs/4.0/layout/grid/) under the hood. It is possible to benefit its powerful grid system. Basically, you can consider that your row is divided in 12 subunits of same width. You can then choose to use only a few of this subunits.
+</div>
+<div class = "col-md-4">
+<br><br>Here, I use 3 subunits of size 4 (4x3=12). The last column is used for a plot. You can read more about the grid system [here](bootstrap grid system). I got this result showing the following code in my R Markdown document.
+</div>
+<div class = "col-md-4">
+```{r, message=FALSE, echo=FALSE}
+ggplot( mtcars, aes(x=mpg)) + geom_histogram(fill="skyblue", alpha=0.5) + theme_minimal()
+```
+</div>
+</div>
+
+
+Kod kojim se postiže ovaj rezultat:
+```{r, eval=FALSE}
+<div class = "row">
+  
+<div class = "col-md-4">
+<br><br>Since R Markdown use the [bootstrap framework](https://getbootstrap.com/docs/4.0/layout/grid/) under the hood. It is possible to benefit its powerful grid system. Basically, you can consider that your row is divided in 12 subunits of same width. You can then choose to use only a few of this subunits.
+</div>
+  
+<div class = "col-md-4">
+<br><br>Here, I use 3 subunits of size 4 (4x3=12). The last column is used for a plot. You can read more about the grid system [here](bootstrap grid system). I got this result showing the following code in my R Markdown document.
+</div>
+  
+<div class = "col-md-4">
+``{r, message=FALSE, echo=FALSE}
+ggplot( mtcars, aes(x=mpg)) + geom_histogram(fill="skyblue", alpha=0.5) + theme_minimal()
+``
+</div>
+</div>
+```
+
+
+# Tabovi za podnaslove {#buttons .tabset .tabset-fade .tabset-pills}
+***
+Kreiranje tabova za podnaslove se može kreirati na sledeći način, nakon naslova u čijem nastavku je dat kod "{#buttons .tabset .tabset-fade .tabset-pills}":
+
+## Prvi
+Sadržaj prvog podnaslova #1
+
+<br><br>
+
+***
+
+Kod za kreiranje ovakvog izgleda:
+```{r, eval=FALSE}
+# Korišćenje buttons-a ili tab-ova za podnaslove 
+***
+Organizovati podnaslove na sledeći način: 
+
+## Prvi
+Prvi podnaslov
+
+## Drugi
+Sadržaj drugog podnaslova #2
+
+## Treći
+Sadržaj trećeg podnaslova #3
+```
+
+
+Takođe je moguće stilizovati izgled dugmeta sledećim css kodom:
+```{r, eval=FALSE}
+.btn {
+    border-width: 0 0px 0px 0px;
+    font-weight: normal;
+    text-transform: ;
+}
+.btn-default {
+    color: #2ecc71;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+```
+
+## Drugi
+Sadržaj drugog podnaslova #2
+
+## Treći
+Sadržaj trećeg podnaslova #3
+
+
+
+# Naglašavanje dela teksta
+***
+Korišćenjem stilizacije putem **css** koda moguće je promeniti boju pozdaine kako bi tekst bio naglašen.
+
+Kod:
+```{r, eval=FALSE}
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+- Ovo je prva rečenica.
+- Ovo je druga rečenica.
+
+</div>
+```
+
+Dobijamo:
+<br>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
+- Ovo je prva rečenica.
+- Ovo je druga rečenica.
+
+</div>
+
+
+# Tabele - paket DT
+***
+Paket [DT library](https://rstudio.github.io/DT/) je jedna od najboljih opcija u cilju formatiranja i stilizacije tabela u HTML formatu. Moguće je:
+
+- Prikazati samo željeni sadržaj
+- Imati jasan uvid u podatke
+- Moguća je pretraga po kolonama
+- Dodavanje filtera
+- Kao i drugih pojedinosti
+
+Primer:
+
+```{r, warning=FALSE}
+library(DT)
+datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+```
+
+
+# Tabele - paket kableExtra
+***
+Druga opcija kod kreiranja tabela je korišćenje paketa [kableExtra](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html).
+Ovaj paketa nudi mogućnosti stilizacije i kreiranja tabela u skladu sa funkcionalnostima tidyverse familije paketa.
+
+
+```{r, warning=FALSE, message=FALSE}
+library(kableExtra)
+dt <- mtcars[1:5, 1:6]
+dt %>%
+  kbl() %>%
+  kable_styling() # automatsko dodavanje bootstrap teme
+
+```
+
+```{r}
+dt %>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+```
+
+
+```{r}
+dt %>%
+  kbl(caption = "Recreating booktabs style table") %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
+
+```{r}
+dt %>%
+  kbl() %>%
+  kable_minimal()
+```
+
+```{r}
+dt %>%
+  kbl() %>%
+  kable_material(c("striped", "hover"))
+```
+
+
+
+```{r}
+kbl(dt) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+```{r}
+mtcars[1:8, 1:8] %>%
+  kbl() %>%
+  kable_paper(full_width = T) %>%
+  column_spec(2, color = spec_color(mtcars$mpg[1:8]),
+              link = "https://haozhu233.github.io/kableExtra/") %>%
+  column_spec(6, color = "white",
+              background = spec_color(mtcars$drat[1:8], end = 0.7),
+              popover = paste("am:", mtcars$am[1:8]))
+```
+```{r}
+kbl(dt) %>%
+  kable_paper("striped", full_width = T) %>%
+  column_spec(5:7, bold = T) %>%
+  row_spec(3:5, bold = T, color = "white", background = "#D7261E")
+```
+
+```{r}
+kbl(mtcars[1:10, 1:6], caption = "Group Rows") %>%
+  kable_paper("striped", full_width = F) %>%
+  pack_rows("Group 1", 4, 7) %>%
+  pack_rows("Group 2", 8, 10)
+```
+
+```{r}
+collapse_rows_dt <- data.frame(C1 = c(rep("a", 10), rep("b", 5)),
+                 C2 = c(rep("c", 7), rep("d", 3), rep("c", 2), rep("d", 3)),
+                 C3 = 1:15,
+                 C4 = sample(c(0,1), 15, replace = TRUE))
+
+kbl(collapse_rows_dt, align = "c") %>%
+  kable_paper(full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  collapse_rows(columns = 1:2, valign = "top")
+```
+
