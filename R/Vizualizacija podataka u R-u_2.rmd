@@ -1,0 +1,451 @@
+---
+title: "Vizualizaciju podataka u R-u"
+subtitle: "drugo predavanje"
+author: "Milutin Pejović"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+      keep_md: true
+      theme: "simplex"
+      toc: true
+      highlight: tango
+      toc_depth: 5
+      toc_float: true
+      fig_caption: yes
+
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# devtools::install_github("thomasp85/ggforce")
+library(tidyverse)
+library(magrittr)
+library(DT)
+library(ggplot2)
+library(remedy)
+library(here)
+library(ggplot2)
+library(gridExtra)
+library(ggpubr)
+library(lattice)
+library(plotly)
+library(ggforce)
+library(ggthemes)
+library(dcldata)
+```
+
+
+```{r include = FALSE}
+# source("./bin/chunk-options.R")
+```
+
+
+```{r include = FALSE, eval = FALSE}
+<style>
+body {
+text-align: justify}
+</style>
+
+```
+
+
+U okviru ovog predavanja biće predstavljeni različite vrste grafika namenjenih vizualizaciji različitih vrsta promenljivih kao i odnosa više različitih promenljivih u okviru `ggplot` okruženja. Za te potrebe koristićemo podatke koji su dostupni u okviru paketa `dcldata`, a koji je kreiran kao dopunski materijal za knjigu [Data visualization](https://dcl-data-vis.stanford.edu/). Za instalaciju paketa potrebno je sledeće:
+
+```{r eval=FALSE}
+install.packages("dcldata")
+```
+
+Za potrebe vizualizacije podataka koristićemo opšte poznati set podataka `Gapminder` koji sadrži podatke populacije, bruto društvenog proizvoda po stanovniku, prosečni životni vek stanovništva po godinama i kontinentima.
+
+```{r eval=FALSE}
+data(gm_combined)
+
+?gm_combined
+```
+
+# Vizualizacija jedne promenljive
+
+## Distrubucija jedne promenljive
+
+Kada želimo saznati više o distribuciji jedne promenljive obično prvo pogledamo aritmetičku sredinu i uz to minimalnu i maksimalnu vrednost. Međutim, veoma često to nije dovoljno, pa želimo pogledati i median koji je po prirodi manje osetljiv na odskačuće rezultate. Poređenje srednje vrednosti i medijana možemo videti koliko nam je distribucija podataka razvučena ka minimumu ili maksimumu. 
+
+```{r}
+
+serbia <- gm_combined %>% dplyr::filter(name == "Serbia")
+
+head(serbia)
+```
+
+```{r}
+serbia$year
+
+range(serbia$year)
+
+min(serbia$population)
+
+max(serbia$population)
+
+mean(serbia$population)
+
+summary(serbia$population)
+
+```
+
+Iste funkcionalnosti su dostupne i u okviru `dplyr` paketa
+
+```{r}
+serbia %>% dplyr::slice_sample(n = 20)
+
+serbia %>% dplyr::slice_max(order_by = population, n = 20)
+
+serbia %>% dplyr::slice_min(order_by = population, n = 20)
+
+serbia %>% dplyr::slice_head(n = 20)
+
+serbia %>% dplyr::slice_tail(n = 20)
+
+```
+
+
+```{r}
+gm_combined %>%
+  dplyr::filter(region == "Europe") %>%
+  ggplot(aes(x = life_expectancy)) +
+  geom_histogram() 
+```
+
+```{r}
+gm_combined %>%
+  dplyr::filter(region == "Europe") %>%
+  ggplot(aes(x = life_expectancy)) +
+  geom_histogram(binwidth=5) +
+  geom_vline(aes(xintercept = median(life_expectancy)), color = "red")
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(x = life_expectancy)) +
+  geom_freqpoly(binwidth = 2) +
+  geom_vline(aes(xintercept = median(life_expectancy)), color = "red")
+```
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(life_expectancy)) +
+  geom_density() +
+  geom_vline(aes(xintercept = median(life_expectancy)), color = "red")
+```
+
+### Distribucija više promenljivih
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(x = life_expectancy)) + geom_histogram(aes(fill = region), bins = 20, alpha=0.5) 
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(x = life_expectancy)) + geom_density(aes(fill = region), alpha=0.5) 
+
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(life_expectancy)) +
+  geom_histogram(binwidth = 2) +
+  facet_grid(cols = vars(region))
+```
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(life_expectancy)) +
+  geom_histogram(binwidth = 2) +
+  facet_grid(rows = vars(region))
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(life_expectancy, color = region)) +
+  geom_freqpoly(binwidth = 5)
+```
+
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(life_expectancy, color = region, fill = region )) +
+  geom_density(alpha = 0.5)
+```
+
+
+### Box-plot
+
+```{r echo=FALSE}
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/box-plot.png")
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(x = region, life_expectancy)) +
+  geom_boxplot()
+```
+
+
+```{r}
+gm_combined %>% 
+  mutate(region_1 = fct_reorder(region, life_expectancy)) %>% 
+  ggplot(aes(region_1, life_expectancy)) +
+  geom_boxplot()
+```
+
+
+```{r}
+gm_combined %>% 
+  mutate(region_1 = fct_reorder(region, life_expectancy)) %>% 
+  ggplot(aes(region_1, life_expectancy)) +
+  geom_boxplot() + 
+  coord_flip()
+```
+
+
+```{r}
+gm_combined %>% 
+  mutate(region_1 = fct_reorder(region, life_expectancy)) %>% 
+  ggplot(aes(region_1, life_expectancy)) +
+  geom_boxplot() +
+  geom_hline(aes(yintercept = median(life_expectancy)), color = "red") +
+  theme(axis.text.x = element_text(angle = -45, hjust = 0)) 
+  
+```
+
+
+## Vizualizacija odnosa dve promenljive
+
+### Dve kontinualne promenljive
+
+Vizualizacija dve kontinualne promenljive omogućava uvid u odnos dve promenljive. U okviru ovog poglavlja posmatraćemo odnos izmedju promenljivih `life_expectancy` i `gdp_per_capita`.
+
+Nekoliko pitanja se mogu postaviti kada govorimo o odnosu dve kontinualne promenljive `life_expectancy` i `gdp_per_capita`:
+
++ Postoji li odnos izmedju dve promenljive?
++ Postoji li zavisnost između dve promenljive?
++ Koji je tip zavisnosti?
++ Da li `life_expectancy` linearno raste sa rastom `gdp_per_capita`?
+
+U okviru `ggplot` okruženja postoji nekoliko objekata i geometrijskih lejera koji su namenjeni vizalizaciji odnosa dve kontinualne promenljive: 
+
++ Scales
++ Coordinate systems
++ Geoms:
+  - geom_point()
+  - geom_hex()
+  - geom_bin2d()
+  - geom_smooth()
+  - geom_line()
+
+
+```{r}
+asia_2015 <-
+  gm_combined %>% 
+  filter(region == "Asia", year == 2015)
+
+asia_2015 %>% 
+  mutate(name = fct_reorder(name, population)) %>% 
+  ggplot(aes(population, name)) +
+  geom_point()
+```
+
+
+```{r}
+asia_2015 %>% 
+  mutate(name = fct_reorder(name, population)) %>% 
+  ggplot(aes(population, name)) +
+  geom_point() +
+  scale_x_log10()
+```
+
+
+```{r}
+
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_point()
+
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_point() +
+  scale_x_log10()
+```
+
+
+#### Preklapanje podataka
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_bin2d() +
+  scale_x_log10()
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  scale_x_log10()
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  scale_x_log10() +
+  scale_fill_viridis_c()
+```
+
+
+```{r}
+gm_combined_2010_2015 <-
+  gm_combined %>% 
+  filter(year %in% c(2010, 2015))
+
+gm_combined_2010_2015 %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_point() +
+  scale_x_log10()
+
+gm_combined_2010_2015 %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  scale_x_log10() +
+  scale_fill_viridis_c()
+```
+
+
+```{r}
+gm_combined_2010_2015 %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_point(shape = 21, size = 3) +
+  scale_x_log10()
+```
+
+#### Smoothing
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  geom_smooth() +
+  scale_x_log10() +
+  scale_fill_viridis_c() 
+```
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  geom_smooth(method = "loess") +
+  scale_x_log10() +
+  scale_fill_viridis_c()
+```
+
+
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy)) +
+  geom_hex() +
+  geom_smooth(method = "gam") +
+  scale_x_log10() +
+  scale_fill_viridis_c()
+```
+
+```{r}
+gm_combined %>% 
+  ggplot(aes(gdp_per_capita, life_expectancy, color = region)) +
+  geom_point() +
+  scale_x_log10()
+```
+
+Često je potrebno prikazati jednu promenljivu koja je prikupljana u dva različita momenta u vremenu.
+
+```{r}
+gm_combined_paired <-
+  gm_combined_2010_2015 %>%  
+  select(iso_a3, name, region, year, life_expectancy) %>% 
+  pivot_wider(
+    names_from = year,
+    names_prefix = "year_",
+    values_from = life_expectancy
+  )
+
+gm_combined_paired %>% 
+  ggplot(aes(year_2010, year_2015)) +
+  geom_point(alpha = 0.5) 
+```
+
+
+```{r}
+gm_combined_paired %>% 
+  ggplot(aes(year_2010, year_2015)) +
+  geom_point(alpha = 0.5) +
+  coord_fixed()
+```
+
+
+```{r}
+gm_combined_paired %>% 
+  filter(region == "Asia") %>% 
+  mutate(name = fct_reorder(name, year_2015)) %>% 
+  ggplot(aes(y = name)) +
+  geom_point(aes(x = year_2010, color = "2010")) +
+  geom_point(aes(x = year_2015, color = "2015"))
+```
+
+
+```{r}
+gm_combined_paired %>% 
+  filter(region == "Asia") %>% 
+  mutate(name = fct_reorder(name, year_2015)) %>% 
+  ggplot(aes(y = name)) +
+  geom_segment(aes(x = year_2010, xend = year_2015, y = name, yend = name)) +
+  geom_point(aes(x = year_2010, color = "2010")) +
+  geom_point(aes(x = year_2015, color = "2015"))
+```
+
+
+
+#### Prikazivanje vise promenljivih
+
+
+```{r}
+gm_combined_2015 <-
+  gm_combined %>% 
+  filter(year == 2015)
+
+gm_combined_2015 %>% 
+  arrange(desc(population)) %>% 
+  ggplot(
+    aes(gdp_per_capita, life_expectancy, fill = region, size = population)
+  ) +
+  geom_point(shape = 21, color = "black") +
+  scale_size(range = c(0.5, 20)) +
+  scale_x_log10() 
+```
+
+
+
+
+
