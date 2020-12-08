@@ -4,9 +4,44 @@ library(sf)
 library(readxl)
 library(magrittr)
 library(stringr)
-wd <- "D:/R_projects/Nauka_R/"
+wd <- "D:/R_projects/Nauka_R/Slides/R/COVID"
 setwd(wd)
 
+
+covid <- readxl::read_excel(path = "covid.xlsx") %>%
+  as.data.frame() 
+
+covid
+names(covid)
+summary(covid)
+
+
+ggplot(data = covid)+
+  geom_line(mapping = aes(x = date, y = n_positive), colour = "yellow")+
+  geom_line(mapping = aes(x = date, y = n_host), colour = "orange")+
+  geom_line(mapping = aes(x = date, y = n_resp), colour = "red")
+
+
+
+ggplot(data = covid)+
+  geom_line(mapping = aes(x = date, y = n_positive, colour = "yellow"))+
+  geom_line(mapping = aes(x = date, y = n_host, colour = "orange"))+
+  geom_line(mapping = aes(x = date, y = n_resp, colour = "red"))+
+  labs(title = "Statisticki podaci - COVID19", 
+       subtitle = "Republika Srbija",
+       x = "Mesec", 
+       y = "Broj osoba", 
+       caption = "Podaci preuzeti: \n https://data.gov.rs/sr/")+
+  scale_color_manual(name = "Podaci: ", 
+                     values = c("yellow", "orange", "red"), 
+                     labels = c("Broj hospitalizovanih", "Broj na respiratoru", "Broj pozitivnih"))+
+  theme_bw()+
+  theme(legend.position = "bottom")
+  
+
+
+
+# Vizualizacija prostornih podataka
 
 dat1 <- readxl::read_excel(path = "covid.xlsx") %>%
   as.data.frame()
