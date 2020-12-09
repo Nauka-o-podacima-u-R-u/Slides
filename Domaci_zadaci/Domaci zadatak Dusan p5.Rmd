@@ -8,6 +8,7 @@ output: word_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+merenja <- read.table(file = "D:\\Fakultet\\MASTER_PRVA_GODINA\\Nauka o podacima u R-u\\Vezbe\\Vezba_4\\niv_merenja.xlsx", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 ```
 

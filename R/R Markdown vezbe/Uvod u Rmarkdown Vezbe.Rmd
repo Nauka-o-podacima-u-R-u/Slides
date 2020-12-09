@@ -113,6 +113,7 @@ Centriranje slika se postiže sledećim kodom:
 I kao rezultat: 
 <center>
 ![FigName](Rlogo.png)
+
 </center>
 
 
@@ -252,7 +253,7 @@ Sadržaj trećeg podnaslova #3
 
 
 
-# Naglašavanje dela teksta
+## Naglašavanje dela teksta
 ***
 Korišćenjem stilizacije putem **css** koda moguće je promeniti boju pozdaine kako bi tekst bio naglašen.
 
@@ -272,7 +273,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
 Dobijamo:
 <br>
 <style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+div.blue { background-color:#d97e77; border-radius: 5px; padding: 30px;}
 </style>
 <div class = "blue">
 
@@ -296,7 +297,8 @@ Primer:
 
 ```{r, warning=FALSE}
 library(DT)
-datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T) )
+datatable(mtcars, rownames = FALSE, filter="top", options = list(pageLength = 5, scrollX=T)) %>%
+  formatStyle('Sepal.Length',  color = 'red', backgroundColor = 'orange', fontWeight = 'bold')
 ```
 
 
@@ -321,7 +323,6 @@ dt %>%
   kable_paper("hover", full_width = F)
 ```
 
-
 ```{r}
 dt %>%
   kbl(caption = "Recreating booktabs style table") %>%
@@ -340,8 +341,6 @@ dt %>%
   kable_material(c("striped", "hover"))
 ```
 
-
-
 ```{r}
 kbl(dt) %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
@@ -357,6 +356,7 @@ mtcars[1:8, 1:8] %>%
               background = spec_color(mtcars$drat[1:8], end = 0.7),
               popover = paste("am:", mtcars$am[1:8]))
 ```
+
 ```{r}
 kbl(dt) %>%
   kable_paper("striped", full_width = T) %>%
