@@ -1,0 +1,750 @@
+---
+title: "Prostorni podaci u R-u"
+author: "Milutin Pejović"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+      keep_md: true
+      theme: "simplex"
+      toc: true
+      highlight: tango
+      toc_depth: 5
+      toc_float: true
+      fig_caption: yes
+
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# devtools::install_github("thomasp85/ggforce")
+library(sp)
+library(sf)
+library(rgdal)
+library(mapedit)
+library(mapview)
+library(tidyverse)
+library(magrittr)
+library(DT)
+library(ggplot2)
+library(remedy)
+library(here)
+library(ggplot2)
+library(gridExtra)
+library(ggpubr)
+library(lattice)
+library(plotly)
+library(ggforce)
+library(ggthemes)
+library(readxl)
+library(viridis)
+library(RANN)
+```
+
+
+## Šta su to prostorni podaci
+
+Prostorni podaci su namenjeni skladištenju, manipulaciji i analizi informacija o nekim prostornim fenomenima. Na primer, izmerena temperatura u jednoj tački može da predstavlja jedan prostorni podatak. Prostorni podatak je najčešće reprezentacija jednog prostornog fenomena u toj tački. U ovom slučaju to je temperatura, koja je prostorno-vremenski promenljiva. Prema tome, prostorni podaci opisuju prostorne fenomene i kao takvi, prilagođeni su prirodi i karakteristikama prostornih fenomena:
+
++ Prostorni fenomeni mogu biti diskretni i kontinualni,
++ Pod diskretnim prostornim fenomenima se smatraju fenomeni koji se mogu opisati primarnim geometrijskim primitivima,
++ Diskretni prostorni fenomeni se obicno opisuju vektorskim podacima (lokacija, kuca, reka…),
++ Kontinualni prostorni fenomeni su obicno podložni prostornim i vremenskim promenama,
++ Obicno se opisuju rasterskim podacima.
+
+
+Kad kažemo vektorski podaci, obično mislimo na tačku liniju i poligon.
+
+```{r echo=FALSE}
+px <- c(5, 7, 8, 9, 8, 7, 6) 
+py <- c(7, 3, 4, 8, 9, 15, 14) 
+plot(px, py, type="n", axes=F, xlab = '', ylab = '') 
+polygon(px, py, col = "khaki1")
+points(c(6, 9, 8, 8.5), c(9, 14, 8, 9), pch=20, col = "peachpuff4", lwd = 3)
+lines(c(5, 6, 7, 8), c(5, 6,10, 11), col = "steelblue1",  lwd = 3)
+lines(c(8, 9), c(14, 12), col = "dark green", lwd = 3)
+```
+
+> <h3>Zadatak</h3>
+>
+> Šta od informacija neki podatak (kao npr. tačka, linija ili poligon) mora da sadrži da bi se zvao prostornim?
+
+```{r eval=FALSE, echo=FALSE}
+# Answer
+# - lat/lon coordinates
+# - projection
+# - what type (point/line/poly)
+# - if polygon, is it a hole or not
+# - attribute data
+# * ... ?
+```
+
+
+## Prostorni podaci u R-u
+
+U okviru R okruženja, izdvojila su se dva pristupa namenjenih radu sa prostornim podacima, a to su `sp (spatial)` i `sf (simple features)`.  Kad se kaže pristup, tu se misli na celokupno okruženje, koje pruža mogućnosti skladištenja, manupulacije, vizualizacije i drugih analiza. Jedno okruženje obično čini jedan osnovni paket koji rešava konceptualni problem apstrakcije prostornih podataka i niz drugih paketa namenjenih rešavanju konkretnih problema, a koji koriste tako organizovane podatke. Popularnost `R`-a u pogledu rada sa prostornim podacima ogleda se u mnoštvu paketa namenjenih učitavanju, vizualizaciji i analizi prostornih podataka [cran task view - spatial](https://cran.r-project.org/web/views/Spatial.html). Pored toga, tome doprinose i razvijeni interfejsi ka opšte prihvaćenim geoinformatičkim softverima (`GDAL, GEOS, PROJ4`).
+
+
+Ovo predavanje ima za cilj da predstavi mogućnosti `R` programskog okruženja za manupulaciju prostornim podacima. Kroz ovo predavanje biće opisano šta su to prostorni podaci, koja je njihova struktura, koji paketi i klase su namenjene radu sa prostornim podacima i odabrane funkcionalnosti tih rešenja.
+
+
+# `sp` paket
+
+[`sp`](https://cran.r-project.org/package=sp) je prvi paket namenjen radu sa prostornim podacima. Njegovo razvijanje je počelo ranih 2000-tih godina sa namerom da standardizuje format skladištenja prostornih podataka, a sve u cilju veće "interoperobilnosti" između različitih paketa koji se bave prostornim analizama. Tako je u okviru `sp` paketa definisane klase i metode za rad sa vektorskim podacima (`SpatialPoints`, `Spatiallines` i `SpatialPoligons`), tako i klase i metode za rad sa rasterskim podacima `SpatialPixels` i `SpatialGrid`
+
+
+## Struktura `sp` klasa
+
+`sp` klase su razvijene u okviru `s4` sistema za objektno orijentisano programiranje u R-u. 
+
+> R ima nekoliko razvijenih pristupa objektno orijentisanom programiranju: S3 (stari), S4 i RC (Reference Classes). U okviru S3 sistema, klasa je definisana atributom `class`, ali je odgovarajuci metod definisan u okviru tzv. generičkih funkcija (generic functions). Za datu klasu, generička funkcija traži odgovarajući metod. S4 sistem je dosta rigorozniji u definiciji strukture klase i nasledjivanju osobina. S4 objekti se sastoje iz elemenata, koji se nazivaju slotovi i njima se pristupa operatorom `@`.
+
+Lista postojećih `sp` klasa može se dobiti sledećom komadnom:
+
+\tiny
+```{r}
+library(sp)
+getClass("Spatial")
+```
+
+Kao što se može videti, osnovna klasa za prostorne podatke u okviru `sp` paketa je klasa `spatial`. Ona je sačinjena iz dva elementa, koji se u ovom slučaju zovu "slotovi", `bbox` i `proj4string`. 
+
+`bbox` - Bounding box (Spatial extent)
+
+- `bounding box` predstavlja prostorni obuhvat nekog prostornog objekta
+```{r echo=FALSE, fig.cap="Bounding box", out.width = '100%'}
+suppressWarnings(library(knitr))
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/spatial_extent.png")
+```
+
+`proj4string` - Opis koordinatnog sistema (Coordinate Reference System - CRS class). Opis koordinatnog sistema je zadat u vidu `PROJ4` stringa, o kome će biti reči u nastavku.
+
+
+## Koordinatni referetni sistem (Coordinate Reference System - CRS)
+
+Geografski koordinatni referentni sistem je geometrijski model u kome je definisano sledeće:
+
+1. Model oblika zemlje (npr: elipsoid sa parametrima $a$ i $e$);
+1. Početni meridijan (najčešće Grinički meridijan, pa se ovaj deo podrazumeva i često izostavlja iz definicije);
+1. Datum.
+
+Koordinatni referentni sistem u projekciji je geometrijski model u kome je definisano sledeće:
+
+1. Projekcija;
+1. Model oblika zemlje (npr: elipsoid sa parametrima $a$ i $e$);
+1. Početni meridijan (npr: Grinički meridijan);
+1. Datum.
+
+> Prema Lott-u [2015](http://docs.opengeospatial.org/is/12-063r5/12-063r5.html) važno je razlikovati:
+>   
+> + Koordinatni sistem (**coordinate system**) je set matematickih pravila koja definišu kako se koordinate dodeljuju tacki
+> 
+> + Datum (**datum**) je set parametara koji definiše položaj centra, razmeru i orijentaciju koordinatnog sistema
+> 
+> + Geodetski datum (**Geodetic datum**) opisuje odnos koordinatnog sistema u odnosu na Zemlju
+> 
+> + Koordinatni Referentni Sistem (**Coordinate Reference System**) je koordinatni sistem ciji je položaj odreden datumom u odnosu na referentni objekat. U slucaju planete zemlje (WGS84) parametri geodetskog datuma se koriste.
+> 
+> + Možemo razlikovati Geografske koordinatne sisteme, Sisteme u projekciji i Lokalne koordinatne sisteme.
+
+#### Geodetski datum
+
+Datum (Geodetski) je set konstanti koji definišu položaj refernetnog elipsoida u odnosu na Zemlju.
+Može biti definisan na 2 načina:
+
+1. Topocentrični datum i
+1. Geocentrični datum.
+
+Geocentričnidatum se definiše sa sedam parametara i to na sledeći način:
+
+1. Tri parametra koja definišu položaj referentnog elipsoida u odnosu na centar Zemlje $∆X , ∆Y, ∆Z$;
+1. Tri parametra koja definišu orjentaciju referentnog elipsoida $\alpha, \beta, \gamma$;
+1. Parametar razmere $\mu$
+
+WGS84 je konvencionalni terestički referentni sistem uz koji se vezuje globalni elipsoid WGS84 kojim se aproksimira geoid na celoj njegovoj površini. Dakle, parametri datuma se često definišu tako da predstaljaju geometrijski odnos referenc elipsoida i globalnog elipsoida (WGS84).
+
+
+#### EPSG
+
+EPSG (European Petroleum Survey Group – Oil & Gas Producers) registar je javni registar podataka vezanih koordinatnih referentnih sistema, geodetskih datuma i elipsoida kao i algoritama i parametara transformacija podataka iz jednog sistema u drugi. U okviru tog registra, svakom koordinatnom sistemu je dodeljen određeni kod, poznat pod nazivom EPSG kod kojim se on identifikuje, na primer EPSG:4326 - WGS 84. Kompletan registar je dostupan na adresi: http://www.epsg-registry.org/
+
+Ovaj set podataka omogućuje jednostavne transfromacije između koordinatnih referentnih sistema, stalno se razvija, napreduje i
+ažurira.
+
+Više informacija: http://www.epsg.org/
+
+U `R`-u, detalji određenog EPSG koda mogu se dobiti sledećom komandom:
+```{r}
+CRS("+init=epsg:4326")
+```
+
+
+\scriptsize
+```{r}
+getClass("CRS")
+```
+\scriptsize
+CRS mo?e biti zadat i preko epsg koda
+```{r}
+CRS("+init=epsg:4326")
+```
+
+
+Sažet pregled na temu `CRS`-a u `R`-u je dat na sledećem [linku](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf)
+
+### PROJ.4
+
+- PROJ.4 biblioteka omogućava transformaciju prostprnih koordinata iz jednog sistema u drugi
+- Da bi transformacija bila moguća, koordinatni sistemi moraju biti definisani.
+- PROJ.4 koristi "tag=value" opis koordinatnog sistema
+
+
+- [PROJ.4](https://proj4.org/) biblioteka je dostupna preko `rgdal R` paketa.
+\scriptsize
+```{r message=TRUE, results = TRUE, warning=TRUE}
+library(rgdal)
+```
+
+
+#### PROJ4 string primer
+
+- PROJ4 string se sastoji od elemenata koji defini?u koordinatni sistem (projekciju, elipsoid, zonu), datum i jedinice.
+- Svaki element je odvojen znakom "+" i razmakom pre njega
+
+\small
+`"+proj=tmerc +lat_0=0 +lon_0=21 +k=0.9999 +x_0=7500000 +y_0=0 +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311
++units=m"`
+
+```{r eval=FALSE, linewidth=60}
++proj=tmerc - Gaus Kriger (Transverzalna merkatorova) projekcija,                  
++lat_0=0 +lon_0=21 - koordinatni pocetak na elipsoidu,                            
++k=0.9999 - razmera du? srednjeg meridijana,                                        
++x_0=7500000 +y_0=0 - koordinatni pocetak u ravni karte                           
++ellps=bessel - elipsoid                                                            
++towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,6.89 - 3 translacije, 3 rotacije, razmera u odnosu na WGS84 izra?ena u ppm (parts per milion)  
++=m - jedinice metri.
+```
+
+</br></br></br></br></br>
+
+
+
+
+## `spatial`* klase (`SpatialPoints`, `SpatialLines`, `SpatialPolygons`)
+
+```{r echo=FALSE, fig.cap="SpatialPoints", out.width = '100%'}
+suppressWarnings(library(knitr))
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/SpatialPoints.png")
+```
+
+### SpatialPoints
+
+- `SpatialPoints`, `SpatialLines`, `SpatialPolygons`
+- `SpatialPoints` se dobija proširenjem `Spatial` klase dodavanje slota `coords` u vidu matrice koordinata.
+- `SpatialPointsDataFrame` se dobija proširenjem `SpatialPoints` klase dodavanje slota `data` u vidu data frame-a sa podacima.
+
+\scriptsize
+```{r eval=TRUE}
+
+padavine <- read.table("C:/R_projects/Nauka_R/Slides/data/merenja1960-1990.txt", header=TRUE, sep=",")
+
+
+names(padavine)<-c("merna_stanica", "Latitude", "Longitude", "H", "mmperm2")
+
+
+# Izdvajanje koordinata
+coords <- as.matrix(padavine[, c("Longitude", "Latitude")], ncol = 2)
+
+# Opis koordinatnog sistema
+coord_system <- CRS("+proj=longlat +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311067")
+
+
+# Kreiranje `SpatialPoints` klase
+padavine_sp <- SpatialPoints(coords, proj4string = coord_system, bbox = NULL)
+
+
+str(padavine_sp)
+
+head(padavine_sp@coords)
+
+# bbox se dodaju automatski
+
+padavine_sp[1,]
+
+```
+
+#### Primer kreiranja `SpatialPointsDataFrame` klase
+
+```{r eval = TRUE}
+padavine_atributi <- padavine %>% dplyr::select(merna_stanica, H, mmperm2)
+
+# Kreiranje `SpatialPointsDataFrame` klase
+padavine_spdf <- SpatialPointsDataFrame(coords, proj4string = coord_system, bbox = NULL, data = padavine_atributi)
+
+
+```
+
+```{r eval = FALSE}
+str(padavine_spdf)
+
+padavine_spdf[5, 2]
+
+padavine_spdf[15, ]
+
+
+#Pristupanje odredjenom atributu
+padavine_spdf[[2]] #vraca vrednosti iz prve kolone "data" slota
+```
+
+
+
+### Standardne `sp` metode
+
+\scriptsize
+```{r eval=TRUE}
+#Pristupanje odrednjeim tackama
+padavine_sp[1,]
+padavine_spdf[1,]
+
+#Pristupanje odredjenom atributu
+padavine_spdf[,2]
+
+padavine_spdf[1:2, "mmperm2"] # Vraca "SpatialPointsDataFrame" 
+
+# padavine_spdf[[1]] #vraca vrednosti iz prve kolone "data" slota
+```
+
+**Pristupanje određenom slotu vrši se korišćenjem operatora "@"**
+```{r eval = FALSE}
+# Pristupanje određenom slotu vrši se korišćenjem operatora "@"
+
+padavine_spdf@data
+
+padavine_spdf@proj4string
+
+padavine_spdf@coords
+```
+
+
+
+### Prostorne `sp` metode
+
+
+```{r eval = TRUE}
+# dimensions(x) vraca informaciju o prostornoj dimenziji podataka
+
+dimensions(padavine_spdf)
+
+padavine_WGS <- spTransform(padavine_spdf, CRS("+init=epsg:4326"))
+
+# spTransform(x, CRS) vrši transformaciju prostornih podataka iz jednog koordinatnog sistema u drugi
+GK <- "+proj=tmerc +lat_0=0 +lon_0=21 +k=0.9999 +x_0=7500000 +y_0=0 +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311 +units=m"
+
+padavine_GK <- spTransform(padavine_WGS, CRS(GK))
+
+# coordinates(x) vraca sadržaj "coords" slota
+
+head(coordinates(padavine_spdf))
+
+head(coordinates(padavine_GK))
+
+# bbox(x) vraca sadržaj "boundary box" slota
+
+bbox(padavine_spdf)
+
+bbox(padavine_GK)
+
+proj4string(padavine_GK)
+
+
+# gridded(x) vraca informaciju da li je "x" dobijen od "SpatialPixels" ili konvertuje "SpatialPoints" u "SpatialPixels"
+# over(x) vraca atribute na osnovu prostornog preklapanja
+# spsample(x) prostorno uzorkovanje
+```
+Još neke prostorne metode date su u sledećoj tabeli:
+
+function | and what it does
+------------ | ------------------------------------------------------
+`bbox()` | returns the bounding box coordinates
+`proj4string()` | sets or retrieves projection attributes as object of the `CRS` class. 
+`CRS()` | creates an object of class of coordinate reference system arguments
+`spplot()` | plots a separate map of all the attributes unless specified otherwise
+`coordinates()` | set or retrieve the spatial coordinates. For spatial polygons it returns the centroids.
+`over(a, b)` | used for example to retrieve the polygon or grid indices on a set of points
+`spsample()` | sampling of spatial points within the spatial extent of objects
+
+
+
+
+### `SpatialLines` klase
+
+
+
+```{r eval = TRUE, echo=FALSE, fig.cap="SpatialPoints", out.width = '100%'}
+suppressWarnings(library(knitr))
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/SpatialLines.png")
+```
+Kreiracemo linije od svake tacke na Umci do fiksnih tacaka
+
+```{r eval = FALSE, include = FALSE}
+nn_points <- nn2(data = coordinates(padavine_GK), k = 4)[[1]][,-1]
+
+nn_line_list <- as.list(rep(NA, dim(nn_points)[1]))
+nn_line_names <- as.list(rep(NA, dim(nn_points)[1]))
+
+for(i in 1:length(nn_line_list)){
+  pi_coords <- coordinates(padavine_GK[i,])
+  l1_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[i, 1], ])), ncol = 2, byrow = TRUE)
+  l1_name <- paste(padavine_GK$merna_stanica[i], padavine_GK$merna_stanica[nn_points[i, 1]], sep = "_")
+  l2_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[i, 2], ])), ncol = 2, byrow = TRUE)
+  l2_name <- paste(padavine_GK$merna_stanica[i], padavine_GK$merna_stanica[nn_points[i, 2]], sep = "_")
+  l3_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[i, 3], ])), ncol = 2, byrow = TRUE)
+  l3_name <- paste(padavine_GK$merna_stanica[i], padavine_GK$merna_stanica[nn_points[i, 3]], sep = "_")
+  nn_line_list[[i]] <- list(l1_coords, l2_coords, l3_coords)
+  nn_line_names[[i]] <- list(l1_name, l2_name, l3_name)
+}
+```
+
+
+```{r eval = TRUE}
+
+
+
+nn_points <- nn2(data = coordinates(padavine_GK), k = 4)[[1]][,-1]
+
+  pi_coords <- coordinates(padavine_GK[1,])
+  l1_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[1, 1], ])), ncol = 2, byrow = TRUE)
+  l1_name <- paste(padavine_GK$merna_stanica[1], padavine_GK$merna_stanica[nn_points[1, 1]], sep = "_")
+  l2_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[1, 2], ])), ncol = 2, byrow = TRUE)
+  l2_name <- paste(padavine_GK$merna_stanica[1], padavine_GK$merna_stanica[nn_points[1, 2]], sep = "_")
+  l3_coords <- matrix(c(pi_coords, coordinates(padavine_GK[nn_points[1, 3], ])), ncol = 2, byrow = TRUE)
+  l3_name <- paste(padavine_GK$merna_stanica[1], padavine_GK$merna_stanica[nn_points[1, 3]], sep = "_")
+
+
+line_1 <- Line(l1_coords)
+line_2 <- Line(l2_coords)
+line_3 <- Line(l3_coords)
+
+str(line_1)
+
+# Da bi smo napravili `Lines` kreirane linije moramo smestiti u jednu listu i dodati im ID. Posto su ovo linije prve epohe, ID ce im biti prvi UTC_date.
+
+lines_IDs <- c(1, 2, 3)
+
+lines_1 <- Lines(list(line_1), ID = lines_IDs[1])
+lines_2 <- Lines(list(line_2), ID = lines_IDs[2])
+lines_3 <- Lines(list(line_3), ID = lines_IDs[3])
+
+str(lines_1)
+
+# Da bi smo napravili "SpatialLines" moramo koristiti funkciju `SpatialLines`
+
+lines_sp <- SpatialLines(list(lines_1, lines_2, lines_3), proj4string = CRS(GK))
+
+plot(lines_sp)
+
+str(lines_sp)
+
+```
+
+
+#### `SpatialLinesDataFrame` klase
+
+
+```{r eval = FALSE}
+
+lines_spdf <- SpatialLinesDataFrame(lines_sp, data = data.frame(ID = lines_IDs, od_do = c(l1_name, l2_name, l3_name), match.ID = "ID")
+
+lines_spdf                                   
+```
+
+
+> <h3>Zadatak</h3>
+>
+> Kreirati `SpatialLinesDataFrame` koji ce sadržati po tri linije do najbližih stanica za svaku stanicu)
+
+### `Polygon*` klasa
+
+```{r}
+srbija <- readOGR(dsn = "C:/R_projects/Nauka_R/Slides/data/Srbija_shp/RAP.shp")
+
+str(srbija)
+
+plot(srbija)
+```
+
+
+- `Polygon` klasa proširuje `Line` klasu sa dodatnim slotovima kojima se proverava da li set linija cini zatvoreni poligon.
+
+\scriptsize
+```{r}
+getClass("Polygon")
+```
+- Dodatni slotovi su `labpt`, `area`, `hole` i `ringDir`.
+- `Polygons` klasa predstavlja listu `Polygon` objekata
+
+#### `SpatialPolygons` klasa
+
+- `SpatialPolygons` klasa predstavlja prostornu reprezentaciju od `Polygon` i `Polygons` klasa.
+- To podrazumeva proširenje tih klasa slotovima `bbox` i `proj4string`
+
+\scriptsize
+```{r}
+getClass("SpatialPolygons")
+```
+
+#### `SpatialPolygonsDataFrame*` klasa
+
+\scriptsize
+```{r}
+getClass("SpatialPolygonsDataFrame")
+```
+
+## `sp` klase za gridne podatke
+
+- Gridovi su struktuirani objekti i ne zahtevaju toliko informacija za njihovo opisivanje
+- NPR. dovoljno je zadati koordinate pocetka grida, rezoluciju celije i broj kolona i vrsta (cime je definisan prostorni obuhvat.) 
+
+\scriptsize
+```{r}
+getClass("GridTopology")
+```
+
+### `SpatialGrid*` klase
+- `GridTopology` klasa ima ulogu da definiše strukturu grida i igra osnovu za kreiranje klasa prostornih gridova.
+- `SpatialGrid` klasa sadrzi `GridTopology` klasu i `Spatial` slotove `bbox` i `proj4string`
+- `SpatialGridDataFrame` klasa predstavlja `SpatialGrid` klasu pro?irenu za `data` slot sa dodatnim atributima za svaku celiju.
+
+### `SpatialPixels*` klase
+
+- U slucajevima kada znatan deo grida oznacen sa NA vrednostima, velicina grida je bezrazlo?no velika. Veliki broj celija ne nosi nikakvu informaciju.
+- Alternativa za taj problem je `SpatialPixels*` klasa
+- `SpatialPixels*` predstavlja samo celije koje nose informaciju i tako što zapisuje koordinate centra celije i ukupan broj takvih celija.
+- Takav format omogucava zapisivanje grida u vidu tacaka u spoljnim bazama.
+
+
+```{r echo=FALSE, fig.cap="SpatialGrids i SpatialPixels", out.width = '100%'}
+suppressWarnings(library(knitr))
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/SpatialPixelsAndGrids.png")
+```
+
+#### `sp` klase
+
+```{r echo=FALSE, fig.cap="sp klase", out.width = '100%'}
+suppressWarnings(library(knitr))
+knitr::include_graphics("C:/R_projects/Nauka_R/Slides/Figures/spClasses.png")
+```
+
+## Vizualizacija `sp` klasa
+
+### Vizualizacija `sp` klasa
+- Postoje nekoliko metoda namenjenih vizualizaciji `sp` klasa: `plot(x)`, `spplot(x, attr)`, `bubble(x, attr)`
+- Takodje moguce je koristiti i `ggplot`
+
+### `sp` metode za vizualizaciju
+
+```{r}
+bubble(padavine_GK, "mmperm2", main="mm/m2" , maxsize = 1.0)
+```
+
+### `ggplot` pristup
+\tiny
+```{r}
+library(ggplot2)
+
+padavine_GK_df <- padavine_GK %>% as.data.frame() %>% dplyr::select(Easting = Longitude, Northing = Latitude, H, mmperm2)
+
+ggplot(as.data.frame(padavine_GK_df)) + geom_point(aes(x = Easting, y = Northing, size = mmperm2)) + coord_equal() + labs(x = "E", y="N")
+```
+
+
+# `sf` paket
+
+`sf` okruženje je prilično novo okruženje. Prvi put je objavljeno 2016-te godine. `sf` implementira standard koji se zove `Simple Features` koji definiše način skladištenja geometrije vektorskih prostornih podataka. 
+ 
+```{r wkt-primitives, echo=FALSE, results='asis', out.width='100%', fig.cap='Well-Known-Text Geometry primitives  (wikipedia)'}
+knitr::include_graphics('C:/R_projects/Nauka_R/Slides/Figures/wkt_primitives.png')
+```
+
+
+```{r wkt-multipart, echo=FALSE, results='asis', out.width='100%', fig.cap='Well-Known-Text Multipart geometries (wikipedia)'}
+knitr::include_graphics('C:/R_projects/Nauka_R/Slides/Figures/wkt_multipart.png')
+```
+
+
+U okviru `sf` paketa prostorni podaci su skladišteni u formi `data.frame`-a sa jednom posebnom kolonom koja sadrži informacije o geometriji (koordinatama). Ta kolona je u stvari lista koja je iste dužine kao i bilo koja druga kolona u `data.frame`-u i zove se `list column`. Svaki element te liste (liste kolone) može biti opet lista bilo koje dužine, koliko god je potrebno da se skladišti geometrija jednog **feature**-a.
+
+```{r sf_objekat, echo=FALSE, results='asis', out.width='100%', fig.cap='Struktura sf objekta'}
+knitr::include_graphics('C:/R_projects/Nauka_R/Slides/Figures/sf_objekat.png')
+```
+
+Da bi se kreirao objekat iz `sf` familije potrebni su sledeci koraci:
+
+> Kreirati geometriju objekta (topologiju)
+
+Geometrija objekta se skladišti kao numerički vektor ili matrica koordinata i skladišti se kao klasa `sfg` (`Simple Feature Geometry`). Slično kao kod `sp` paketa, postoje funkcije koje omogućavaju kreiranje `Simple Feature Geometry` -a, kao na primer `st_point(), st_linestring(), st_polygon()`i druge.
+
+> Kombinovati pojedinačne objekte u specijalnu kolonu (list column)
+
+Pojedinačne geometrije se kombinuju u specijalnu listu koja ce biti jedna kolona u `sf` klasi. Ta kolona se skladišti kao klasa `Simple Feature Collection (sfc)` komandom st_sfc(). Važno je znati da `sfc` klasa skladišti i informaciju o `bounding box`-u i o koordinatnom sistemu (takodje u `PROJ4` notaciji).
+
+
+> Dodavanje atributa
+
+Na kraju, dodaju se atributi i kreira se konačna klasa `sf` koja skladišti sadržaj pod klasa (`sfg` i `sfc`) kao i atribute. Ova klasa se formira komandom `st_sf()`. Ova fukncija tačnije proširuje dobro poznati `data.frame` u prostorni podatak.
+
+
+Primer:
+```{r eval = FALSE}
+l1_coords
+
+sf_line_1 <- st_linestring(l1_coords) 
+sf_line_2 <- st_linestring(l2_coords) 
+sf_line_3 <- st_linestring(l3_coords) 
+
+class(sf_line_1)
+```
+
+```{r eval = FALSE}
+lines_sfc <- st_sfc(sf_line_1, sf_line_2, sf_line_3, crs = GK)
+
+sf_lines <- st_sf(od_do = c(l1_name, l2_name, l3_name) , lines_sfc)
+
+sf_lines
+# st_set_crs(umka_sf, GK)
+```
+
+```{r eval = FALSE}
+# MULTILINESTRING
+sf_multiline <- st_multilinestring(list(sf_line_1, sf_line_2, sf_line_3))
+
+class(sf_multiline)
+
+sfc_multiline <- st_sfc(sf_multiline, crs = GK)
+
+sf_multiline <- st_sf(sfc_multiline, stanica = "station_1")
+
+sf_multiline
+
+sf_linestring <- st_cast(sf_multiline, "LINESTRING")
+
+sf_linestring
+
+class(sf_linestring)
+
+sf_linestring$od_do = unlist(lines_IDs)
+
+class(sf_linestring) 
+
+sf_linestring$length = st_length(sf_linestring)
+
+sf_linestring
+
+```
+
+```{r eval = FALSE}
+# LINESTRING
+
+coords_line_1
+coords_line_2
+coords_line_3
+
+sf_linestring <- st_linestring(rbind(l1_coords, l2_coords, l3_coords))
+
+GK <- "+proj=tmerc +lat_0=0 +lon_0=21 +k=0.9999 +x_0=7500000 +y_0=0 +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311 +units=m"
+
+sf_linestring_sfc <- st_sfc(sf_linestring,  crs = GK)
+
+plot(sf_linestring_sfc)
+
+sf_linestring_sf <- st_sf(sf_linestring_sfc, od_do = c(l1_name, l2_name, l3_name))
+
+sf_linestring_sf
+
+
+```
+
+
+```{r}
+methods(class="sf")
+```
+
+> **Neke prednosti `sf` okruženja**
+> 
+> + Omogućava brzo učitavanje i ispisivanje velikih fajlova sa prostornim podacima
+> + Omogućava funkcije koje se oslanjaju na GEOS, GDAL i PROJ eksterne biblioteke, koje su povezane (linkovane) sa ovim paketom tako da ne moraju biti učitane.
+> + `sf` objekti se mogu direktno plotovati u `ggplot`-u
+> + `sf` objekti se mogu direktno čitati i pisati u/iz prostornih baza podataka kao što je PostGIS
+> + `sf` je potpuno kompatibilan sa tidyverse familijom paketa
+
+## Kreiranje prostornih objekata iz tabele
+
+### U `sf` okruženju
+
+```{r eval = FALSE}
+
+padavine <- read.table("C:/R_projects/Nauka_R/Slides/data/merenja1960-1990.txt", header=TRUE, sep=",")
+
+
+names(padavine)<-c("merna_stanica", "Latitude", "Longitude", "H", "mmperm2")
+
+str(padavine)
+
+# Opis koordinatnog sistema
+coord_system <- "+proj=longlat +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311067"
+
+padavine_sf <- st_as_sf(padavine, coords = c("Longitude", "Latitude"))
+str(padavine_sf)
+
+
+st_crs(st_as_sf)
+
+st_crs(padavine_sf) <- coord_system # Моžemo koristit direktno EPSG broj
+
+st_crs(padavine_sf)
+
+```
+
+
+### U `sp` okruženju
+
+```{r eval=FALSE}
+
+padavine_sp <- padavine
+
+coordinates(padavine_sp) <- ~Longitude + Latitude
+
+# ili ovako
+# coordinates(umka_sp) <- c("latitude", "longitude")
+
+class(padavine_sp)
+
+
+is.projected(padavine_sp) # da li je definisana projekcija  
+
+
+proj4string(padavine_sp) <- CRS(coord_system)
+is.projected(padavine_sp) 
+```
+
+## Prostorne operacije
+
+```{r Spatial manipulation, echo=FALSE, results='asis', out.width='100%', fig.cap='Prostorne operacije u sf paketu'}
+knitr::include_graphics('C:/R_projects/Nauka_R/Slides/Figures/spatial_manipulation_sf.png')
+```
+
+```{r Spatial manipulation1, echo=FALSE, results='asis', out.width='100%', fig.cap='Prostorne operacije u sf paketu'}
+knitr::include_graphics('C:/R_projects/Nauka_R/Slides/Figures/spatial_manipulation_sf2.png')
+```
+
+
+### `sp` - `sf` poređenje
+
+|how to.. | for `sp` objects | for `sf` objects |
+|---|---|---|
+|join attributes| `sp::merge()` | `dplyr::*_join()` (also `sf::merge()`) |
+|reproject | `spTransform()` | `st_transform()`|
+|retrieve (or assign) CRS | `proj4string()` | `st_crs()` |
+|count points in polygons| `over()` | `st_within` and `aggregate()` |
+|buffer|  `rgeos::gBuffer()` (separate package) | `st_buffer()` |
+|select by location | [`g*` functions](https://www.rdocumentation.org/packages/rgeos/) from `rgeos` | [st_* geos functions](https://www.rdocumentation.org/packages/sf/topics/geos) in `sf` |
+ 
+
