@@ -1,0 +1,223 @@
+---
+title: "Rešenje zadatka"
+author: "Vojkan Milijašević"
+date: "12/7/2020"
+output:
+  html_document:
+    theme: united
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+# Princip rešavanja zadatka
+
+Na osnovu dobijenih podataka (`niv_merenja.xlsx`) izvršeno je sledeće:
+
+* Učitavanje Excel fajla
+* Primena funkcije `nivelman` na svaki nivelmanski vlak
+* Kreiranje sumarnih tabela `tabela1sve` (koja se odnosi na merenja na stanici) i `tabela2sve` (koja se odnosi na merenja od repera do repera)
+
+# Učitavanje Excel fajla
+
+Excel fajl `niv_merenja` je organizovan tako da su merenja u pojedinačnim vlakovima smeštena u odvojenim sheet-ovima. Ovde će biti prikazana dva načina učitavanja tog fajla:
+
+1. Učitavanje Excel fajla pomoću `purrr` paketa
+2. Učitavanje Excel fajla pomoću `rio` paketa
+
+Zbog potreba u ovom zadatku za `purrr` paketom i drugim paketima koji su sastavni deo kolekcije paketa `tidyverse` izvršeno je učitavanje kolekcije paketa tidyverse.
+Takođe, za potrebe zadatka izvršeno je učitavanje paketa `readxl` i `rio`.
+
+```{r , include = FALSE}
+library(tidyverse)
+library(readxl)
+library(rio)
+```
+
+## Učitavanje Excel fajla pomoću `purrr` paketa
+
+Za potrebe rešavanja ovog zadatka, ovaj pristup nije korišćen, te će u nastavku biti prezentovan kao moguća opcija.
+
+Potrebno je definisati promenljivu koja predstavlja putanju do Excel fajla sa podacima.
+
+```{r , eval = FALSE}
+putanja <- ".../niv_merenja.xlsx"
+```
+
+Zatim se vrši kreiranje liste (`lista1`) u kojoj će svaki član liste biti jedna tabela (jedan excel sheet, odnosno jedan nivelmanski vlak).
+
+```{r , eval = FALSE}
+lista1 <- putanja %>%
+  readxl::excel_sheets() %>%
+  purrr::set_names() %>%
+  purrr::map(readxl::read_excel, path = putanja)
+```
+
+Obratiti pažnju na funkciju **map** iz paketa `purrr`. Više o toj funkciji možete pogledati na sajtu tidyverse paketa, konkretno u delu koji je posvećen [readxl](https://readxl.tidyverse.org/articles/articles/readxl-workflows.html#iterate-over-multiple-worksheets-in-a-workbook) paketu.    
+
+## Učitavanje Excel fajla pomoću `rio` paketa
+
+Pomoću ovog paketa, korišćenjem funkcije **import_list** izvršeno je kreiranje liste (`lista1`) u kojoj je svaki član liste jedna tabela (jedan excel sheet, odnosno jedan nivelmanski vlak).
+
+```{r , eval = FALSE}
+lista1 <- rio::import_list(".../niv_merenja.xlsx")
+```
+
+```{r ucitavanje_xlsx, include = FALSE}
+lista1 <- rio::import_list("E:/GRF/Master akademske studije/Semestar 1/Nauka o podacima u R-u/4. cas (18.11.2020.)/Predavanja i vezbe/Materijal/niv_merenja.xlsx")
+```
+
+# Primena funkcije `nivelman` na svaki nivelmanski vlak
+
+Definišu se reperi u mreži:
+
+```{r }
+reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116", "D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22", "A23", "A24")
+```
+
+Zatim se vrši kreiranje prazne liste `lista2`.
+
+```{r , include = FALSE}
+lista2 <- list()
+```
+
+Posle toga se kroz **for** petlju vrši primenjivanje funkcije `nivelman` na svaki član (na svaku tabelu) u listi `lista1` i vrši ubacivanje dobijenih rezultata u novu listu `lista2`.
+
+```{r funkcija_nivelman, include = FALSE}
+#Učitava se paket "magrittr" jer se u funkciji koristi operator "%<>%" iz tog paketa 
+library(magrittr)
+
+nivelman <- function(merenja, reperi) {
+  #Vraca listu koju cine dve tabele. Prva tabela sadrzi visinske razlike po stanici. Druga tabela sadrzi visinske razlike od repera do repera.
+  #Argument "merenja" zahteva tabelu koja treba da sadrzi kolone (tacka, merenje, duzina) sa odgovarajuce pridruzenim vrednostima.
+  #Argument "reperi" zahteva vektor repera koji se nalaze u mrezi. 
+  
+  #TABELA1
+  tabela1 <- merenja %>%
+    dplyr::mutate(koeficijent1 = rep(1:4, dim(merenja)[1]/4)) %>%
+    dplyr::summarize(od = tacka[koeficijent1 == 1],
+                     do = tacka[koeficijent1 == 2],
+                     dh = (merenje[koeficijent1 == 1] - merenje[koeficijent1 == 2] + merenje[koeficijent1 == 4] - merenje[koeficijent1 ==3])/2,
+                     duzina = (duzina[koeficijent1 == 1] + duzina[koeficijent1 == 2] + duzina[koeficijent1 == 3] + duzina[koeficijent1 == 4])/2)
+  
+  #TABELA2
+  tabela1 %<>%
+    dplyr::mutate(koeficijent2 = NA)
+  
+  #Promenljiva "brojac" kroz for petlju dodeljuje vrednosti koloni "koeficijent2".
+  #Nakon izvrsene for petlje, promenljiva "brojac" predstavlja broj nivelmanskih vlakova.
+  brojac <- 0
+  for(i in 1:dim(tabela1)[1]) {
+    if (tabela1$od[i] %in% reperi) {
+      (brojac <- brojac + 1) & (tabela1$koeficijent2[i] <- brojac)
+    } else {
+      tabela1$koeficijent2[i] <- brojac
+    }
+  }
+  
+  brojvlakova <- brojac
+  
+  tabela2 <- tabela1 %>%
+    dplyr::group_by(koeficijent2) %>%
+    dplyr::summarize(od = od[1],
+                     do = do[length(do)],
+                     dh = sum(dh),
+                     n = length(koeficijent2),
+                     duzina = sum(duzina)) %>%
+    dplyr::select(od, do, dh, n, duzina) %>%
+    as.data.frame()
+  
+  tabela1 <- tabela1 %>%
+    dplyr::select(od, do, dh, duzina)
+  
+  rezultat <- list(tabela1 = tabela1, tabela2 = tabela2)
+  return(rezultat)
+}
+```
+
+```{r , message = FALSE}
+for(i in 1:length(lista1)) {
+  lista2[[i]] <- nivelman(lista1[[i]], reperi)
+  }
+```
+
+Svaki član u listi `lista2` će se sastojati od liste koja sadrzi dva člana (dve tabele) (`tabela1` - odnosi se na merenja na stanici u okviru nivelmanskog vlaka i `tabela2` - odnosi se na merenja od repera do repera u okviru nivelmanskog vlaka) koje su rezultat primene funkcije nivelman.
+
+Zatim je izvršen grafički prikaz prvog člana liste `lista2` (to jest prvog nivelmanskog vlaka) i to tabele `tabela1`:
+
+```{r , include = FALSE}
+#"Hvatanje" tabele "tabela1" iz prvog člana liste "lista2" i kreiranje pomoćne tabele #"tabelica1". Ako postoji potreba za drugim tabelama/članovima, potrebno je samo promeniti #indeks(e).
+tabelica1 <- lista2[[1]][[1]]
+
+#Kreiranje prazne tabele "tabelica2" koja će nakon popunjavanja služiti za kreiranje #grafika. 
+tabelica2 <- data.frame(tacke = rep(NA, (dim(tabelica1)[1]+1)), 
+                        duzina = rep(NA, (dim(tabelica1)[1]+1)),
+                        dh = rep(NA, (dim(tabelica1)[1])+1))
+
+#Popunjavanje tabele "tabelica2"
+for(i in 1:dim(tabelica1)[1]) {
+  tabelica2$tacke[i] = tabelica1$od[i]
+}
+tabelica2$tacke[dim(tabelica2)[1]] = tabelica2$tacke[1]
+
+tabelica2$duzina[1] = 0
+tabelica2$dh[1] = 0
+for(i in 2:dim(tabelica2)[1]) {
+  tabelica2$duzina[i] = tabelica2$duzina[i-1] + tabelica1$duzina[i-1]
+  tabelica2$dh[i] = tabelica2$dh[i-1] + tabelica1$dh[i-1]
+}
+
+#Kreiranje tabele "tabelica3" potrebne za postavljanje anotacija (za označavanje repera na grafiku)
+tabelica3 <- tabelica2 %>%
+  dplyr::filter(tacke %in% reperi)
+```
+
+```{r grafik, echo = FALSE}
+library(ggrepel)
+ggplot2::ggplot(tabelica2, aes(x = duzina, y = dh)) +
+  geom_line() +
+  ggrepel::geom_label_repel(data = tabelica3, aes(label = tacke))
+```
+
+# Kreiranje tabela `tabela1sve` i `tabela2sve`
+
+Nakon izvršenih koraka, potrebno je: 
+
+* Spojiti dobijene tabele `tabela1` iz liste `lista2` kako bi se dobila sumarna tabela `tabela1sve` (koja se odnosi na merenja na stanici) 
+* Spojiti dobijene tabele (`tabela2`) iz liste `lista2` kako bi se dobila sumarna tabela `tabela2sve` (koja se odnosi na merenja od repera do repera).
+
+Najpre se vrši kreiranje praznih tabela `tabela1sve` i `tabela2sve`.
+
+```{r , include = FALSE}
+tabela1sve <- data.frame()
+tabela2sve <- data.frame()
+```
+
+Nakon toga, vrši se potrebno spajanje kroz **for** petlju i korišćenjem funkcije **rbind**.
+
+```{r}
+for(i in 1:length(lista2)) {
+  tabela1sve <- rbind(tabela1sve, lista2[[i]][[1]])
+  tabela2sve <- rbind(tabela2sve, lista2[[i]][[2]])
+}
+```
+
+Prikaz prvih 10 redova tabele `tabela1sve`:
+
+```{r , echo = FALSE}
+#Učitavanje paketa "knitr"
+library(knitr)
+
+knitr::kable(
+  tabela1sve[1:10, ],
+  caption = "tabela1sve (prvih 10 redova)"
+)
+```
+
+Prikaz prvih 10 redova tabele `tabela2sve`:
+
+```{r , echo = FALSE}
+knitr::kable(
+  tabela2sve[1:10, ],
+  caption = "tabela2sve (prvih 10 redova)"
+)
+```

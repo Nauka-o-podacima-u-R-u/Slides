@@ -1,0 +1,204 @@
+---
+title: "Vezba Nivelmanski vlakovi"
+author: "Dusan Lazic"
+date: "12/7/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+merenja <- read.table(file = "D:\\Fakultet\\MASTER_PRVA_GODINA\\Nauka o podacima u R-u\\Vezbe\\Vezba_4\\niv_merenja.xlsx", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+```
+
+## Задатак
+
+У оквиру овог задатка потребно је на основу података мерења која су дата у **Microsoft Office Excel** формату срачунати висинске разлике у нивелманској мрежи.Подаци мерења су експортовани из тоталне станице. Сваки **sheet** документа из кога се преузимају подаци за рачунање садржи мерења обављена у једном нивелманском влаку.
+
+## Решење
+
+Задатак се решава тако што се проблем подели на вишсе мањих делова и касније састави. Од свих тих мањих решења, прави се једна велика функција, која ће у целости решавати задатак.
+
+Прва замисао је да се у оквиру једног **sheet**-а мерења одвоје по станицама и то се ради функцијом:
+
+```{r, eval = FALSE}
+merenja$stanica <- factor(rep(1:(dim(merenja)[1]/4), each = 4))
+```
+
+Након тога се мерења поделе у листи према фактору који им је малочас додељен:
+
+```{r, eval = FALSE}
+merenja_list <- split(merenja, merenja$stanica)
+```
+
+За рачунање је потребна нова табела и њу правимо функцијом:
+
+```{r, eval = FALSE}
+merenja_df <- data.frame(od = rep(NA, length(merenja_list)), 
+                          do = rep(NA, length(merenja_list)), 
+                          dh = rep(NA, length(merenja_list)), 
+                          duzina = rep(NA, length(merenja_list)))
+```
+
+Сада ту табелу треба попунити. Она ће се попуњавати на основу класичног израза за рачунање висинских разлика, с тим што ће се користити петља која ће проћи кроз све чланове претходно направљене листе:
+
+```{r, eval = FALSE}
+for(i in 1:length(merenja_list)){
+  merenja_df$od[i] <- as.character(merenja_list[[i]]$tacka[1])
+  merenja_df$do[i] <- as.character(merenja_list[[i]]$tacka[2])
+  merenja_df$dh[i] <- ((merenja_list[[i]]$merenje[1]-merenja_list[[i]]$merenje[2])+(merenja_list[[i]]$merenje[4]-merenja_list[[i]]$merenje[3]))/2
+  merenja_df$duzina[i] <- sum(merenja_list[[i]]$duzina)/2 
+}
+```
+
+Када имамо висинске разлике, остало је "само" да их сумирамо. Потребно је на почетку унети који репери учествују у том влаку који срачунавамо. Идеја је да се већ постојећој табели **merenja_df** додају колоне **isReperOD** и **isReperDO** који ће нам говорити да ли се репер налази у колони Од или До, како би знали одакле докле треба сумирати висинске разлике.
+
+```{r, eval = FALSE}
+merenja_df$isReperOD <- merenja_df$od %in% reperi
+merenja_df$isReperDO <- merenja_df$do %in% reperi
+```
+
+Како би убацивали податке у нову табелу **merenja_df_sum**, потребно је имати индексе тих позиција у колонама **isReperOD** и **isReperDO**:
+
+```{r, eval = FALSE}
+#indeks pozicije "od" repera,
+ind.od <- which(merenja_df$isReperOD == T)
+# indeks pozicije "do" repera
+ind.do <- which(merenja_df$isReperDO == T)
+
+```
+
+Након тога је потребно проћи петљом кроз те индексе и направити колоне у викду вектора и касније их убацити у коначну табелу:
+
+```{r, eval = FALSE}
+# broj vis razlika izmedju repera
+ndh = sum(merenja_df$isReperOD)
+
+# Visinske razlike
+
+# Naziv "od" repera
+od <- merenja_df$od[ind.od]
+
+# Naziv "do" repera
+do <- merenja_df$do[ind.do]
+
+# Racunanje visinskih razlika od repera do repera
+dh <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  dh[i] <- sum(merenja_df$dh[ind.od[i]:ind.do[i]])
+}
+
+# Racunanje broja stanica od repera do repera
+n <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  n[i] <- length(ind.od[i]:ind.do[i])
+}
+
+# Racunanje duzina od repera do repera
+duzina <- rep(NA, ndh)
+
+for(i in 1:ndh){
+  duzina[i] <- sum(merenja_df$duzina[ind.od[i]:ind.do[i]])
+}
+
+# Kreiranje data.frame-a
+merenja_df_sum <- data.frame(od = od, do = do, dh = dh, n = n, duzina = duzina)
+```
+
+Све то је сада потребно спојити и од тога направити функцију која ће као резултат давати две табеле **merenja_df** и **merenja_df_sum**:
+
+```{r, eval = FALSE}
+merenja <- read.table(file = "D:\\Fakultet\\MASTER_PRVA_GODINA\\Nauka o podacima u R-u\\Vezbe\\Vezba_4\\niv_merenja.xlsx", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+nivelman <- function(niv_merenja, reperi){ # ime funkcije je nivelman, a argumenti niv_merenja (ulazna merenja) i reperi (naziv repera)
+  
+  # kopiramo kod koji smo kreirali ()
+  merenja_df <- niv_merenja %>% dplyr::mutate(stanica = factor(rep(1:(dim(niv_merenja)[1]/4), each = 4))) %>% 
+    dplyr::group_by(stanica) %>%
+    dplyr::summarise(od = as.character(tacka[1]),
+                     do = as.character(tacka[2]),
+                     dh = ((merenje[1]-merenje[2])+(merenje[4]-merenje[3]))/2,
+                     duzina = sum(duzina)/2)
+  
+  merenja_df <- merenja_df %>% dplyr::mutate(isReperOD = merenja_df$od %in% reperi,
+                                             isReperDO = merenja_df$do %in% reperi)
+  
+  #indeks pozicije "od" repera,
+  ind.od <- which(merenja_df$isReperOD == T)
+  # indeks pozicije "do" repera
+  ind.do <- which(merenja_df$isReperDO == T)  
+  
+  # broj vis razlika izmedju repera
+  ndh = sum(merenja_df$isReperOD)
+  
+  # Promenljiva koja pokazuje koja merenja pripadaju odredjenom nivelmanskom vlaku
+  vlak <- c()
+  for(i in 1:ndh){
+    vlak <- c(vlak, rep(i, ind.do[i]-(ind.od[i]-1)))
+  }
+  
+  merenja_df$vlak <- factor(vlak) 
+  
+  
+  merenja_df_sum <- merenja_df %>% dplyr::select(od, do, dh, duzina, vlak) %>%
+    dplyr::group_by(vlak) %>% 
+    dplyr::summarize(od = od[1],
+                     do = do[length(vlak)],
+                     dh = sum(dh),
+                     stanica = length(vlak))
+  
+  merenja_df <- merenja_df %>% dplyr::select(od, do, dh, duzina)
+  
+  results <- list(tabela_1 = merenja_df, tabela_2 = merenja_df_sum)
+  return(results)
+}
+```
+
+То је решење када се ради само један влак. Уколико желимо да аутоматизујемо поступак за све влакове потребно је проћи кроз све **sheet**-ове документа, како би обухватили све нивелманске влакове који су мерени. То радимо на следећи начин:
+
+```{r, eval = FALSE}
+reperi <- c("B1", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "S1", "S2", "S3", "D1", "H1", "J1", "M1", "P1", "D7", "H7", "N7", "D10", "E10", "I10", "P10", "P13", "L116",    "D19", "G19", "J19", "M19", "P19", "E26", "P26", "D29", "J29", "M29", "P29", "D32", "H32", "D38", "G38", "J38", "M38", "P38", "A11", "A12", "A13", "A14", "A21", "A22", "A23", "A24")
+
+# Putanja ka fajlu (3 nacina)
+merenja_path <- "D:\\Fakultet\\MASTER_PRVA_GODINA\\Nauka o podacima u R-u\\Vezbe\\Vezba_4\\niv_merenja.xlsx"
+
+# Nazivi sheet-ova
+nazivi_sheets <- merenja_path %>%
+  readxl::excel_sheets()
+
+# Ucitavanje svakog sheet-a i smestanje u listu
+lista_sheets <- list()
+for(i in 1:length(nazivi_sheets)){
+  lista_sheets[[i]] <- readxl::read_excel(path = merenja_path, sheet = nazivi_sheets[i])
+}
+names(lista_sheets) <- nazivi_sheets # postavljanje naziva elemenata liste
+# lista_sheets
+
+# Primena funkcije nivelman
+lista_nivelman <- list()
+for(i in 1:length(lista_sheets)){
+  lista_nivelman[[i]] <- nivelman(niv_merenja = lista_sheets[[i]], reperi = reperi)
+}
+```
+
+Финиш задатка представља убацивање мерења и влакова у две велике табеле које ће садржати све сумиране податке:
+
+```{r, eval = FALSE}
+# Visinske razlike po stanici - Tabela 1
+tabela_1 <- data.frame()
+for(i in 1:length(lista_nivelman)){
+  tabela_1 <- rbind(tabela_1, lista_nivelman[[i]][[1]])
+}
+# tabela_1
+
+# Visinske razlike od repera do repera - Tabela 2
+tabela_2 <- data.frame()
+for(i in 1:length(lista_nivelman)){
+  tabela_2 <- rbind(tabela_2, lista_nivelman[[i]][[2]])
+}
+# tabela_2
+```
+

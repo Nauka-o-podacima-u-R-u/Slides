@@ -1,0 +1,69 @@
+
+---
+title: "<center><div class='mytitle'>R Markdown izveštaj</div></center>"
+author: "<center><div class='mysubtitle'>Petar Bursać, Milutin Pejović</div></center>"
+output:
+  html_document:
+      css: style.css
+      toc: FALSE
+      includes: 
+        before_body: header.html
+---
+
+<br><br>
+
+<div class="mycontent">
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# devtools::install_github("thomasp85/ggforce")
+library(tidyverse)
+library(magrittr)
+library(DT)
+library(ggplot2)
+library(remedy)
+library(here)
+library(ggplot2)
+library(gridExtra)
+library(ggpubr)
+library(lattice)
+library(plotly)
+library(ggforce)
+library(ggthemes)
+library(ggrepel)
+```
+
+
+```{r include = FALSE}
+# source("./bin/chunk-options.R")
+```
+
+
+```{r include = FALSE, eval = FALSE}
+<style>
+  body {
+    text-align: justify}
+</style>
+  
+```
+
+
+# R markdown izveštaj sa slikom
+***
+
+`Rmarkdown` je okruženje u okviru `R` programskog jezika koje nam omogućava da kreiramo dokumente koji objedinjuju R kod, rezultate koda i prateći tekst. U okviru `Rmarkdown`-a moguće je kreirati različite dokumente u različitim formatima, kao što su html, pdf, word, prezentaciju itd. 
+
+`Rmarkdown` je prevashodno namenjen da:
+
+1.  Da omogući lakšu komunikaciju između onoga ko radi na rešavanju nekog problema i onoga ko će da donese odluku na osnovu rezultata, omogućavajući onome ko donosi odluke da se fokusira na rezultate i tekst, a ne na kod. 
+
+1.  Da omogući komunikaciju između ljudi (uključujući i budućeg tebe) tako što će kod biti praćen određenim tekstom koji će objašnjavati kako se došlo do određenih rezultata.
+    
+1.  Da omogući bolju dokumentaciju onoga što je urađeno.
+
+
+
+
+
+<br><br><br>
+</div>
