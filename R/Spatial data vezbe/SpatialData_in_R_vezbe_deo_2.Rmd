@@ -359,7 +359,6 @@ Funkcija za vizualizaciju podataka u formi kolor kompozita i falš kolor kompozi
 
 Nazivi snimka - pomoćno:
 ```{r message=FALSE, warning=FALSE}
-
 files.names <- list.files("Data/Multispektralni_snimci/", full.names = F,
                           pattern = ".tif")
 files.names %<>% stringr::str_remove(., pattern = ".tif")
