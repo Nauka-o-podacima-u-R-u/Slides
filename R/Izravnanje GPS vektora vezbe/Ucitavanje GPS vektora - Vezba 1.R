@@ -194,8 +194,32 @@ umka_df$n_satellites <- as.factor(umka_df$n_satellites)
 
 
 
+# Rešenje zadatka 3
+# -----------------------------------------------------------------------------------------------------------
 
+# UTC_date kolona ima format mmddyy
+umka_df$UTC_date
 
+# Da bi se konvertovala u datum mora se opisati format
+
+# Ali prethodno mora biti konvertovana u tekstualni podatak
+typeof(umka_df$UTC_date)
+umka_df$UTC_date <- as.character(umka_df$UTC_date)
+
+# Pojavljuje se drugi problem, neki zapisi imaju 5 karaktera: Jedan za mesece, dva za dane, dva za godine.
+
+# Napraviti logicki vektor identifikuje vrste koje imaju 5 karaktera.
+five_char <- nchar(umka_df$UTC_date) == 5
+
+# Iskoristiti tu kolonu u selekciji i konverziji zapisa u 6-to karakterni
+# Potrebno je dodati nulu ispred jednocifrenih meseci
+# Komanda `paste` je iskorišćena za kreiranje tekstualnog podatka
+
+umka_df$UTC_date[five_char] <- paste(0, umka_df$UTC_date[five_char], sep = "")
+
+# Na kraju konverzija u datum se može uraditi komandom `as.Date()`
+
+umka_df$UTC_date <- as.Date(umka_df$UTC_date, format = "%m%d%y")
 
 
 
