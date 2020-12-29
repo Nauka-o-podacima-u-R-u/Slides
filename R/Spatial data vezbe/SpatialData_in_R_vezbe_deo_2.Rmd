@@ -421,6 +421,9 @@ for(i in 1:length(rasStack)){
 
 rasListNDVI
 
+names(rasListNDVI) <- paste(files.names, "_NDVI", sep = "")
+names(rasListNDVI)
+
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -519,7 +522,16 @@ div.blue { background-color:#fff7fa; border-radius: 5px; padding: 20px;}
 </div>
 
 
+### Čuvanje podataka u GeoTIFF formatu
 
+```{r eval = FALSE, warning = FALSE, message = FALSE}
+writeRaster(rasListNDVI$`0_2015-08-24_S2_NDVI`, "Data/Multispektralni_snimci/0_2015-08-24_S2_NDVI.tif", overwrite=TRUE)
+
+for(i in 1:length(rasListNDVI)){
+  writeRaster(rasListNDVI[[i]], paste("Data/Multispektralni_snimci/", names(rasListNDVI)[[i]], ".tif", sep = ""), overwrite = TRUE)
+  print(names(rasListNDVI)[[i]])
+}
+```
 
 
 
